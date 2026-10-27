@@ -1,0 +1,46 @@
+﻿[
+  {
+    "emoji": "🥤",
+    "bg": "#fdeee2",
+    "tag": "Vegan",
+    "tagClass": "tag-green",
+    "name": "Formula 1 Shake – Vanilla",
+    "rating": 5,
+    "reviews": 2140,
+    "price": 2349,
+    "mrp": 2899
+  },
+  {
+    "emoji": "🍓",
+    "bg": "#fdeaea",
+    "tag": "High Protein",
+    "tagClass": "tag-pink",
+    "name": "Formula 1 – Berry Burst",
+    "rating": 5,
+    "reviews": 1832,
+    "price": 2349,
+    "mrp": 0
+  },
+  {
+    "emoji": "🍵",
+    "bg": "#e2f3ea",
+    "tag": "Zero Sugar",
+    "tagClass": "tag-green",
+    "name": "Herbal Tea Concentrate – Peach",
+    "rating": 4,
+    "reviews": 960,
+    "price": 1699,
+    "mrp": 0
+  },
+  {
+    "emoji": "💪",
+    "bg": "#e8ecfc",
+    "tag": "Muscle Support",
+    "tagClass": "tag-blue",
+    "name": "Protein Drink Mix – Vanilla",
+    "rating": 5,
+    "reviews": 1204,
+    "price": 2799,
+    "mrp": 0
+  }
+]

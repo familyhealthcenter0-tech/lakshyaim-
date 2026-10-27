@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login – Lakshyaim Private Limited</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body class="admin-body">
+
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">L</span>
+        <span class="logo-text">Lakshyaim Private Limited</span>
+      </a>
+      <div class="nav-actions">
+        <a href="index.html" class="btn btn-outline btn-sm">← Back to Site</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Login screen ===== -->
+  <main class="login-wrap" id="loginScreen">
+    <div class="login-card">
+      <span class="login-icon">🔐</span>
+      <h1>Admin Login</h1>
+      <p class="login-sub">Lakshyaim Private Limited control panel</p>
+      <form id="loginForm">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter username" autocomplete="username" required />
+        <label for="password">Password</label>
+        <div class="pass-wrap">
+          <input type="password" id="password" placeholder="Enter password" autocomplete="current-password" required />
+          <button type="button" id="togglePass" aria-label="Show password">👁</button>
+        </div>
+        <p class="error-msg" id="errorMsg"></p>
+        <button type="submit" class="btn btn-full">Login</button>
+      </form>
+      <p class="hint">Demo credentials: <strong>admin</strong> / <strong>admin123</strong></p>
+    </div>
+  </main>
+
+  <!-- ===== Dashboard (after login) ===== -->
+  <main class="dash-wrap" id="dashboard" style="display:none">
+    <div class="container">
+      <div class="dash-head">
+        <h1>Admin Dashboard</h1>
+        <button class="btn btn-outline btn-sm" id="logoutBtn">Logout</button>
+      </div>
+      <p class="welcome" id="welcomeMsg"></p>
+
+      <div class="dash-grid">
+        <div class="dash-card">
+          <span>🧾</span>
+          <p class="dash-num" id="statOrders">312</p>
+          <p>Orders today</p>
+        </div>
+        <div class="dash-card">
+          <span>👥</span>
+          <p class="dash-num" id="statMembers">1,247</p>
+          <p>Members</p>
+        </div>
+        <div class="dash-card">
+          <span>📦</span>
+          <p class="dash-num">38</p>
+          <p>Products live</p>
+        </div>
+        <div class="dash-card">
+          <span>💰</span>
+          <p class="dash-num">₹2.4L</p>
+          <p>Revenue this week</p>
+        </div>
+      </div>
+
+      <div class="dash-panel" style="margin-bottom:26px">
+        <h2>➕ Add New Product</h2>
+        <form id="addProductForm" class="add-form">
+          <div class="row">
+            <label>Product name
+              <input type="text" id="pName" placeholder="e.g. Aloevera Concentrate – Mango" required />
+            </label>
+            <label>Emoji
+              <input type="text" id="pEmoji" placeholder="🥭" maxlength="4" required />
+            </label>
+          </div>
+          <div class="row">
+            <label>Tag (category)
+              <input type="text" id="pTag" placeholder="e.g. Digestive Health" required />
+            </label>
+            <label>Tag color
+              <select id="pTagClass">
+                <option value="tag-green">Green</option>
+                <option value="tag-pink">Pink</option>
+                <option value="tag-blue">Blue</option>
+              </select>
+            </label>
+          </div>
+          <div class="row">
+            <label>Price (₹)
+              <input type="number" id="pPrice" min="1" placeholder="1999" required />
+            </label>
+            <label>MRP (optional)
+              <input type="number" id="pMrp" min="0" placeholder="2499" />
+            </label>
+          </div>
+          <div class="row">
+            <label>Rating (1–5)
+              <input type="number" id="pRating" min="1" max="5" value="5" required />
+            </label>
+            <label>Reviews count
+              <input type="number" id="pReviews" min="0" value="0" required />
+            </label>
+          </div>
+          <button type="submit" class="btn">Save Product</button>
+          <button type="button" class="btn btn-outline" id="resetProductsBtn">Reset to Default</button>
+        </form>
+        <p class="form-msg" id="prodMsg"></p>
+      </div>
+
+      <div class="dash-panel" style="margin-bottom:26px">
+        <h2>🛍 Product Catalog (<span id="prodCount">0</span>)</h2>
+        <table class="orders-table">
+          <thead>
+            <tr><th>Image</th><th>Name</th><th>Tag</th><th>Price</th><th>Delete</th></tr>
+          </thead>
+          <tbody id="productTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="dash-panel">
+        <h2>Recent Orders</h2>
+        <table class="orders-table">
+          <thead>
+            <tr><th>Order ID</th><th>Customer</th><th>Product</th><th>Amount</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>#LA-2041</td><td>Riya S.</td><td>Formula 1 – Vanilla</td><td>₹2,349</td><td><span class="status st-done">Delivered</span></td></tr>
+            <tr><td>#LA-2040</td><td>Arun K.</td><td>Herbal Tea – Peach</td><td>₹1,699</td><td><span class="status st-ship">Shipped</span></td></tr>
+            <tr><td>#LA-2039</td><td>Meera P.</td><td>Healthy Active Kit</td><td>₹8,499</td><td><span class="status st-pend">Pending</span></td></tr>
+            <tr><td>#LA-2038</td><td>Vikas T.</td><td>Protein Drink Mix</td><td>₹2,799</td><td><span class="status st-done">Delivered</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script src="products.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
