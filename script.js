@@ -1,0 +1,180 @@
+// Mobile menu toggle
+const hamburger = document.getElementById("hamburger");
+const navLinks = document.getElementById("navLinks");
+
+hamburger.addEventListener("click", () => navLinks.classList.toggle("open"));
+
+// Close mobile menu after clicking a link (dropdown toggle ko chhod kar — uska apna behavior hai)
+navLinks.querySelectorAll("a").forEach((a) =>
+  a.addEventListener("click", () => {
+    if (a.id !== "dropToggle") navLinks.classList.remove("open");
+  })
+);
+
+// Navbar shadow on scroll
+const navbar = document.getElementById("navbar");
+window.addEventListener("scroll", () => {
+  navbar.classList.toggle("scrolled", window.scrollY > 8);
+});
+
+// Add-to-cart clicks -> update cart badge (delegated, works for dynamic products too)
+const cartBtn = document.querySelector(".icon-btn[aria-label='Cart']");
+let cartCount = 2;
+codeClicks();
+function codeClicks() {
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".card .btn");
+    if (!btn) return;
+    cartCount++;
+    const badge = cartBtn.querySelector(".cart-count");
+    badge.textContent = cartCount;
+    badge.animate(
+      [{ transform: "scale(1)" }, { transform: "scale(1.5)" }, { transform: "scale(1)" }],
+      { duration: 250 }
+    );
+    btn.textContent = "Added ✓";
+    setTimeout(() => (btn.textContent = "Add to Cart"), 1200);
+  });
+}
+
+// Shop grid render (products.js ke saath)
+const productGrid = document.getElementById("productGrid");
+if (productGrid) {
+  getProducts().then((list) => {
+    productGrid.innerHTML = list.map(productCardHTML).join("");
+  });
+}
+
+// ===== Gallery (gallery/manifest.json se saari images) =====
+const galleryGrid = document.getElementById("galleryGrid");
+let galleryImages = [];
+
+async function initGallery() {
+  if (!galleryGrid) return;
+  try {
+    const res = await fetch("gallery/manifest.json");
+    galleryImages = await res.json();
+  } catch {
+    galleryImages = [];
+  }
+  if (!Array.isArray(galleryImages) || !galleryImages.length) {
+    galleryGrid.innerHTML = '<p class="gallery-empty">Gallery abhi load nahi hui — thodi der baad refresh karein.</p>';
+    return;
+  }
+  galleryGrid.innerHTML = galleryImages
+    .map(
+      (src, i) => `
+    <figure class="gallery-item" data-index="${i}">
+      <img src="${src}" alt="Lakshyaim photo ${i + 1}" loading="lazy" />
+    </figure>`
+    )
+    .join("");
+}
+
+// ===== Lightbox =====
+const lightbox = document.getElementById("lightbox");
+const lbImg = document.getElementById("lbImg");
+const lbCount = document.getElementById("lbCount");
+let lbIndex = 0;
+
+function showLightbox(i) {
+  lbIndex = (i + galleryImages.length) % galleryImages.length;
+  lbImg.src = galleryImages[lbIndex];
+  lbCount.textContent = `${lbIndex + 1} / ${galleryImages.length}`;
+}
+
+function openLightbox(i) {
+  showLightbox(i);
+  lightbox.classList.add("open");
+  lightbox.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+
+function closeLightbox() {
+  lightbox.classList.remove("open");
+  lightbox.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+  lbImg.src = "";
+}
+
+function stepLightbox(delta) {
+  showLightbox(lbIndex + delta);
+}
+
+galleryGrid?.addEventListener("click", (e) => {
+  const item = e.target.closest(".gallery-item");
+  if (item) openLightbox(+item.dataset.index);
+});
+document.getElementById("lbClose")?.addEventListener("click", closeLightbox);
+document.getElementById("lbPrev")?.addEventListener("click", () => stepLightbox(-1));
+document.getElementById("lbNext")?.addEventListener("click", () => stepLightbox(1));
+lightbox?.addEventListener("click", (e) => {
+  if (e.target === lightbox) closeLightbox(); // background par click = band
+});
+document.addEventListener("keydown", (e) => {
+  if (!lightbox?.classList.contains("open")) return;
+  if (e.key === "Escape") closeLightbox();
+  else if (e.key === "ArrowLeft") stepLightbox(-1);
+  else if (e.key === "ArrowRight") stepLightbox(1);
+});
+
+initGallery();
+
+// ===== Header "Products" dropdown (catalog se dynamic) =====
+const navDrop = document.getElementById("navDrop");
+const dropToggle = document.getElementById("dropToggle");
+const dropMenu = document.getElementById("dropMenu");
+
+function closeDrop() {
+  navDrop?.classList.remove("open");
+  dropToggle?.setAttribute("aria-expanded", "false");
+}
+
+if (navDrop && dropToggle && dropMenu) {
+  // Toggle: click par open/close
+  dropToggle.addEventListener("click", (e) => {
+    e.preventDefault();
+    const open = navDrop.classList.toggle("open");
+    dropToggle.setAttribute("aria-expanded", String(open));
+  });
+  // Bahar click → band
+  document.addEventListener("click", (e) => {
+    if (!navDrop.contains(e.target)) closeDrop();
+  });
+  // Escape → band
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeDrop();
+  });
+  // Catalog se items bharo (products.js ka data)
+  getProducts().then((list) => {
+    dropMenu.innerHTML = `
+      <a class="drop-item drop-all" href="#products" role="menuitem">🛍️ All Products</a>
+      ${list
+        .map(
+          (p) => `
+        <a class="drop-item" href="#products" role="menuitem">
+          <span class="drop-thumb" style="background:${p.bg}">${p.image ? `<img src="${p.image}" alt="" loading="lazy" onerror="this.remove()" />` : p.emoji}</span>
+          <span class="drop-name">${p.name}</span>
+          <span class="drop-price">${formatPrice(p.price)}</span>
+        </a>`
+        )
+        .join("")}
+    `;
+  });
+  // Item click → dropdown + mobile menu dono band
+  dropMenu.addEventListener("click", () => {
+    closeDrop();
+    navLinks.classList.remove("open");
+  });
+}
+
+// Join form
+const joinForm = document.getElementById("joinForm");
+const formMsg = document.getElementById("formMsg");
+joinForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const email = document.getElementById("email").value.trim();
+  formMsg.textContent = `✅ Thanks! Member invite sent to ${email}`;
+  formMsg.style.color = "#bff0c8";
+  joinForm.reset();
+});

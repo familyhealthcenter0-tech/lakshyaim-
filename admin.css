@@ -1,0 +1,200 @@
+/* ===== Admin login ===== */
+.admin-body { background: linear-gradient(135deg, var(--green), var(--green-dark)); min-height: 100vh; }
+.admin-body .navbar { background: #fff; }
+
+.login-wrap {
+  display: grid;
+  place-items: center;
+  min-height: calc(100vh - 67px);
+  padding: 40px 16px;
+}
+.login-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  padding: 40px 34px;
+  width: min(400px, 100%);
+  text-align: center;
+}
+.login-icon { font-size: 2.6rem; }
+.login-card h1 { font-size: 1.6rem; margin-top: 8px; }
+.login-sub { color: var(--muted); font-size: 0.9rem; margin: 4px 0 24px; }
+
+#loginForm { text-align: left; display: flex; flex-direction: column; gap: 6px; }
+#loginForm label { font-size: 0.82rem; font-weight: 700; margin-top: 8px; }
+#loginForm input {
+  padding: 11px 14px;
+  border: 1.5px solid #d8e0d3;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+#loginForm input:focus { border-color: var(--green); }
+.pass-wrap { position: relative; }
+.pass-wrap input { width: 100%; }
+.pass-wrap button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.error-msg {
+  display: none;
+  background: #fdeaea;
+  color: #b33232;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+.error-msg.show { display: block; }
+#loginForm .btn { margin-top: 14px; }
+.hint {
+  margin-top: 18px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  background: var(--alt);
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+.hint strong { color: var(--green-dark); }
+
+/* ===== Dashboard ===== */
+.dash-wrap { padding: 34px 0 60px; background: var(--cream); min-height: calc(100vh - 67px); }
+.dash-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.dash-head h1 { font-size: 1.6rem; }
+.welcome { color: var(--muted); margin-top: 4px; }
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin: 26px 0;
+}
+.dash-card {
+  background: #fff;
+  border: 1px solid #e6ebdf;
+  border-radius: var(--radius);
+  padding: 22px;
+}
+.dash-card span { font-size: 1.6rem; }
+.dash-num { font-size: 1.7rem; font-weight: 800; color: var(--green-dark); margin-top: 4px; }
+.dash-card p:not(.dash-num) { color: var(--muted); font-size: 0.88rem; }
+
+.dash-panel {
+  background: #fff;
+  border: 1px solid #e6ebdf;
+  border-radius: var(--radius);
+  padding: 24px;
+}
+.dash-panel h2 { font-size: 1.1rem; margin-bottom: 14px; }
+.orders-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.orders-table th {
+  text-align: left;
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 10px 12px;
+  border-bottom: 2px solid #e6ebdf;
+}
+.orders-table td { padding: 12px; border-bottom: 1px solid #eee; }
+.status { padding: 3px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; }
+.st-done { background: #dff2e4; color: #1f6b3f; }
+.st-ship { background: #e2e9fb; color: #2f4ea8; }
+.st-pend { background: #fdf3dc; color: #9a6d07; }
+
+@media (max-width: 640px) {
+  .orders-table th:nth-child(3), .orders-table td:nth-child(3) { display: none; }
+}
+
+/* ===== Add product form ===== */
+.add-form { display: flex; flex-direction: column; gap: 12px; }
+.add-form .row { display: flex; gap: 14px; flex-wrap: wrap; }
+.add-form .row label {
+  flex: 1;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+.add-form input,
+.add-form select {
+  padding: 10px 12px;
+  border: 1.5px solid #d8e0d3;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+.add-form input:focus, .add-form select:focus { border-color: var(--green); }
+.add-form .btn { align-self: flex-start; }
+
+.p-thumb {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  font-size: 1.4rem;
+  overflow: hidden;
+}
+.p-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ===== Add-product photo preview ===== */
+.add-preview {
+  width: 150px;
+  aspect-ratio: 3 / 2;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e6ebdf;
+  background: #f4f8f2;
+  position: relative;
+  align-self: end;
+}
+.add-preview img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Nayi add hui row halki green flash */
+@keyframes rowFlash {
+  from { background: #e2f3ea; }
+  to { background: transparent; }
+}
+tr.row-new { animation: rowFlash 2s ease-out; }
+.del-btn {
+  background: #fdeaea;
+  color: #b33232;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.del-btn:hover { background: #f9c8c8; }
