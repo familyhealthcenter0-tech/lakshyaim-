@@ -710,6 +710,7 @@ function compressImage(file) {
 const ANALYTICS_COLORS = ["kpi-green", "kpi-blue", "kpi-amber", "kpi-violet", "kpi-teal", "kpi-rose"];
 
 async function renderAnalytics() {
+  const fmtRupee = (n) => "₹" + Number(n || 0).toLocaleString("en-IN");
   const orders = JSON.parse(localStorage.getItem("lakshyaim_orders") || "[]");
   const products = await getProducts();
   const members = JSON.parse(localStorage.getItem("lakshyaim_members") || "[]");
@@ -855,6 +856,125 @@ async function renderAnalytics() {
           )
           .join("")
       : '<p class="chart-empty">No order items yet.</p>';
+  }
+
+  // Chart 5 — Revenue trend line (SVG, order by order)
+  const trendEl = document.getElementById("chartTrend");
+  if (trendEl) {
+    const pts = orders.slice(-12).map((o) => ({ id: o.id.replace("#LA-", ""), v: Number(o.total) || 0 }));
+    if (pts.length >= 2) {
+      const w = 640, h = 220, padL = 52, padR = 18, padT = 20, padB = 34;
+      const max = Math.max(...pts.map((p) => p.v), 1);
+      const iw = w - padL - padR, ih = h - padT - padB;
+      const xs = (i) => padL + (i * iw) / (pts.length - 1);
+      const ys = (v) => padT + ih - (v / max) * ih;
+      const line = pts.map((p, i) => (i ? "L" : "M") + xs(i).toFixed(1) + " " + ys(p.v).toFixed(1)).join(" ");
+      const area = line + " L" + xs(pts.length - 1).toFixed(1) + " " + (padT + ih) + " L" + xs(0).toFixed(1) + " " + (padT + ih) + " Z";
+      let grid = "";
+      for (let g = 0; g <= 4; g++) {
+        const y = padT + (ih / 4) * g;
+        const val = Math.round(max - (max / 4) * g);
+        grid +=
+          '<line x1="' + padL + '" y1="' + y + '" x2="' + (w - padR) + '" y2="' + y + '" stroke="#e6ebf1" stroke-width="1"/>' +
+          '<text x="' + (padL - 8) + '" y="' + (y + 4) + '" text-anchor="end" font-size="10" fill="#8a97a5">₹' + fmtAnalytics(val) + "</text>";
+      }
+      const dots = pts
+        .map((p, i) => '<circle cx="' + xs(i).toFixed(1) + '" cy="' + ys(p.v).toFixed(1) + '" r="4.5" fill="#0d9b64" stroke="#fff" stroke-width="2"/>')
+        .join("");
+      const labels = pts
+        .map((p, i) => '<text x="' + xs(i).toFixed(1) + '" y="' + (h - 10) + '" text-anchor="middle" font-size="10" fill="#8a97a5">' + p.id + "</text>")
+        .join("");
+      trendEl.innerHTML =
+        '<svg viewBox="0 0 ' + w + " " + h + '" style="width:100%;height:auto;display:block">' +
+        '<defs><linearGradient id="trendGrad" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0%" stop-color="rgba(13,155,100,0.35)"/><stop offset="100%" stop-color="rgba(13,155,100,0.02)"/>' +
+        "</linearGradient></defs>" +
+        grid +
+        '<path d="' + area + '" fill="url(#trendGrad)"/>' +
+        '<path d="' + line + '" fill="none" stroke="#0d9b64" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>' +
+        dots +
+        labels +
+        "</svg>";
+    } else {
+      trendEl.innerHTML = '<p class="chart-empty">Trend chart ke liye kam se kam 2 orders chahiye.</p>';
+    }
+  }
+
+  // Chart 6 — Catalog by category
+  const catEl = document.getElementById("chartCategory");
+  if (catEl) {
+    const cats = {};
+    products.forEach((p) => {
+      const k = p.tag || "Other";
+      cats[k] = (cats[k] || 0) + 1;
+    });
+    const entries = Object.entries(cats).sort((a, b) => b[1] - a[1]);
+    const maxCat = Math.max(1, ...entries.map((e) => e[1]));
+    catEl.innerHTML = entries.length
+      ? entries
+          .map(
+            (e) =>
+              '<div class="hbar"><span class="hbar-label">' + e[0].slice(0, 18) + '</span>' +
+              '<span class="hbar-track"><span class="hbar-fill" style="width:' + Math.round((e[1] / maxCat) * 100) + '%;background:linear-gradient(90deg,#12a96e,#077a4c)"></span></span>' +
+              '<span class="hbar-val">' + e[1] + "</span></div>"
+          )
+          .join("")
+      : '<p class="chart-empty">No products.</p>';
+  }
+
+  // Chart 7 — Members growth (join date ke hisaab se)
+  const memEl = document.getElementById("chartMembers");
+  if (memEl) {
+    const byDate = {};
+    members.forEach((m) => {
+      const d = (m.date || "").split(",")[0];
+      if (d) byDate[d] = (byDate[d] || 0) + 1;
+    });
+    const dates = Object.keys(byDate);
+    const maxM = Math.max(1, ...Object.values(byDate));
+    memEl.innerHTML = dates.length
+      ? dates
+          .map(
+            (d) =>
+              '<div class="hbar"><span class="hbar-label">' + d + '</span>' +
+              '<span class="hbar-track"><span class="hbar-fill" style="width:' + Math.round((byDate[d] / maxM) * 100) + '%;background:linear-gradient(90deg,#f59e0b,#d97706)"></span></span>' +
+              '<span class="hbar-val">' + byDate[d] + "</span></div>"
+          )
+          .join("")
+      : '<p class="chart-empty">No members yet.</p>';
+  }
+
+  // GST report — per-order breakdown
+  const gstNote = document.getElementById("gstReportNote");
+  const gstTable = document.getElementById("gstTable");
+  const gstBody = document.getElementById("gstTableBody");
+  if (gstNote && gstTable && gstBody) {
+    const rate = Number(settings.gstRate) || 0;
+    const gstin = settings.gstin || "";
+    if (rate > 0) {
+      gstNote.textContent =
+        "GST " + rate + "% (inclusive)" + (gstin ? " · GSTIN: " + gstin : "") + " — har order me included GST amount:";
+      document.getElementById("gstRateLabel").textContent = rate;
+      gstTable.style.display = "";
+      const rows = orders.map((o) => {
+        const t = Number(o.total) || 0;
+        return { id: o.id, name: o.customer.name, total: t, gst: Math.round((t * rate) / (100 + rate)) };
+      });
+      const totalGst = rows.reduce((n, r) => n + r.gst, 0);
+      gstBody.innerHTML =
+        rows
+          .map(
+            (r) =>
+              "<tr><td><b>" + r.id + "</b></td><td>" + r.name + "</td><td>" + fmtRupee(r.total) + "</td><td><b>" + fmtRupee(r.gst) + "</b></td></tr>"
+          )
+          .join("") +
+        '<tr><td colspan="2" style="text-align:right;font-weight:800">Total GST</td><td></td><td style="font-weight:800">' +
+        fmtRupee(totalGst) +
+        "</td></tr>";
+    } else {
+      gstNote.textContent = "GST off hai — Settings me GST rate set karo, phir yahan per-order GST report banega.";
+      gstTable.style.display = "none";
+    }
   }
 }
 

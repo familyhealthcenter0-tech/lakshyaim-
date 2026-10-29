@@ -279,7 +279,12 @@
         <div class="ad-view" id="view-analytics" style="display:none">
           <div class="kpi-grid-12" id="analyticsKpis"></div>
 
-          <div class="analytics-grid">
+          <div class="dash-panel" style="margin-bottom:24px">
+            <h2><span class="panel-ico">📈</span> Revenue Trend — Order by Order</h2>
+            <div id="chartTrend"></div>
+          </div>
+
+          <div class="analytics-grid" style="margin-bottom:24px">
             <div class="dash-panel">
               <h2><span class="panel-ico">💰</span> Revenue — Last Orders</h2>
               <div class="chart-bars" id="chartRevenue"></div>
@@ -299,6 +304,28 @@
               <h2><span class="panel-ico">🏆</span> Top Products</h2>
               <div class="hbars" id="chartTop"></div>
             </div>
+          </div>
+
+          <div class="analytics-grid" style="margin-bottom:24px">
+            <div class="dash-panel">
+              <h2><span class="panel-ico">🏷</span> Catalog by Category</h2>
+              <div class="hbars" id="chartCategory"></div>
+            </div>
+            <div class="dash-panel">
+              <h2><span class="panel-ico">👥</span> Members Growth</h2>
+              <div class="hbars" id="chartMembers"></div>
+            </div>
+          </div>
+
+          <div class="dash-panel" id="gstReportPanel">
+            <h2><span class="panel-ico">🧮</span> GST Report</h2>
+            <p class="co-note" id="gstReportNote"></p>
+            <table class="orders-table" id="gstTable" style="display:none">
+              <thead>
+                <tr><th>Order ID</th><th>Customer</th><th>Total</th><th>GST (<span id="gstRateLabel"></span>%)</th></tr>
+              </thead>
+              <tbody id="gstTableBody"></tbody>
+            </table>
           </div>
         </div>
 
@@ -428,6 +455,6 @@
 
   <script src="products.js?v=202610303"></script>
   <script src="site-content.js?v=202610301"></script>
-  <script src="admin.js?v=202610321"></script>
+  <script src="admin.js?v=202610322"></script>
 </body>
 </html>
