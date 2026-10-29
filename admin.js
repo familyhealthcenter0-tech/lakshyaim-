@@ -132,7 +132,7 @@ function refreshProductTable() {
     tableBody.innerHTML = list
       .map(
         (p, i) => `
-      <tr>
+      <tr data-search="${(p.name + " " + p.tag).toLowerCase()}">
         <td class="cell-emoji"><span class="p-thumb" style="background:${p.bg}">${p.image ? `<img src="${p.image}" alt="" onerror="this.remove()" />` : p.emoji}</span></td>
         <td>${p.name}</td>
         <td>${p.tag}</td>
@@ -141,7 +141,31 @@ function refreshProductTable() {
       </tr>`
       )
       .join("");
+    updateStats();
   });
+}
+
+// Product search filter — catalog table live filter
+const searchInput = document.getElementById("prodSearch");
+if (searchInput) {
+  searchInput.addEventListener("input", () => {
+    const q = searchInput.value.trim().toLowerCase();
+    [...tableBody.querySelectorAll("tr")].forEach((tr) => {
+      const hay = (tr.dataset.search || "");
+      tr.style.display = hay.includes(q) ? "" : "none";
+    });
+  });
+}
+
+// ===== Dashboard stats — sab dynamic (localStorage orders) =====
+function updateStats() {
+  const orders = JSON.parse(localStorage.getItem("lakshyaim_orders") || "[]");
+  const so = document.getElementById("statOrders");
+  const sp = document.getElementById("statPending");
+  const sr = document.getElementById("statRevenue");
+  if (so) so.textContent = orders.length;
+  if (sp) sp.textContent = orders.filter((o) => o.status === "Pending").length;
+  if (sr) sr.textContent = "₹" + orders.reduce((n, o) => n + Number(o.total || 0), 0).toLocaleString("en-IN");
 }
 
 if (addForm) {
@@ -246,7 +270,8 @@ function renderRecentOrders() {
   }
   if (!orders.length) {
     tbody.innerHTML =
-      '<tr><td colspan="5" style="color:var(--muted)">Abhi koi order nahi — site par checkout se pehla order test karo, wahi yahan live dikhega.</td></tr>';
+      '<tr><td colspan="6" style="color:var(--muted)">Abhi koi order nahi — site par checkout se pehla order test karo, wahi yahan live dikhega.</td></tr>';
+    updateStats();
     return;
   }
   tbody.innerHTML = orders
@@ -256,13 +281,17 @@ function renderRecentOrders() {
     .map(
       (o) => `
       <tr>
-        <td>${o.id}</td>
-        <td>${o.customer.name}</td>
+        <td><b>${o.id}</b></td>
+        <td>
+          <div class="cust-cell"><b>${o.customer.name}</b><span class="row-sub">${o.date || ""} · ${o.customer.city || ""}</span></div>
+        </td>
         <td>${o.items.length > 1 ? o.items[0].name + " +" + (o.items.length - 1) + " more" : o.items[0].name}</td>
-        <td>${fmtN(o.total)}</td>
+        <td><b>${fmtN(o.total)}</b></td>
+        <td><span class="pay-chip">${o.pay || "COD"}</span></td>
         <td><span class="status st-pend">${o.status}</span></td>
       </tr>`
     )
     .join("");
+  updateStats();
 }
 renderRecentOrders();

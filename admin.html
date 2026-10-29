@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=202610308" />
-  <link rel="stylesheet" href="admin.css?v=202610303" />
+  <link rel="stylesheet" href="admin.css?v=202610310" />
 </head>
 <body class="admin-body">
 
@@ -50,35 +50,47 @@
   <main class="dash-wrap" id="dashboard" style="display:none">
     <div class="container">
       <div class="dash-head">
-        <h1>Admin Dashboard</h1>
-        <button class="btn btn-outline btn-sm" id="logoutBtn">Logout</button>
+        <div class="dash-head-info">
+          <h1>Admin Dashboard</h1>
+          <p class="dash-tagline">Lakshyaim control center — products, orders aur store performance ek jagah.</p>
+        </div>
+        <div class="dash-head-actions">
+          <a href="index.html" class="btn btn-outline btn-sm">🛍 Open Store</a>
+          <button class="btn btn-sm" id="logoutBtn">Logout</button>
+        </div>
       </div>
       <p class="welcome" id="welcomeMsg"></p>
 
       <div class="dash-grid">
         <div class="dash-card">
-          <span>🧾</span>
-          <p class="dash-num" id="statOrders">312</p>
-          <p>Orders today</p>
+          <span class="dash-ico">🧾</span>
+          <p class="dash-num" id="statOrders">0</p>
+          <p>Total orders</p>
         </div>
         <div class="dash-card">
-          <span>👥</span>
-          <p class="dash-num" id="statMembers">1,247</p>
-          <p>Members</p>
+          <span class="dash-ico gold">⏳</span>
+          <p class="dash-num" id="statPending">0</p>
+          <p>Pending orders</p>
         </div>
         <div class="dash-card">
-          <span>📦</span>
+          <span class="dash-ico">📦</span>
           <p class="dash-num" id="statProducts">0</p>
           <p>Products live</p>
         </div>
         <div class="dash-card">
-          <span>💰</span>
-          <p class="dash-num">₹2.4L</p>
-          <p>Revenue this week</p>
+          <span class="dash-ico gold">💰</span>
+          <p class="dash-num" id="statRevenue">₹0</p>
+          <p>Total revenue</p>
         </div>
       </div>
 
-      <div class="dash-panel" style="margin-bottom:26px">
+      <div class="quick-actions">
+        <a href="#addProductPanel" class="qa-btn">➕ Add New Product</a>
+        <a href="#catalogPanel" class="qa-btn">🛍 Manage Catalog</a>
+        <a href="#ordersPanel" class="qa-btn">🧾 View Orders</a>
+      </div>
+
+      <div class="dash-panel" id="addProductPanel" style="margin-bottom:26px">
         <h2>➕ Add New Product</h2>
         <form id="addProductForm" class="add-form">
           <div class="row">
@@ -142,8 +154,11 @@
         <p class="form-msg" id="prodMsg"></p>
       </div>
 
-      <div class="dash-panel" style="margin-bottom:26px">
-        <h2>🛍 Product Catalog (<span id="prodCount">0</span>)</h2>
+      <div class="dash-panel" id="catalogPanel" style="margin-bottom:26px">
+        <div class="search-row">
+          <h2>🛍 Product Catalog (<span id="prodCount">0</span>)</h2>
+          <input type="text" id="prodSearch" class="search-input" placeholder="🔍 Search by name ya tag..." />
+        </div>
         <table class="orders-table">
           <thead>
             <tr><th>Image</th><th>Name</th><th>Tag</th><th>Price</th><th>Delete</th></tr>
@@ -152,11 +167,11 @@
         </table>
       </div>
 
-      <div class="dash-panel">
-        <h2>Recent Orders <span style="font-size:0.78rem;color:var(--muted);font-weight:600">(checkout se place hue orders yahan dikhte hain)</span></h2>
-        <table class="orders-table">
+      <div class="dash-panel" id="ordersPanel">
+        <h2>🧾 Recent Orders <span style="font-size:0.78rem;color:var(--muted);font-weight:600">(checkout se place hue orders yahan dikhte hain)</span></h2>
+        <table class="orders-table orders-table--rich">
           <thead>
-            <tr><th>Order ID</th><th>Customer</th><th>Product</th><th>Amount</th><th>Status</th></tr>
+            <tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Amount</th><th>Payment</th><th>Status</th></tr>
           </thead>
           <tbody id="ordersTableBody"></tbody>
         </table>
@@ -165,6 +180,6 @@
   </main>
 
   <script src="products.js?v=202610302"></script>
-  <script src="admin.js?v=202610302"></script>
+  <script src="admin.js?v=202610310"></script>
 </body>
 </html>
