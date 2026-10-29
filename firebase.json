@@ -12,6 +12,36 @@
         "source": "/admin",
         "destination": "/admin.html"
       }
+    ],
+    "headers": [
+      {
+        "source": "/index.html",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+      },
+      {
+        "source": "/admin.html",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+      },
+      {
+        "source": "/**.html",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+      },
+      {
+        "source": "/**/*.css",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
+      },
+      {
+        "source": "/**/*.js",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
+      },
+      {
+        "source": "/**/@(jpg|jpeg|png|svg|webp)",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
+      },
+      {
+        "source": "/**/*.json",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=600" }]
+      }
     ]
   },
   "storage": {
