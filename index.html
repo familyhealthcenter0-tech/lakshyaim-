@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lakshyaim Private Limited – Nutrition &amp; Weight Management</title>
+  <meta name="description" content="Lakshyaim Private Limited — science-backed protein shakes, teas and supplements for balanced nutrition and healthy weight management." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -11,8 +15,8 @@
   <!-- Top bar -->
   <div class="topbar">
     <span>🌿 Free shipping on orders over ₹2,999</span>
-    <span>|</span>
-    <span>👤 Become a Member &amp; save 25%</span>
+    <span class="topbar-sep">·</span>
+    <span>👤 Members save 25% every day</span>
   </div>
 
   <!-- Navbar -->
@@ -20,7 +24,7 @@
     <div class="container nav-inner">
       <a href="#" class="logo">
         <span class="logo-mark">L</span>
-        <span class="logo-text">Lakshyaim Private Limited</span>
+        <span class="logo-text">Lakshyaim</span>
       </a>
       <nav class="nav-links" id="navLinks">
         <div class="nav-drop" id="navDrop">
@@ -28,17 +32,16 @@
           <div class="drop-menu" id="dropMenu" role="menu"></div>
         </div>
         <a href="#gallery">Gallery</a>
-        <a href="#programs">Programs</a>
+        <a href="#why">Why Us</a>
         <a href="#results">Results</a>
-        <a href="#science">Science</a>
+        <a href="#faq">FAQ</a>
         <a href="#membership">Membership</a>
-        <a href="#contact">Contact</a>
       </nav>
       <div class="nav-actions">
         <button class="icon-btn" aria-label="Search">🔍</button>
         <button class="icon-btn" aria-label="Cart">🛒 <span class="cart-count">2</span></button>
         <a href="#membership" class="btn btn-sm">Sign In</a>
-        <a href="admin.html" class="btn btn-sm btn-admin">🔐 Admin</a>
+        <a href="admin.html" class="btn btn-sm btn-ghost">Admin</a>
         <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
       </div>
     </div>
@@ -78,16 +81,49 @@
   <!-- Products -->
   <section class="section" id="products">
     <div class="container">
-      <h2 class="sec-title">Best Sellers</h2>
-      <p class="sec-sub">Trusted daily nutrition, chosen by thousands.</p>
+      <p class="eyebrow">Best Sellers</p>
+      <h2 class="sec-title">Trusted Daily Nutrition</h2>
+      <p class="sec-sub">Chosen by thousands, verified for purity, priced for everyday routines.</p>
       <div class="grid" id="productGrid"></div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="section" id="why">
+    <div class="container">
+      <p class="eyebrow">Why Lakshyaim</p>
+      <h2 class="sec-title">Chosen by People Who Read Labels</h2>
+      <p class="sec-sub">No shortcuts, no mystery blends — just clean, verified nutrition with real human support.</p>
+      <div class="grid grid-3 why-grid">
+        <div class="why-card">
+          <span class="why-icon gold">🔬</span>
+          <h3>Lab-Verified Quality</h3>
+          <p>Every batch is third-party tested for purity and potency. FSSAI-certified manufacturing, full traceability.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">👩‍⚕️</span>
+          <h3>1-on-1 Expert Coaching</h3>
+          <p>Certified nutritionists build your plan, review progress weekly, and adjust until it works.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">🚚</span>
+          <h3>Fast, Free Delivery</h3>
+          <p>Pan-India shipping in 3–5 days. Free on every order above ₹2,999 — no hidden charges, ever.</p>
+        </div>
+        <div class="why-card">
+          <span class="why-icon">🛡️</span>
+          <h3>90-Day Guarantee</h3>
+          <p>Love the results or get your money back. A full season to judge us — that's how confident we are.</p>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Gallery -->
   <section class="section section-alt" id="gallery">
     <div class="container">
-      <h2 class="sec-title">Product Gallery</h2>
+      <p class="eyebrow">Product Gallery</p>
+      <h2 class="sec-title">The Full Range, Up Close</h2>
       <p class="sec-sub">Products, offers aur results — poori range ek jagah. Photo par click karke bada dekhein.</p>
       <div class="gallery-grid" id="galleryGrid"></div>
     </div>
@@ -96,8 +132,9 @@
   <!-- Programs / Start packs -->
   <section class="section section-alt" id="programs">
     <div class="container">
+      <p class="eyebrow">Programs</p>
       <h2 class="sec-title">Choose Your Journey</h2>
-      <p class="sec-sub">Starter packs built around one goal each.</p>
+      <p class="sec-sub">Starter kits built around one goal each — with coaching included.</p>
       <div class="grid grid-3">
         <div class="plan">
           <p class="plan-name">Weight Balance</p>
@@ -140,27 +177,50 @@
   <!-- Results / testimonials -->
   <section class="section" id="results">
     <div class="container">
-      <h2 class="sec-title">Real Results</h2>
-      <p class="sec-sub">Members who rebuilt their routine with us.</p>
+      <p class="eyebrow">Real Results</p>
+      <h2 class="sec-title">Stories From Our Members</h2>
+      <p class="sec-sub">Unfiltered reviews from people who rebuilt their daily routine with us.</p>
+      <p class="testi-meta">⭐ <strong>4.9 / 5</strong> average from <strong>50,000+</strong> verified member reviews</p>
       <div class="grid grid-3">
-        <div class="testimonial">
+        <figure class="testimonial">
+          <span class="quote-mark">"</span>
           <p class="stars">★★★★★</p>
-          <p>“The shake keeps me full till lunch. I've dropped 6 kg in three months without feeling hungry.”</p>
-          <div class="avatar">R</div>
-          <p><strong>Riya S.</strong> · Member</p>
-        </div>
-        <div class="testimonial">
+          <blockquote>The shake keeps me full till lunch. I've dropped 6 kg in three months without ever feeling hungry or low on energy.</blockquote>
+          <figcaption>
+            <div class="avatar">RS</div>
+            <div class="testi-who">
+              <strong>Riya S.</strong>
+              <span>Member · Weight Balance</span>
+            </div>
+            <span class="result-chip">−6 kg in 3 months</span>
+          </figcaption>
+        </figure>
+        <figure class="testimonial">
+          <span class="quote-mark">"</span>
           <p class="stars">★★★★★</p>
-          <p>“Tea in the morning replaced my sugary colas completely. Energy through the whole workday.”</p>
-          <div class="avatar">A</div>
-          <p><strong>Arun K.</strong> · Member</p>
-        </div>
-        <div class="testimonial">
+          <blockquote>Tea in the morning replaced my sugary colas completely. Steady energy through the whole workday — no 4 pm crash.</blockquote>
+          <figcaption>
+            <div class="avatar">AK</div>
+            <div class="testi-who">
+              <strong>Arun K.</strong>
+              <span>Member · Daily Wellness</span>
+            </div>
+            <span class="result-chip">3 colas → 0 / day</span>
+          </figcaption>
+        </figure>
+        <figure class="testimonial">
+          <span class="quote-mark">"</span>
           <p class="stars">★★★★☆</p>
-          <p>“Sports kit + the coaching calls helped me train for my first half marathon properly.”</p>
-          <div class="avatar">M</div>
-          <p><strong>Meera P.</strong> · Member</p>
-        </div>
+          <blockquote>The sports kit plus weekly coaching calls got me to my first half marathon properly trained — and properly fueled.</blockquote>
+          <figcaption>
+            <div class="avatar">MP</div>
+            <div class="testi-who">
+              <strong>Meera P.</strong>
+              <span>Member · Sports Performance</span>
+            </div>
+            <span class="result-chip">First 21K finisher 🏅</span>
+          </figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -184,8 +244,61 @@
     </div>
   </section>
 
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="container faq-wrap">
+      <p class="eyebrow">FAQ</p>
+      <h2 class="sec-title">Questions, Answered Honestly</h2>
+      <p class="sec-sub">Sabse zyada pooche jaane wale sawaal — seedha jawab, bina ghumaye.</p>
+      <div class="faq-list" id="faqList">
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false">
+            <span>Are the products safe and certified?</span>
+            <span class="faq-ico">+</span>
+          </button>
+          <div class="faq-a"><p>Yes. Every product is made in FSSAI-certified facilities and every batch is third-party lab-tested for purity and potency. Certificates of analysis are available on request — we have nothing to hide.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false">
+            <span>How do I use the shake in my routine?</span>
+            <span class="faq-ico">+</span>
+          </button>
+          <div class="faq-a"><p>Most members replace one or two meals a day with a shake, keep one balanced whole-food meal, and add healthy snacks. Your free welcome plan walks you through the first week step by step.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false">
+            <span>Do you ship across India? How fast?</span>
+            <span class="faq-ico">+</span>
+          </button>
+          <div class="faq-a"><p>We ship to 27,000+ pin codes pan-India in 3–5 working days. Orders above ₹2,999 ship free; below that a flat ₹99 applies. Track every order from your account.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false">
+            <span>What if it doesn't work for me?</span>
+            <span class="faq-ico">+</span>
+          </button>
+          <div class="faq-a"><p>You get a 90-day money-back promise. If you follow the plan and don't feel a genuine difference, write to us — we refund the order. That policy has our founder's signature on it.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false">
+            <span>What exactly does membership include?</span>
+            <span class="faq-ico">+</span>
+          </button>
+          <div class="faq-a"><p>Members save 25% on every order, unlock reward points, get early access to new flavours, and a free monthly check-in with a certified nutritionist. No lock-in — cancel anytime.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false">
+            <span>Do I need a coach to start?</span>
+            <span class="faq-ico">+</span>
+          </button>
+          <div class="faq-a"><p>No. The starter guide, meal planner and recipes are enough to begin on your own. Coaching is there when you want accountability or a personalised plan — free for members.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Membership CTA -->
-  <section class="section section-alt" id="membership">
+  <section class="section" id="membership">
     <div class="container cta-box">
       <h2>Join &amp; Save 25%</h2>
       <p>Lakshyaim members get preferred pricing, rewards and personalized coaching support.</p>
@@ -202,9 +315,9 @@
     <div class="container footer-grid">
       <div>
         <a href="#" class="logo logo-light">
-          <span class="logo-mark">L</span><span class="logo-text">Lakshyaim Private Limited</span>
+          <span class="logo-mark">L</span><span class="logo-text">Lakshyaim</span>
         </a>
-        <p class="footer-sub">Lakshyaim Private Limited — balanced nutrition for everyday life.</p>
+        <p class="footer-sub">Lakshyaim Private Limited — balanced, science-backed nutrition for everyday life. Made in India, made for routines.</p>
       </div>
       <div>
         <h4>Shop</h4>

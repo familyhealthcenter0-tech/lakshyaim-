@@ -120,6 +120,31 @@ document.addEventListener("keydown", (e) => {
 
 initGallery();
 
+// ===== FAQ accordion (smooth open/close) =====
+const faqList = document.getElementById("faqList");
+if (faqList) {
+  faqList.addEventListener("click", (e) => {
+    const btn = e.target.closest(".faq-q");
+    if (!btn) return;
+    const item = btn.closest(".faq-item");
+    const panel = item.querySelector(".faq-a");
+    const isOpen = item.classList.contains("open");
+
+    // Sirf ek FAQ khula rakhte hain
+    faqList.querySelectorAll(".faq-item.open").forEach((other) => {
+      if (other !== item) {
+        other.classList.remove("open");
+        other.querySelector(".faq-a").style.maxHeight = "0px";
+        other.querySelector(".faq-q").setAttribute("aria-expanded", "false");
+      }
+    });
+
+    item.classList.toggle("open", !isOpen);
+    btn.setAttribute("aria-expanded", String(!isOpen));
+    panel.style.maxHeight = !isOpen ? panel.scrollHeight + "px" : "0px";
+  });
+}
+
 // ===== Header "Products" dropdown (catalog se dynamic) =====
 const navDrop = document.getElementById("navDrop");
 const dropToggle = document.getElementById("dropToggle");
