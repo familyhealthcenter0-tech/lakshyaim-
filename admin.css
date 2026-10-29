@@ -654,6 +654,37 @@
   align-self: end;
   box-shadow: var(--shadow-soft);
 }
+.logo-upload-row {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.logo-preview {
+  width: 96px;
+  height: 96px;
+  border-radius: 18px;
+  border: 1.5px dashed var(--card-border);
+  background: #f8fafc;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  flex: 0 0 auto;
+  box-shadow: var(--shadow-soft);
+}
+.logo-preview .logo-mark {
+  width: 72px;
+  height: 72px;
+  font-size: 1.7rem;
+}
+.logo-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.logo-upload-actions { display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 220px; }
 .add-preview img {
   position: absolute;
   inset: 0;

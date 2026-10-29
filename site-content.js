@@ -205,6 +205,29 @@ function applySiteContent() {
   buildPlans();
 }
 
+// ===== Logo apply (admin Settings se upload hua logo) =====
+function applyLogo() {
+  let logo = "";
+  try {
+    logo = (JSON.parse(localStorage.getItem("lakshyaim_settings")) || {}).logo || "";
+  } catch {
+    logo = "";
+  }
+  document.querySelectorAll(".logo-mark").forEach((el) => {
+    if (logo) {
+      el.innerHTML = '<img src="' + logo + '" alt="Logo" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;display:block;" />';
+      el.style.background = "transparent";
+      el.style.boxShadow = "none";
+    } else {
+      el.innerHTML = "L";
+      el.style.background = "";
+      el.style.boxShadow = "";
+    }
+  });
+}
+applyLogo();
+window.addEventListener("storage", applyLogo);
+
 // ===== Gallery config (admin Gallery Manager ke liye) =====
 function getGalleryConfig() {
   try {

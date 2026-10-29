@@ -553,7 +553,79 @@ function renderSettings() {
   if (sf) sf.value = s.shipFee != null ? s.shipFee : 99;
   if (gstin) gstin.value = s.gstin || "";
   if (gstRate) gstRate.value = s.gstRate != null ? s.gstRate : 0;
+
+  // Logo preview
+  const preview = document.getElementById("logoPreview");
+  if (preview) {
+    if (s.logo) preview.innerHTML = '<img src="' + s.logo + '" alt="Logo" />';
+    else preview.innerHTML = '<span class="logo-mark">L</span>';
+  }
 }
+
+// Logo upload / remove
+function compressImage(file, max) {
+  max = max || 240;
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, max / Math.max(img.width, img.height));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/png", 0.9));
+      };
+      img.onerror = reject;
+      img.src = reader.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+document.getElementById("logoFile")?.addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const dataUrl = await compressImage(file, 240);
+    const s = getSettings();
+    s.logo = dataUrl;
+    localStorage.setItem("lakshyaim_settings", JSON.stringify(s));
+    applyLogo();
+    const preview = document.getElementById("logoPreview");
+    if (preview) preview.innerHTML = '<img src="' + dataUrl + '" alt="Logo" />';
+    logActivity("🖼", "Website logo upload kiya");
+    const msg = document.getElementById("settingsMsg");
+    if (msg) {
+      msg.textContent = "✅ Logo upload ho gaya — header aur sidebar me turant apply.";
+      msg.style.color = "#0b6b46";
+    }
+  } catch {
+    const msg = document.getElementById("settingsMsg");
+    if (msg) {
+      msg.textContent = "❌ Logo upload fail — chhota image try karo.";
+      msg.style.color = "#b33232";
+    }
+  }
+  e.target.value = "";
+});
+
+document.getElementById("removeLogoBtn")?.addEventListener("click", () => {
+  const s = getSettings();
+  delete s.logo;
+  localStorage.setItem("lakshyaim_settings", JSON.stringify(s));
+  applyLogo();
+  const preview = document.getElementById("logoPreview");
+  if (preview) preview.innerHTML = '<span class="logo-mark">L</span>';
+  logActivity("🖼", "Website logo remove kiya");
+  const msg = document.getElementById("settingsMsg");
+  if (msg) {
+    msg.textContent = "✅ Logo remove ho gaya — default L mark wapas.";
+    msg.style.color = "#0b6b46";
+  }
+});
 
 document.getElementById("settingsForm")?.addEventListener("submit", (e) => {
   e.preventDefault();
