@@ -994,3 +994,105 @@ tr.row-new { animation: rowFlash 2s ease-out; }
   margin-bottom: 24px;
 }
 .db-kpis .dash-card { text-align: left; }
+/* ===== Settings view — professional grouped cards ===== */
+.settings-group {
+  background: #fbfdfe;
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.settings-group:last-child { margin-bottom: 0; }
+.settings-group-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--card-border);
+}
+.settings-group-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: var(--green-light);
+  font-size: 1.3rem;
+  flex: 0 0 auto;
+  box-shadow: inset 0 0 0 1px rgba(13, 155, 100, 0.12);
+}
+.settings-group h3 {
+  font-size: 1.02rem;
+  font-weight: 800;
+  margin: 0 0 3px;
+  color: var(--ink);
+}
+.settings-group-sub {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin: 0;
+}
+.settings-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #2a3a34;
+  margin-bottom: 12px;
+}
+.settings-label input,
+.settings-label select {
+  padding: 12px 14px;
+  border: 1.5px solid #dfe7eb;
+  background: #fbfdfe;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+.settings-label input:focus,
+.settings-label select:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(13, 155, 100, 0.16);
+}
+.logo-preview {
+  width: 96px;
+  height: 96px;
+  border-radius: 18px;
+  border: 1.5px dashed var(--card-border);
+  background: #f8fafc;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  flex: 0 0 auto;
+  box-shadow: var(--shadow-soft);
+}
+.logo-preview .logo-mark {
+  width: 72px;
+  height: 72px;
+  font-size: 1.7rem;
+}
+.logo-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.logo-upload-row {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.logo-upload-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 220px;
+}

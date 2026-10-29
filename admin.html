@@ -396,69 +396,104 @@
 
         <!-- ===== View: Settings ===== -->
         <div class="ad-view" id="view-settings" style="display:none">
-          <div class="dash-panel">
+          <div class="dash-panel settings-panel">
             <h2>⚙️ Store Settings</h2>
 
-            <div class="co-section-title" style="margin-top:0">🖼 Website Logo</div>
-            <div class="logo-upload-row">
-              <div class="logo-preview" id="logoPreview"><span class="logo-mark">L</span></div>
-              <div class="logo-upload-actions">
-                <label class="btn btn-sm" for="logoFile" style="cursor:pointer">📁 Upload Logo</label>
-                <input type="file" id="logoFile" accept="image/*" hidden />
-                <button type="button" class="btn btn-outline btn-sm" id="removeLogoBtn">Remove Logo</button>
-                <p class="co-note" style="margin:8px 0 0">PNG/JPG/SVG — auto-compress (max 240px). Logo header aur sidebar me turant apply ho jayega.</p>
+            <!-- Branding -->
+            <div class="settings-group">
+              <div class="settings-group-head">
+                <span class="settings-group-icon">🖼</span>
+                <div>
+                  <h3>Branding — Website Logo</h3>
+                  <p class="settings-group-sub">Site header aur sidebar ka logo upload karo</p>
+                </div>
+              </div>
+              <div class="logo-upload-row">
+                <div class="logo-preview" id="logoPreview"><span class="logo-mark">L</span></div>
+                <div class="logo-upload-actions">
+                  <label class="btn btn-sm" for="logoFile" style="cursor:pointer">📁 Upload Logo</label>
+                  <input type="file" id="logoFile" accept="image/*" hidden />
+                  <button type="button" class="btn btn-outline btn-sm" id="removeLogoBtn">Remove Logo</button>
+                  <p class="co-note" style="margin:8px 0 0">PNG/JPG/SVG — auto-compress (max 240px). Header aur sidebar me turant apply ho jayega.</p>
+                </div>
               </div>
             </div>
 
-            <div class="co-section-title" style="margin-top:22px">🚚 Shipping</div>
-            <form id="settingsForm" class="add-form">
+            <!-- Shipping -->
+            <div class="settings-group">
+              <div class="settings-group-head">
+                <span class="settings-group-icon">🚚</span>
+                <div>
+                  <h3>Shipping & Delivery</h3>
+                  <p class="settings-group-sub">Free shipping threshold aur fee set karo</p>
+                </div>
+              </div>
+              <form id="settingsForm" class="add-form">
+                <div class="row">
+                  <label>Free shipping threshold (₹)
+                    <input type="number" id="setFreeOver" min="0" placeholder="2999" />
+                  </label>
+                  <label>Shipping fee (₹) — threshold se neeche
+                    <input type="number" id="setShipFee" min="0" placeholder="99" />
+                  </label>
+                </div>
+                <button type="submit" class="btn">Save Shipping</button>
+              </form>
+              <p class="form-msg" id="settingsMsg"></p>
+              <p class="co-note">Cart/checkout pages par turant apply hoti hain.</p>
+            </div>
+
+            <!-- GST -->
+            <div class="settings-group">
+              <div class="settings-group-head">
+                <span class="settings-group-icon">🧾</span>
+                <div>
+                  <h3>GST Details</h3>
+                  <p class="settings-group-sub">GSTIN aur rate set karo — checkout par auto-calculate hoga</p>
+                </div>
+              </div>
               <div class="row">
-                <label>Free shipping threshold (₹)
-                  <input type="number" id="setFreeOver" min="0" placeholder="2999" />
+                <label>GSTIN (optional — checkout par dikhega)
+                  <input type="text" id="setGstin" placeholder="e.g. 23ABCDE1234F1Z5" maxlength="15" />
                 </label>
-                <label>Shipping fee (₹) — threshold se neeche
-                  <input type="number" id="setShipFee" min="0" placeholder="99" />
+                <label>GST rate (%) — 0 = off
+                  <input type="number" id="setGstRate" min="0" max="28" placeholder="5" />
                 </label>
               </div>
-              <button type="submit" class="btn">Save Settings</button>
-            </form>
-            <p class="form-msg" id="settingsMsg"></p>
-            <p class="co-note">Shipping settings cart/checkout pages par turant apply hoti hain (localStorage).</p>
-
-            <div class="co-section-title" style="margin-top:28px">🧾 GST Details</div>
-            <div class="row">
-              <label>GSTIN (optional — checkout par dikhega)
-                <input type="text" id="setGstin" placeholder="e.g. 23ABCDE1234F1Z5" maxlength="15" />
-              </label>
-              <label>GST rate (%) — 0 = off
-                <input type="number" id="setGstRate" min="0" max="28" placeholder="5" />
-              </label>
+              <button type="button" class="btn btn-outline" id="saveGstBtn">Save GST</button>
+              <p class="form-msg" id="gstMsg"></p>
             </div>
-            <button type="button" class="btn btn-outline" id="saveGstBtn">Save GST</button>
-            <p class="form-msg" id="gstMsg"></p>
 
-            <div class="co-section-title" style="margin-top:28px">💳 Payment Gateway</div>
-            <div class="pay-opts" style="margin-bottom:12px">
-              <label class="pay-opt"><input type="checkbox" id="payCod" />💵 COD</label>
-              <label class="pay-opt"><input type="checkbox" id="payUpi" />📱 UPI / GPay</label>
-              <label class="pay-opt"><input type="checkbox" id="payCard" />💳 Card</label>
-              <label class="pay-opt"><input type="checkbox" id="payRzp" />🟣 Razorpay</label>
+            <!-- Payment Gateway -->
+            <div class="settings-group">
+              <div class="settings-group-head">
+                <span class="settings-group-icon">💳</span>
+                <div>
+                  <h3>Payment Gateway</h3>
+                  <p class="settings-group-sub">Checkout par kaunse payment methods dikhein</p>
+                </div>
+              </div>
+              <div class="pay-opts" style="margin-bottom:12px">
+                <label class="pay-opt"><input type="checkbox" id="payCod" />💵 COD</label>
+                <label class="pay-opt"><input type="checkbox" id="payUpi" />📱 UPI / GPay</label>
+                <label class="pay-opt"><input type="checkbox" id="payCard" />💳 Card</label>
+                <label class="pay-opt"><input type="checkbox" id="payRzp" />🟣 Razorpay</label>
+              </div>
+              <div class="row">
+                <label>Razorpay Key ID (rzp_test_... / rzp_live_...)
+                  <input type="text" id="payRzpKey" placeholder="rzp_test_xxxxxxxxxx" />
+                </label>
+                <label>UPI ID (optional — checkout par customer ko dikhega)
+                  <input type="text" id="payUpiId" placeholder="lakshyaim@upi" />
+                </label>
+              </div>
+              <label>Checkout payment note
+                <input type="text" id="payNote" placeholder="Demo store — COD available..." />
+              </label>
+              <p class="co-note" style="margin-bottom:14px">Razorpay on karne par checkout me <b>Razorpay</b> option dikhega — live keys integrate hone tak demo mode me order record hota hai.</p>
+              <button type="button" class="btn" id="savePaymentBtn">Save Payment Settings</button>
+              <p class="form-msg" id="payMsg"></p>
             </div>
-            <label style="display:flex;flex-direction:column;gap:6px;font-size:0.82rem;font-weight:700;color:#2a3a34;margin-bottom:12px">
-              Razorpay Key ID (rzp_test_... / rzp_live_...)
-              <input type="text" id="payRzpKey" placeholder="rzp_test_xxxxxxxxxx" style="padding:12px 14px;border:1.5px solid #dfe7eb;background:#fbfdfe;border-radius:12px;font-size:0.95rem;font-family:inherit;outline:none" />
-            </label>
-            <p class="co-note" style="margin-bottom:14px">Razorpay on karne par checkout me <b>Razorpay</b> option dikhega — live keys integrate hone tak demo mode me order record hota hai.</p>
-            <label class="settings-label" style="display:flex;flex-direction:column;gap:6px;font-size:0.82rem;font-weight:700;color:#2a3a34;margin-bottom:12px">
-              UPI ID (optional — checkout par customer ko dikhega)
-              <input type="text" id="payUpiId" placeholder="lakshyaim@upi" style="padding:12px 14px;border:1.5px solid #dfe7eb;background:#fbfdfe;border-radius:12px;font-size:0.95rem;font-family:inherit;outline:none" />
-            </label>
-            <label style="display:flex;flex-direction:column;gap:6px;font-size:0.82rem;font-weight:700;color:#2a3a34;margin-bottom:14px">
-              Checkout payment note
-              <input type="text" id="payNote" placeholder="Demo store — COD available..." style="padding:12px 14px;border:1.5px solid #dfe7eb;background:#fbfdfe;border-radius:12px;font-size:0.95rem;font-family:inherit;outline:none" />
-            </label>
-            <button type="button" class="btn" id="savePaymentBtn">Save Payment Settings</button>
-            <p class="form-msg" id="payMsg"></p>
           </div>
         </div>
 
