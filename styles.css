@@ -1129,6 +1129,39 @@ h1, h2, h3 { font-weight: 800; }
 .success-sub b { color: var(--green-dark); }
 .success-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 26px; }
 
+/* ===== Products page (full catalog) ===== */
+.show-all-wrap { text-align: center; margin-top: 30px; }
+.view-all-btn { padding: 14px 32px; }
+.show-all-sub { color: var(--muted); font-size: 0.84rem; margin-top: 12px; }
+
+.prod-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 18px 0 8px;
+}
+.prod-count-chip {
+  background: var(--green);
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 6px 16px;
+  border-radius: 999px;
+  box-shadow: 0 6px 16px rgba(13, 155, 100, 0.28);
+}
+.prod-count-chip b { margin-right: 4px; }
+.prod-note { color: var(--muted); font-size: 0.85rem; }
+.prods-grid { margin-top: 30px; padding-top: 10px; }
+.prod-bottom {
+  text-align: center;
+  margin-top: 44px;
+  padding-top: 34px;
+  border-top: 1px solid var(--card-border);
+}
+.prod-bottom p { color: var(--muted); margin-bottom: 16px; font-size: 0.95rem; }
+
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; text-align: center; padding: 64px 6%; }

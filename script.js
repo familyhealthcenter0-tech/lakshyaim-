@@ -31,11 +31,16 @@ document.addEventListener("click", (e) => {
   });
 });
 
-// Shop grid render (products.js ke saath)
+// Shop grid render (products.js ke saath) — homepage par max 5 products
 const productGrid = document.getElementById("productGrid");
 if (productGrid) {
   getProducts().then((list) => {
-    productGrid.innerHTML = list.map(productCardHTML).join("");
+    productGrid.innerHTML = list.slice(0, 5).map((p, i) => productCardHTML(p, i)).join("");
+    const countLine = document.getElementById("catalogCountLine");
+    if (countLine) {
+      countLine.textContent =
+        "Catalog me " + list.length + " products live hain — admin panel se jitne bhi add karo, sab yahan drishti me aayenge.";
+    }
   });
 }
 
