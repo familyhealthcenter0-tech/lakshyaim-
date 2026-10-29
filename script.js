@@ -17,7 +17,8 @@ window.addEventListener("scroll", () => {
   navbar.classList.toggle("scrolled", window.scrollY > 8);
 });
 
-// Add-to-cart clicks — cart store (cart.js) me product add hota hai
+// Add-to-cart clicks — product cart store (cart.js) me add hota hai
+// aur turant cart page par le jata hai
 const cartBtn = document.querySelector(".icon-btn[aria-label='Cart']");
 document.addEventListener("click", (e) => {
   const btn = e.target.closest(".card .add-cart-btn");
@@ -26,16 +27,7 @@ document.addEventListener("click", (e) => {
     const p = list[+btn.dataset.index];
     if (!p) return;
     addToCart(p);
-    const badge = cartBtn?.querySelector(".cart-count");
-    if (badge) {
-      badge.textContent = cartTotalItems();
-      badge.animate(
-        [{ transform: "scale(1)" }, { transform: "scale(1.4)" }, { transform: "scale(1)" }],
-        { duration: 250 }
-      );
-    }
-    btn.textContent = "Added ✓";
-    setTimeout(() => (btn.textContent = "Add to Cart"), 1100);
+    location.href = "cart.html";
   });
 });
 
