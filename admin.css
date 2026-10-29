@@ -610,3 +610,81 @@ tr.row-new { animation: rowFlash 2s ease-out; }
 }
 .act-text { flex: 1; color: var(--ink); font-weight: 600; }
 .act-time { color: var(--muted); font-size: 0.78rem; white-space: nowrap; }
+
+/* ===== CMS content editor ===== */
+.panel-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.cms-group {
+  background: #fbfdfe;
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.cms-group summary {
+  padding: 15px 18px;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--ink);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+}
+.cms-group summary::-webkit-details-marker { display: none; }
+.cms-group summary::after { content: "▾"; margin-left: auto; color: var(--muted); transition: transform 0.2s; }
+.cms-group[open] summary::after { transform: rotate(180deg); }
+.cms-group[open] summary { border-bottom: 1px solid var(--card-border); background: #fff; }
+.cms-fields {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 14px;
+  padding: 16px 18px;
+}
+.cms-field { display: flex; flex-direction: column; gap: 5px; font-size: 0.8rem; font-weight: 700; color: #2a3a34; }
+.cms-field.cms-wide { grid-column: 1 / -1; }
+.cms-field input,
+.cms-field textarea {
+  padding: 11px 13px;
+  border: 1.5px solid #dfe7eb;
+  background: #fff;
+  border-radius: 11px;
+  font-size: 0.92rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  resize: vertical;
+}
+.cms-field input:focus,
+.cms-field textarea:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(13, 155, 100, 0.16);
+}
+.cms-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 10px 0;
+  cursor: pointer;
+}
+.cms-check input { accent-color: var(--green); width: 16px; height: 16px; }
+.cms-item {
+  border: 1px dashed #c9d8d0;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+  background: #fff;
+  grid-column: 1 / -1;
+}
+.cms-item-title {
+  font-weight: 800;
+  font-size: 0.8rem;
+  color: var(--green-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+}
+.cms-save-row { margin-top: 18px; }

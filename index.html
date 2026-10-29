@@ -16,9 +16,9 @@
 
   <!-- Top bar -->
   <div class="topbar">
-    <span>🌿 Free shipping on orders over ₹2,999</span>
+    <span data-cms="topbar.t1"></span>
     <span class="topbar-sep">·</span>
-    <span>👤 Members save 25% every day</span>
+    <span data-cms="topbar.t2"></span>
   </div>
 
   <!-- Navbar : left hamburger · center logo · right actions -->
@@ -54,16 +54,12 @@
   <!-- Hero -->
   <section class="hero">
     <div class="hero-text">
-      <p class="badge"><span class="badge-dot"></span>Plant-based nutrition · FSSAI certified</p>
-      <h1>Fuel Your <span>Better</span>,<br />Every Single Day</h1>
-      <p class="sub">
-        Science-backed shakes, teas and supplements — formulated by
-        nutritionists, delivered fresh to your door, and supported by
-        real human coaching.
-      </p>
+      <p class="badge"><span class="badge-dot"></span><span data-cms="hero.badge"></span></p>
+      <h1><span data-cms-html="hero.l1"></span><span data-cms-html="hero.accent"></span><span data-cms-html="hero.l2"></span></h1>
+      <p class="sub" data-cms="hero.sub"></p>
       <div class="hero-btns">
-        <a href="#products" class="btn">Shop Products <span class="btn-arrow">→</span></a>
-        <a href="#programs" class="btn btn-outline">Get a Free Plan</a>
+        <a href="#products" class="btn"><span data-cms="hero.cta1"></span> <span class="btn-arrow">→</span></a>
+        <a href="#programs" class="btn btn-outline" data-cms="hero.cta2"></a>
       </div>
       <div class="trust-row">
         <div class="avatar-stack" aria-hidden="true">
@@ -74,11 +70,7 @@
           <strong>4.9/5</strong> from 50,000+ members
         </p>
       </div>
-      <div class="hero-stats">
-        <div><strong>90+</strong><span>countries</span></div>
-        <div><strong>40 yrs</strong><span>of nutrition science</span></div>
-        <div><strong>27k+</strong><span>pincodes delivered</span></div>
-      </div>
+      <div class="hero-stats"></div>
     </div>
     <div class="hero-img">
       <div class="shake-card">
@@ -86,8 +78,8 @@
           <span class="shake-emoji">🥤</span>
           <img class="shake-photo" src="gallery/img-54.jpg" alt="Formula 1 Shake" loading="eager" onerror="this.remove()" />
         </div>
-        <p>Formula 1 Shake</p>
-        <p class="shake-sub">18g protein · 25 vitamins · 0 added sugar</p>
+        <p data-cms="hero.cardTitle"></p>
+        <p class="shake-sub" data-cms="hero.cardSub"></p>
         <span class="float-chip chip-a">✅ FSSAI Certified</span>
         <span class="float-chip chip-b">🥤 18g Protein</span>
         <span class="float-chip chip-c">⭐ 4.9 · 2,140 reviews</span>
@@ -113,52 +105,15 @@
   <section class="section section-why" id="why">
     <div class="container">
       <p class="eyebrow">Why Lakshyaim</p>
-      <h2 class="sec-title">Why People Choose Us</h2>
-      <p class="sec-sub">No shortcuts, no mystery blends — just clean, verified nutrition with real human support.</p>
+      <h2 class="sec-title" data-cms="why.title"></h2>
+      <p class="sec-sub" data-cms="why.sub"></p>
     </div>
 
     <div class="why-slider" id="whySlider">
       <div class="container slider-shell">
         <button class="why-nav wn-prev" id="whyPrev" aria-label="Previous slide">‹</button>
         <div class="why-viewport">
-          <div class="why-track" id="whyTrack">
-            <div class="why-card">
-              <span class="why-num">01</span>
-              <span class="why-icon gold">🔬</span>
-              <h3>Lab-Verified Quality</h3>
-              <p>Every batch is third-party tested for purity and potency. FSSAI-certified manufacturing, full traceability.</p>
-            </div>
-            <div class="why-card">
-              <span class="why-num">02</span>
-              <span class="why-icon">👩‍⚕️</span>
-              <h3>1-on-1 Expert Coaching</h3>
-              <p>Certified nutritionists build your plan, review progress weekly, and adjust until it works.</p>
-            </div>
-            <div class="why-card">
-              <span class="why-num">03</span>
-              <span class="why-icon">🚚</span>
-              <h3>Fast, Free Delivery</h3>
-              <p>Pan-India shipping in 3–5 days. Free on every order above ₹2,999 — no hidden charges, ever.</p>
-            </div>
-            <div class="why-card">
-              <span class="why-num">04</span>
-              <span class="why-icon">🛡️</span>
-              <h3>90-Day Guarantee</h3>
-              <p>Love the results or get your money back. A full season to judge us — that's how confident we are.</p>
-            </div>
-            <div class="why-card">
-              <span class="why-num">05</span>
-              <span class="why-icon">🎁</span>
-              <h3>Members Save 25%</h3>
-              <p>Preferred pricing on every order, reward points, early access to new flavours and a free monthly check-in.</p>
-            </div>
-            <div class="why-card">
-              <span class="why-num">06</span>
-              <span class="why-icon">💪</span>
-              <h3>Results at Every Level</h3>
-              <p>Weight balance se sports performance tak — 50,000+ members ke routines, results aur reviews aapke saath hain.</p>
-            </div>
-          </div>
+          <div class="why-track" id="whyTrack"></div>
         </div>
         <button class="why-nav wn-next" id="whyNext" aria-label="Next slide">›</button>
       </div>
@@ -185,46 +140,8 @@
       <p class="eyebrow">Programs</p>
       <h2 class="sec-title">Choose Your Journey</h2>
       <p class="sec-sub">Starter kits built around one goal each — coaching aur meal planner har kit me included.</p>
-      <div class="grid grid-3 plans-grid">
-        <div class="plan">
-          <span class="plan-goal">🎯 Weight Management</span>
-          <p class="plan-name">Weight Balance</p>
-          <p class="plan-price">₹5,999<small>/kit</small></p>
-          <ul>
-            <li>2 × Formula 1 Shake</li>
-            <li>Herbal Tea Concentrate</li>
-            <li>Meal planner app</li>
-            <li>Coach support</li>
-          </ul>
-          <a href="#membership" class="btn btn-outline plan-btn">Get Started</a>
-        </div>
-        <div class="plan plan-featured">
-          <span class="plan-flag">⭐ Most Popular</span>
-          <span class="plan-goal">⚡ Active Lifestyle</span>
-          <p class="plan-name">Healthy Active</p>
-          <p class="plan-price">₹8,499<small>/kit</small></p>
-          <ul>
-            <li>Everything in Weight Balance</li>
-            <li>Protein Drink Mix</li>
-            <li>Multivitamin complex</li>
-            <li>1-on-1 coaching calls</li>
-          </ul>
-          <a href="#membership" class="btn plan-btn">Get Started</a>
-        </div>
-        <div class="plan">
-          <span class="plan-goal">🏆 Athletes &amp; Training</span>
-          <p class="plan-name">Sports Performance</p>
-          <p class="plan-price">₹10,999<small>/kit</small></p>
-          <ul>
-            <li>Protein + recovery bundle</li>
-            <li>Hydration drink mix</li>
-            <li>Workout guide PDF</li>
-            <li>Nutritionist check-in</li>
-          </ul>
-          <a href="#membership" class="btn btn-outline plan-btn">Get Started</a>
-        </div>
-      </div>
-      <p class="plans-note">🛡️ Har kit 90-day money-back promise ke saath · 🚚 Free shipping ₹2,999 se upar · 📞 Free nutritionist intro-call</p>
+      <div class="grid grid-3 plans-grid" id="plansGrid"></div>
+      <p class="plans-note" data-cms="plans.note"></p>
     </div>
   </section>
 
@@ -234,93 +151,14 @@
       <p class="eyebrow">Real Results</p>
       <h2 class="sec-title">Stories From Our Members</h2>
       <p class="sec-sub">Unfiltered reviews from people who rebuilt their daily routine with us.</p>
-      <p class="testi-meta">⭐ <strong>4.9 / 5</strong> average from <strong>50,000+</strong> verified member reviews</p>
+      <p class="testi-meta" data-cms="testi.meta"></p>
     </div>
 
     <div class="tt-slider" id="ttSlider">
       <div class="container slider-shell">
         <button class="tt-nav tt-prev" id="ttPrev" aria-label="Previous review">‹</button>
         <div class="tt-viewport">
-          <div class="tt-track" id="ttTrack">
-            <figure class="testimonial">
-              <span class="quote-mark">"</span>
-              <p class="stars">★★★★★</p>
-              <blockquote>The shake keeps me full till lunch. I've dropped 6 kg in three months without ever feeling hungry or low on energy.</blockquote>
-              <figcaption>
-                <div class="avatar">RS</div>
-                <div class="testi-who">
-                  <strong>Riya S.</strong>
-                  <span>Member · Weight Balance</span>
-                </div>
-                <span class="result-chip">−6 kg in 3 months</span>
-              </figcaption>
-            </figure>
-            <figure class="testimonial">
-              <span class="quote-mark">"</span>
-              <p class="stars">★★★★★</p>
-              <blockquote>Tea in the morning replaced my sugary colas completely. Steady energy through the whole workday — no 4 pm crash.</blockquote>
-              <figcaption>
-                <div class="avatar">AK</div>
-                <div class="testi-who">
-                  <strong>Arun K.</strong>
-                  <span>Member · Daily Wellness</span>
-                </div>
-                <span class="result-chip">3 colas → 0 / day</span>
-              </figcaption>
-            </figure>
-            <figure class="testimonial">
-              <span class="quote-mark">"</span>
-              <p class="stars">★★★★☆</p>
-              <blockquote>The sports kit plus weekly coaching calls got me to my first half marathon properly trained — and properly fueled.</blockquote>
-              <figcaption>
-                <div class="avatar">MP</div>
-                <div class="testi-who">
-                  <strong>Meera P.</strong>
-                  <span>Member · Sports Performance</span>
-                </div>
-                <span class="result-chip">First 21K finisher 🏅</span>
-              </figcaption>
-            </figure>
-            <figure class="testimonial">
-              <span class="quote-mark">"</span>
-              <p class="stars">★★★★★</p>
-              <blockquote>Protein Drink Mix after workouts changed everything. Recovery is faster and I finally have the energy to train on back-to-back days.</blockquote>
-              <figcaption>
-                <div class="avatar">VT</div>
-                <div class="testi-who">
-                  <strong>Vikas T.</strong>
-                  <span>Member · Daily Wellness</span>
-                </div>
-                <span class="result-chip">90 kg squat PB 🏋️</span>
-              </figcaption>
-            </figure>
-            <figure class="testimonial">
-              <span class="quote-mark">"</span>
-              <p class="stars">★★★★★</p>
-              <blockquote>The Omega 3 + Herbal Tea combo was my coach's suggestion. Within weeks my skin cleared up and my evening cravings dropped.</blockquote>
-              <figcaption>
-                <div class="avatar">ND</div>
-                <div class="testi-who">
-                  <strong>Neha D.</strong>
-                  <span>Member · Skin &amp; Wellness</span>
-                </div>
-                <span class="result-chip">Glow-up in 6 weeks ✨</span>
-              </figcaption>
-            </figure>
-            <figure class="testimonial">
-              <span class="quote-mark">"</span>
-              <p class="stars">★★★★★</p>
-              <blockquote>Meal planner plus 1-on-1 calls kept me honest for the first time in years. Down 12 kg and my sugar reports are normal now.</blockquote>
-              <figcaption>
-                <div class="avatar">SR</div>
-                <div class="testi-who">
-                  <strong>Sameer R.</strong>
-                  <span>Member · Weight Balance</span>
-                </div>
-                <span class="result-chip">−12 kg total 🎉</span>
-              </figcaption>
-            </figure>
-          </div>
+          <div class="tt-track" id="ttTrack"></div>
         </div>
         <button class="tt-nav tt-next" id="ttNext" aria-label="Next review">›</button>
       </div>
@@ -420,7 +258,7 @@
         <a href="#" class="logo logo-light">
           <span class="logo-mark">L</span><span class="logo-text">Lakshyaim</span>
         </a>
-        <p class="footer-sub">Lakshyaim Private Limited — balanced, science-backed nutrition for everyday life. Made in India, made for routines.</p>
+        <p class="footer-sub" data-cms="footer.about"></p>
       </div>
       <div>
         <h4>Shop</h4>
@@ -436,7 +274,7 @@
         <a href="admin.html">🔐 Admin Login</a>
       </div>
     </div>
-    <p class="copyright">© 2026 Lakshyaim Private Limited — All rights reserved.</p>
+    <p class="copyright" data-cms="footer.copyright"></p>
   </footer>
 
   <!-- Gallery lightbox -->
@@ -449,7 +287,8 @@
   </div>
 
   <script src="products.js?v=202610303"></script>
-  <script src="cart.js?v=202610302"></script>
+  <script src="cart.js?v=202610304"></script>
+  <script src="site-content.js?v=202610301"></script>
   <script src="script.js?v=202610307"></script>
 </body>
 </html>

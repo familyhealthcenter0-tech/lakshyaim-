@@ -85,18 +85,8 @@
             </label>
 
             <div class="co-section-title">💳 Payment</div>
-            <div class="pay-opts">
-              <label class="pay-opt">
-                <input type="radio" name="pay" value="COD" checked />💵 Cash on Delivery
-              </label>
-              <label class="pay-opt">
-                <input type="radio" name="pay" value="UPI" />📱 UPI / GPay
-              </label>
-              <label class="pay-opt">
-                <input type="radio" name="pay" value="Card" />💳 Card
-              </label>
-            </div>
-            <p class="co-note">Demo store — payment gateway integration next phase me hai (RFP §4.5). COD pe abhi order place hota hai.</p>
+            <div class="pay-opts" id="payOpts"></div>
+            <p class="co-note" id="payNote"></p>
 
             <p class="form-msg" id="coMsg"></p>
             <button type="submit" class="btn btn-full" id="placeOrderBtn">Place Order</button>
@@ -131,6 +121,40 @@
 
   <script src="products.js?v=202610303"></script>
   <script src="cart.js"></script>
+  <script src="site-content.js?v=202610301"></script>
+  <script>
+    // Payment options — admin Settings se control hote hain
+    (function buildPay() {
+      const c = getSiteContent();
+      const opts = [
+        { key: "cod", val: "COD", label: "💵 Cash on Delivery" },
+        { key: "upi", val: "UPI", label: "📱 UPI / GPay" },
+        { key: "card", val: "Card", label: "💳 Card" },
+      ];
+      const enabled = opts.filter((o) => c.payment[o.key]);
+      const host = document.getElementById("payOpts");
+      host.innerHTML = enabled.length
+        ? enabled
+            .map(
+              (o, i) =>
+                '<label class="pay-opt"><input type="radio" name="pay" value="' +
+                o.val +
+                '"' +
+                (i === 0 ? " checked" : "") +
+                " />" +
+                o.label +
+                "</label>"
+            )
+            .join("")
+        : '<span style="color:var(--muted);font-size:0.88rem">Koi payment method enabled nahi — admin Settings me on karo.</span>';
+      const note = document.getElementById("payNote");
+      let noteText = c.payment.note || "";
+      if (c.payment.upi && c.payment.upiId) {
+        noteText += " UPI ID: " + c.payment.upiId;
+      }
+      note.textContent = noteText;
+    })();
+  </script>
   <script>
     const fmt = (n) => "₹" + Number(n).toLocaleString("en-IN");
 

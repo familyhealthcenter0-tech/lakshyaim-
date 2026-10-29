@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=202610309" />
-  <link rel="stylesheet" href="admin.css?v=202610313" />
+  <link rel="stylesheet" href="admin.css?v=202610314" />
 </head>
 <body class="admin-body">
 
@@ -62,6 +62,7 @@
         <button class="ad-link" data-view="products" data-title="Products">📦 Products</button>
         <button class="ad-link" data-view="orders" data-title="Orders">🧾 Orders</button>
         <button class="ad-link" data-view="members" data-title="Members">👥 Members</button>
+        <button class="ad-link" data-view="content" data-title="Site Content">🎨 Content</button>
         <button class="ad-link" data-view="activity" data-title="Activity">🕒 Activity Log</button>
         <button class="ad-link" data-view="settings" data-title="Settings">⚙️ Settings</button>
         <a href="index.html" class="ad-link">🛍 View Store</a>
@@ -247,6 +248,30 @@
           </div>
         </div>
 
+        <!-- ===== View: Content (CMS) ===== -->
+        <div class="ad-view" id="view-content" style="display:none">
+          <div class="dash-panel">
+            <div class="search-row">
+              <h2>🎨 Site Content Editor</h2>
+              <div class="panel-actions">
+                <button class="btn btn-outline btn-sm" id="exportContentBtn">⬇ Export JSON</button>
+                <label class="btn btn-outline btn-sm" for="importContentFile" style="cursor:pointer">⬆ Import JSON</label>
+                <input type="file" id="importContentFile" accept=".json" hidden />
+              </div>
+            </div>
+            <p class="co-note">
+              Website ke har section ka content yahan se edit karo — save karte hi
+              homepage par turant apply ho jayega (usi browser me). Sab visitors ke liye
+              permanent karne ke liye <b>Export JSON</b> karke mujhe file de dena.
+            </p>
+            <div id="cmsEditor"></div>
+            <div class="cms-save-row">
+              <button class="btn" id="saveContentBtn">💾 Save All Content</button>
+            </div>
+            <p class="form-msg" id="cmsMsg"></p>
+          </div>
+        </div>
+
         <!-- ===== View: Members ===== -->
         <div class="ad-view" id="view-members" style="display:none">
           <div class="dash-panel">
@@ -290,7 +315,24 @@
               <button type="submit" class="btn">Save Settings</button>
             </form>
             <p class="form-msg" id="settingsMsg"></p>
-            <p class="co-note">Settings cart/checkout pages par turant apply hoti hain (localStorage). Store-wide permanent karne ke liye deploy ke saath aane wale backend ka intezaar (RFP Phase-1).</p>
+            <p class="co-note">Shipping settings cart/checkout pages par turant apply hoti hain (localStorage).</p>
+
+            <div class="co-section-title" style="margin-top:28px">💳 Payment Gateway</div>
+            <div class="pay-opts" style="margin-bottom:12px">
+              <label class="pay-opt"><input type="checkbox" id="payCod" />💵 COD</label>
+              <label class="pay-opt"><input type="checkbox" id="payUpi" />📱 UPI / GPay</label>
+              <label class="pay-opt"><input type="checkbox" id="payCard" />💳 Card</label>
+            </div>
+            <label class="settings-label" style="display:flex;flex-direction:column;gap:6px;font-size:0.82rem;font-weight:700;color:#2a3a34;margin-bottom:12px">
+              UPI ID (optional — checkout par customer ko dikhega)
+              <input type="text" id="payUpiId" placeholder="lakshyaim@upi" style="padding:12px 14px;border:1.5px solid #dfe7eb;background:#fbfdfe;border-radius:12px;font-size:0.95rem;font-family:inherit;outline:none" />
+            </label>
+            <label style="display:flex;flex-direction:column;gap:6px;font-size:0.82rem;font-weight:700;color:#2a3a34;margin-bottom:14px">
+              Checkout payment note
+              <input type="text" id="payNote" placeholder="Demo store — COD available..." style="padding:12px 14px;border:1.5px solid #dfe7eb;background:#fbfdfe;border-radius:12px;font-size:0.95rem;font-family:inherit;outline:none" />
+            </label>
+            <button type="button" class="btn" id="savePaymentBtn">Save Payment Settings</button>
+            <p class="form-msg" id="payMsg"></p>
           </div>
         </div>
 
@@ -299,6 +341,7 @@
   </div>
 
   <script src="products.js?v=202610303"></script>
-  <script src="admin.js?v=202610313"></script>
+  <script src="site-content.js?v=202610301"></script>
+  <script src="admin.js?v=202610314"></script>
 </body>
 </html>

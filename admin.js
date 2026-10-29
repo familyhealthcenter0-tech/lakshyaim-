@@ -74,6 +74,7 @@ function switchView(view) {
     products: "Products",
     orders: "Orders",
     members: "Members",
+    content: "Site Content",
     activity: "Activity Log",
     settings: "Settings",
   };
@@ -588,3 +589,221 @@ renderRecentOrders();
 renderMembers();
 renderActivity();
 renderSettings();
+
+// ============================================================
+// CMS — Site Content Editor (header/hero/why/testimonials/plans/footer)
+// ============================================================
+const CMS_SCHEMA = [
+  {
+    key: "topbar", icon: "🔔", label: "Header / Topbar",
+    fields: [
+      { p: "topbar.t1", t: "text", l: "Left text" },
+      { p: "topbar.t2", t: "text", l: "Right text" },
+    ],
+  },
+  {
+    key: "hero", icon: "🚀", label: "Hero Section",
+    fields: [
+      { p: "hero.badge", t: "text", l: "Badge text" },
+      { p: "hero.l1", t: "text", l: "Title — white part" },
+      { p: "hero.accent", t: "text", l: "Title — green accent word" },
+      { p: "hero.l2", t: "text", l: "Title — baaki (line break ke liye <br> use karo)", html: true },
+      { p: "hero.sub", t: "textarea", l: "Subtitle" },
+      { p: "hero.cta1", t: "text", l: "Primary button text" },
+      { p: "hero.cta2", t: "text", l: "Secondary button text" },
+      { p: "hero.cardTitle", t: "text", l: "Product card — title" },
+      { p: "hero.cardSub", t: "text", l: "Product card — subtitle" },
+    ],
+    items: [{ arr: "hero.stats", label: "Stat", fields: [{ p: "n", t: "text", l: "Number" }, { p: "l", t: "text", l: "Label" }] }],
+  },
+  {
+    key: "why", icon: "💎", label: "Why Choose Us",
+    fields: [
+      { p: "why.title", t: "text", l: "Section title" },
+      { p: "why.sub", t: "textarea", l: "Section subtitle" },
+    ],
+    items: [{
+      arr: "why.cards", label: "Card",
+      fields: [
+        { p: "icon", t: "text", l: "Icon (emoji)" },
+        { p: "t", t: "text", l: "Title" },
+        { p: "d", t: "textarea", l: "Description" },
+      ],
+    }],
+  },
+  {
+    key: "testi", icon: "💬", label: "Testimonials",
+    fields: [{ p: "testi.meta", t: "text", l: "Rating summary line" }],
+    items: [{
+      arr: "testi.items", label: "Review",
+      fields: [
+        { p: "name", t: "text", l: "Name" },
+        { p: "role", t: "text", l: "Role / plan" },
+        { p: "stars", t: "number", l: "Stars (1–5)" },
+        { p: "text", t: "textarea", l: "Review text" },
+        { p: "chip", t: "text", l: "Result chip" },
+      ],
+    }],
+  },
+  {
+    key: "plans", icon: "🎯", label: "Choose Your Journey (Plans)",
+    fields: [{ p: "plans.note", t: "text", l: "Bottom note" }],
+    items: [{
+      arr: "plans.items", label: "Plan",
+      fields: [
+        { p: "goal", t: "text", l: "Goal chip" },
+        { p: "name", t: "text", l: "Plan name" },
+        { p: "price", t: "number", l: "Price (₹)" },
+        { p: "featured", t: "checkbox", l: "Featured (dark card)" },
+        { p: "features.0", t: "text", l: "Feature 1" },
+        { p: "features.1", t: "text", l: "Feature 2" },
+        { p: "features.2", t: "text", l: "Feature 3" },
+        { p: "features.3", t: "text", l: "Feature 4" },
+      ],
+    }],
+  },
+  {
+    key: "footer", icon: "🦶", label: "Footer",
+    fields: [
+      { p: "footer.about", t: "textarea", l: "About text" },
+      { p: "footer.copyright", t: "text", l: "Copyright line" },
+    ],
+  },
+];
+
+const cmsHost = document.getElementById("cmsEditor");
+const cmsMsg = document.getElementById("cmsMsg");
+
+function cmsFieldHTML(f, value) {
+  const pathAttr = 'data-cms-path="' + f.p + '"' + (f.html ? ' data-cms-htmlfield="1"' : "");
+  if (f.t === "textarea") {
+    return '<label class="cms-field cms-wide"><span>' + f.l + '</span><textarea data-cms-path="' + f.p + '" rows="3">' + (value || "") + "</textarea></label>";
+  }
+  if (f.t === "number") {
+    return '<label class="cms-field"><span>' + f.l + '</span><input type="number" data-cms-path="' + f.p + '" value="' + (value != null ? value : "") + '" /></label>';
+  }
+  if (f.t === "checkbox") {
+    return '<label class="cms-check"><input type="checkbox" data-cms-path="' + f.p + '"' + (value ? " checked" : "") + " /> " + f.l + "</label>";
+  }
+  return '<label class="cms-field"><span>' + f.l + '</span><input type="text" ' + pathAttr + ' value="' + String(value == null ? "" : value).replace(/"/g, "&quot;") + '" /></label>';
+}
+
+function buildCmsEditor() {
+  if (!cmsHost) return;
+  const c = getSiteContent();
+  cmsHost.innerHTML = CMS_SCHEMA.map(
+    (g) => `
+    <details class="cms-group">
+      <summary>${g.icon} ${g.label}</summary>
+      <div class="cms-fields">
+        ${(g.fields || [])
+          .map((f) => cmsFieldHTML(f, getPath(c, f.p)))
+          .join("")}
+        ${(g.items || [])
+          .map((itemDef) =>
+            getPath(c, itemDef.arr)
+              .map(
+                (item, idx) => `
+          <div class="cms-item">
+            <p class="cms-item-title">${itemDef.label} ${idx + 1}</p>
+            <div class="cms-fields">
+              ${itemDef.fields
+                .map((f) => cmsFieldHTML(f, getPath(item, f.p)))
+                .join("")
+                .replace(/data-cms-path="/g, 'data-cms-path="' + itemDef.arr + "." + idx + ".")}
+            </div>
+          </div>`
+              )
+              .join("")
+          ).join("")}
+      </div>
+    </details>`
+  ).join("");
+}
+buildCmsEditor();
+
+// Save — saare inputs collect karke content me daalo
+document.getElementById("saveContentBtn")?.addEventListener("click", () => {
+  const c = getSiteContent();
+  let savedCount = 0;
+  cmsHost.querySelectorAll("[data-cms-path]").forEach((input) => {
+    const path = input.dataset.cmsPath;
+    let val;
+    if (input.type === "checkbox") val = input.checked;
+    else if (input.type === "number") val = Number(input.value) || 0;
+    else val = input.value;
+    const old = getPath(c, path);
+    if (String(old) !== String(val)) savedCount++;
+    setPath(c, path, val);
+  });
+  saveSiteContent(c);
+  applySiteContent();
+  cmsMsg.textContent = "✅ Content save ho gaya (" + savedCount + " fields change hue) — homepage par live hai!";
+  cmsMsg.style.color = "#0b6b46";
+  logActivity("🎨", "Site content update kiya (" + savedCount + " fields)");
+});
+
+document.getElementById("exportContentBtn")?.addEventListener("click", () => {
+  const blob = new Blob([JSON.stringify(getSiteContent(), null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "site-content.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+document.getElementById("importContentFile")?.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      saveSiteContent(data);
+      buildCmsEditor();
+      cmsMsg.textContent = "⬆ Content import ho gaya — Save dabao ya seedha site dekho.";
+      cmsMsg.style.color = "#0b6b46";
+      logActivity("⬆", "Site content JSON import kiya");
+    } catch {
+      cmsMsg.textContent = "❌ File galat hai — valid JSON export hi import karo.";
+      cmsMsg.style.color = "#b33232";
+    }
+  };
+  reader.readAsText(file);
+});
+
+// ===== Payment settings =====
+function loadPaymentSettings() {
+  const p = getSiteContent().payment;
+  const cod = document.getElementById("payCod");
+  const upi = document.getElementById("payUpi");
+  const card = document.getElementById("payCard");
+  const upiId = document.getElementById("payUpiId");
+  const note = document.getElementById("payNote");
+  if (cod) cod.checked = !!p.cod;
+  if (upi) upi.checked = !!p.upi;
+  if (card) card.checked = !!p.card;
+  if (upiId) upiId.value = p.upiId || "";
+  if (note) note.value = p.note || "";
+}
+loadPaymentSettings();
+
+document.getElementById("savePaymentBtn")?.addEventListener("click", () => {
+  const c = getSiteContent();
+  c.payment.cod = document.getElementById("payCod").checked;
+  c.payment.upi = document.getElementById("payUpi").checked;
+  c.payment.card = document.getElementById("payCard").checked;
+  c.payment.upiId = document.getElementById("payUpiId").value.trim();
+  c.payment.note = document.getElementById("payNote").value.trim();
+  if (!c.payment.cod && !c.payment.upi && !c.payment.card) {
+    const pm = document.getElementById("payMsg");
+    pm.textContent = "❌ Kam se kam ek payment method on rakho.";
+    pm.style.color = "#b33232";
+    return;
+  }
+  saveSiteContent(c);
+  logActivity("💳", "Payment settings update ki");
+  const pm = document.getElementById("payMsg");
+  pm.textContent = "✅ Payment settings save ho gayi — checkout par live.";
+  pm.style.color = "#0b6b46";
+});
