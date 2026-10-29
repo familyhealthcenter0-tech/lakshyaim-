@@ -123,23 +123,27 @@ document.addEventListener("keydown", (e) => {
 
 initGallery();
 
-// ===== Why People Choose Us — auto-sliding carousel =====
-(() => {
-  const track = document.getElementById("whyTrack");
-  const dotsEl = document.getElementById("whyDots");
+// ===== Generic auto-sliding carousel factory =====
+// Used by: Why Us slider, Testimonials slider
+// opts: track, dots, slider, prev, next, autoMs, perView ([[minWidth, perView], ...])
+function initAutoCarousel(cfg) {
+  const track = document.getElementById(cfg.track);
+  const dotsEl = document.getElementById(cfg.dots);
   if (!track || !dotsEl) return;
 
-  const slider = document.getElementById("whySlider");
+  const slider = document.getElementById(cfg.slider) || track.parentElement;
   const slides = track.children;
-  const AUTO_MS = 4200;
+  const prevBtn = document.getElementById(cfg.prev);
+  const nextBtn = document.getElementById(cfg.next);
+  const AUTO = cfg.autoMs || 4200;
+  const GAP = 20;
+  const breaks = cfg.perView || [[1025, 3], [641, 2], [0, 1]];
   let per = 3;
   let pos = 0;
   let timer = null;
 
-  const GAP = 20;
-  const perView = () => {
-    if (window.innerWidth >= 1025) return 3;
-    if (window.innerWidth >= 641) return 2;
+  const pv = () => {
+    for (const [w, p] of breaks) if (window.innerWidth >= w) return p;
     return 1;
   };
   const maxPos = () => Math.max(0, slides.length - per);
@@ -168,18 +172,18 @@ initGallery();
   }
 
   function layout() {
-    per = perView();
+    per = pv();
     pos = Math.min(pos, maxPos());
     buildDots();
   }
 
   function restart() {
     clearInterval(timer);
-    timer = setInterval(() => go(1), AUTO_MS);
+    timer = setInterval(() => go(1), AUTO);
   }
 
-  document.getElementById("whyPrev").addEventListener("click", () => { go(-1); restart(); });
-  document.getElementById("whyNext").addEventListener("click", () => { go(1); restart(); });
+  prevBtn?.addEventListener("click", () => { go(-1); restart(); });
+  nextBtn?.addEventListener("click", () => { go(1); restart(); });
 
   // Hover par ruk jaata hai, bahar nikal te hi continue
   slider.addEventListener("mouseenter", () => clearInterval(timer));
@@ -199,7 +203,19 @@ initGallery();
   layout();
   restart();
   window.addEventListener("resize", layout);
-})();
+}
+
+// Why People Choose Us slider (dark)
+initAutoCarousel({
+  track: "whyTrack", dots: "whyDots", slider: "whySlider",
+  prev: "whyPrev", next: "whyNext", autoMs: 4200, perView: [[1025, 3], [641, 2], [0, 1]],
+});
+
+// Testimonials slider (light)
+initAutoCarousel({
+  track: "ttTrack", dots: "ttDots", slider: "ttSlider",
+  prev: "ttPrev", next: "ttNext", autoMs: 4500, perView: [[1025, 3], [641, 2], [0, 1]],
+});
 
 // ===== FAQ accordion (smooth open/close) =====
 const faqList = document.getElementById("faqList");

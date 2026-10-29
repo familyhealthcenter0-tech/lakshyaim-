@@ -533,8 +533,7 @@ h1, h2, h3 { font-weight: 800; }
 .price { font-weight: 800; font-size: 1.12rem; margin: 6px 0 12px; }
 .price s { color: var(--muted); font-weight: 400; font-size: 0.85rem; margin-left: 6px; }
 
-/* ===== Why People Choose Us — premium dark auto-slider ===== */
-.section-why {
+/* ===== Why People Choose Us — premium dark auto-slider ===== */.section-why {
   background:
     radial-gradient(ellipse 42% 46% at 92% 8%, rgba(13, 155, 100, 0.22) 0%, transparent 100%),
     radial-gradient(ellipse 34% 40% at 4% 94%, rgba(245, 158, 11, 0.10) 0%, transparent 100%),
@@ -647,6 +646,72 @@ h1, h2, h3 { font-weight: 800; }
 .why-dots .dot.active {
   width: 26px;
   background: linear-gradient(90deg, var(--green-2), var(--gold));
+}
+
+/* ===== Testimonials — light auto-slide carousel ===== */
+.tt-slider { margin-top: 0; }
+.tt-viewport { overflow: hidden; padding: 10px 2px 6px; }
+.tt-track {
+  display: flex;
+  gap: 20px;
+  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.tt-track .testimonial { flex: 0 0 100%; margin: 0; }
+@media (min-width: 1025px) {
+  .tt-track .testimonial { flex-basis: calc((100% - 40px) / 3); }
+}
+@media (min-width: 641px) and (max-width: 1024px) {
+  .tt-track .testimonial { flex-basis: calc((100% - 20px) / 2); }
+}
+.slider-shell { position: relative; }
+.tt-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1.5px solid var(--card-border);
+  background: #fff;
+  color: var(--ink);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: var(--shadow-soft);
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.tt-nav:hover {
+  background: var(--green-light);
+  border-color: #bfe5d5;
+  color: var(--green-dark);
+}
+.tt-prev { left: -14px; }
+.tt-next { right: -14px; }
+.tt-dots {
+  display: flex;
+  gap: 9px;
+  justify-content: center;
+  margin-top: 22px;
+}
+.tt-dots .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(15, 31, 26, 0.16);
+  cursor: pointer;
+  padding: 0;
+  transition: width 0.25s, background 0.25s;
+}
+.tt-dots .dot.active {
+  width: 26px;
+  background: linear-gradient(90deg, var(--green-2), var(--green));
 }
 
 /* ===== Plans / Choose Your Journey ===== */
@@ -1365,6 +1430,10 @@ h1, h2, h3 { font-weight: 800; }
   .wn-prev { left: -2px; }
   .wn-next { right: -2px; }
   .why-track { user-select: none; -webkit-user-drag: none; }
+  /* Testimonials slider mobil */
+  .tt-prev { left: -2px; }
+  .tt-next { right: -2px; }
+  .tt-nav { width: 38px; height: 38px; font-size: 1.1rem; }
 }
 /* Bahut chote screens (<=420px): Sign In / Admin icon-only — logo ke saath fit */
 @media (max-width: 420px) {
