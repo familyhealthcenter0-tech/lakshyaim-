@@ -227,33 +227,45 @@
     });
 
     function renderSummary() {
-      const cart = getCart();
-      document.getElementById("coItems").innerHTML = cart
-        .map(
-          (i) =>
-            '<div class="co-item">' +
-            cartThumbHTML(i, "co-thumb") +
-            '<div class="co-item-info"><p>' + i.name + "</p><span>Qty " + i.qty + "</span></div>" +
-            '<b>' + fmt(i.price * i.qty) + '</b>' +
-            "</div>"
-        )
-        .join("");
-      const sub = cartSubtotal();
-      const ship = shippingFee(sub);
-      document.getElementById("coSub").textContent = fmt(sub);
-      document.getElementById("coShip").textContent = ship === 0 ? "FREE" : fmt(ship);
-      const gstRate = Number(getSettings().gstRate) || 0;
-      const gstRow = document.getElementById("coGstRow");
-      if (gstRate > 0) {
-        const gstAmt = Math.round((sub + ship) * gstRate / (100 + gstRate));
-        gstRow.style.display = "";
-        document.getElementById("coGstLabel").textContent = "Incl. GST (" + gstRate + "%)" + (getSettings().gstin ? " · GSTIN " + getSettings().gstin : "");
-        document.getElementById("coGst").textContent = fmt(gstAmt);
-      } else {
-        gstRow.style.display = "none";
+      let cart = [];
+      let sub = 0;
+      let ship = 0;
+      let total = 0;
+      try {
+        cart = getCart();
+        sub = cartSubtotal();
+        ship = shippingFee(sub);
+        total = sub + ship;
+
+        document.getElementById("coItems").innerHTML = cart
+          .map(
+            (i) =>
+              '<div class="co-item">' +
+              cartThumbHTML(i, "co-thumb") +
+              '<div class="co-item-info"><p>' + i.name + "</p><span>Qty " + i.qty + "</span></div>" +
+              '<b>' + fmt(i.price * i.qty) + '</b>' +
+              "</div>"
+          )
+          .join("");
+        document.getElementById("coSub").textContent = fmt(sub);
+        document.getElementById("coShip").textContent = ship === 0 ? "FREE" : fmt(ship);
+
+        const gstRate = Number(getSettings().gstRate) || 0;
+        const gstin = getSettings().gstin || "";
+        const gstRow = document.getElementById("coGstRow");
+        if (gstRate > 0) {
+          gstRow.style.display = "";
+          document.getElementById("coGstLabel").textContent = "Incl. GST (" + gstRate + "%)" + (gstin ? " · GSTIN " + gstin : "");
+          document.getElementById("coGst").textContent = fmt(Math.round(total * gstRate / (100 + gstRate)));
+        } else {
+          gstRow.style.display = "none";
+        }
+        document.getElementById("coTotal").textContent = fmt(total);
+      } catch (err) {
+        console.error("renderSummary error:", err);
+        document.getElementById("coTotal").textContent = fmt(total);
       }
-      document.getElementById("coTotal").textContent = fmt(sub + ship);
-      return { cart, sub, ship, total: sub + ship };
+      return { cart, sub, ship, total };
     }
 
     // Khali cart → cart page par bhejo (auth flow me bhi handle hota hai)
@@ -312,13 +324,16 @@
         return;
       }
 
+      // Total — renderSummary ke computed values se (consistent)
+      const total = renderSummary().total;
+
       const order = {
         id: "#LA-" + String(2000 + orders.length + Math.floor(Math.random() * 90 + 10)),
         date: new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }),
         customer: { name, phone: phoneDigits, email: authedUser.email || email, address, city, state, uid: authedUser.uid },
         pay,
         items: cart,
-        total: cart.reduce((n, i) => n + i.price * i.qty, 0) + shippingFee(cart.reduce((n, i) => n + i.price * i.qty, 0)),
+        total,
         status: "Pending",
       };
       orders.push(order);

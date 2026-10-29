@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Orders – Lakshyaim Private Limited</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230d9b64'/%3E%3Ctext x='50' y='70' font-size='58' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='800'%3EL%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=202610311" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">L</span>
+        <span class="logo-text">Lakshyaim</span>
+      </a>
+      <div class="nav-actions">
+        <a href="index.html" class="btn btn-sm btn-ghost">← Back to Shop</a>
+        <a href="cart.html" class="icon-btn" aria-label="Cart">🛒 <span class="cart-count">0</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <div class="container">
+
+      <!-- ===== Google sign-in prompt ===== -->
+      <div id="authView" style="display:none">
+        <div class="checkout-success">
+          <span class="success-icon">🔐</span>
+          <h1>Sign in to View Orders</h1>
+          <p class="success-sub">
+            Aapke orders dekhne ke liye Google account se sign in karo —
+            sirf aapke orders hi aapko dikhenge.
+          </p>
+          <button type="button" class="btn" id="googleSigninBtn" style="margin-top:22px">
+            🔵 Sign in with Google
+          </button>
+          <p class="form-msg" id="authMsg" style="margin-top:14px"></p>
+        </div>
+      </div>
+
+      <!-- ===== User dashboard ===== -->
+      <div id="dashView" style="display:none">
+        <div class="uo-head">
+          <div>
+            <h1 class="page-title">My Orders</h1>
+            <p class="page-sub" id="userLine"></p>
+          </div>
+          <div class="uo-head-actions">
+            <span class="uo-user" id="userChip">👤</span>
+            <button class="btn btn-sm btn-ghost" id="signOutBtn">Sign Out</button>
+          </div>
+        </div>
+
+        <div class="uo-stats" id="uoStats"></div>
+
+        <div id="ordersList"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="cart.js?v=202610304"></script>
+  <script src="site-content.js?v=202610302"></script>
+  <script src="auth.js?v=202610301"></script>
+  <script>
+    const fmt = (n) => "₹" + Number(n).toLocaleString("en-IN");
+    const stClass = (s) => (s === "Delivered" ? "uo-done" : s === "Shipped" ? "uo-ship" : "uo-pend");
+
+    function renderOrders(user) {
+      let orders = [];
+      try {
+        orders = JSON.parse(localStorage.getItem("lakshyaim_orders") || "[]");
+      } catch {
+        orders = [];
+      }
+      const mine = orders.filter(
+        (o) => o.customer.uid === user.uid || (o.customer.email && o.customer.email === user.email)
+      );
+
+      // Stats chips
+      const revenue = mine.reduce((n, o) => n + Number(o.total || 0), 0);
+      document.getElementById("uoStats").innerHTML = [
+        { n: mine.length, l: "Total orders", c: "kpi-green" },
+        { n: mine.filter((o) => o.status === "Delivered").length, l: "Delivered", c: "kpi-blue" },
+        { n: mine.filter((o) => o.status !== "Delivered").length, l: "In progress", c: "kpi-amber" },
+        { n: fmt(revenue), l: "Total spent", c: "kpi-violet" },
+      ]
+        .map(
+          (k) =>
+            '<div class="dash-card kpi ' + k.c + '"><p class="dash-num">' + k.n + '</p><p class="dash-label">' + k.l + "</p></div>"
+        )
+        .join("");
+
+      const list = document.getElementById("ordersList");
+      if (!mine.length) {
+        list.innerHTML =
+          '<div class="cart-empty"><p class="empty-emoji">📦</p><h3>Abhi koi order nahi</h3>' +
+          "<p>Pehla order place karo — yahan status ke saath dikhega.</p>" +
+          '<a href="index.html#products" class="btn">Shop Products</a></div>';
+        return;
+      }
+
+      list.innerHTML = mine
+        .slice()
+        .reverse()
+        .map(
+          (o) => `
+        <div class="uo-order">
+          <div class="uo-order-head">
+            <div>
+              <b>${o.id}</b>
+              <span class="row-sub">${o.date || ""} · ${o.pay || "COD"}</span>
+            </div>
+            <span class="uo-status ${stClass(o.status)}">${o.status}</span>
+          </div>
+          <div class="uo-items">
+            ${o.items
+              .map(
+                (i) => `
+              <div class="uo-item">
+                ${i.image ? '<img src="' + i.image + '" alt="" loading="lazy" />' : '<span class="uo-emoji">' + (i.emoji || "📦") + "</span>"}
+                <span class="uo-item-name">${i.name}</span>
+                <span class="uo-item-qty">× ${i.qty}</span>
+                <span class="uo-item-price">${fmt(i.price * i.qty)}</span>
+              </div>`
+              )
+              .join("")}
+          </div>
+          <div class="uo-total">Total · <b>${fmt(o.total)}</b></div>
+          <div class="uo-address">📍 ${o.customer.name} — ${o.customer.address}, ${o.customer.city} (${o.customer.state})</div>
+        </div>`
+        )
+        .join("");
+    }
+
+    // Auth state
+    fbWatch((user) => {
+      const authView = document.getElementById("authView");
+      const dashView = document.getElementById("dashView");
+      if (!user) {
+        authView.style.display = "block";
+        dashView.style.display = "none";
+        return;
+      }
+      authView.style.display = "none";
+      dashView.style.display = "block";
+      const name = (user.displayName || user.email || "User").split(" ")[0];
+      document.getElementById("userLine").textContent = "Signed in as " + (user.email || name);
+      document.getElementById("userChip").textContent = "👤 " + name;
+      renderOrders(user);
+    });
+
+    document.getElementById("googleSigninBtn").addEventListener("click", () => {
+      const m = document.getElementById("authMsg");
+      m.textContent = "Google window khul rahi hai...";
+      m.style.color = "var(--muted)";
+      fbGoogleSignIn().catch((err) => {
+        let t = err.message || err.code || "Unknown";
+        if (err.code === "auth/operation-not-allowed") {
+          t = "Google sign-in enable nahi hai — Firebase Console → Authentication → Google → Enable karo.";
+        }
+        m.textContent = "❌ " + t;
+        m.style.color = "#b33232";
+      });
+    });
+
+    document.getElementById("signOutBtn").addEventListener("click", () => {
+      fbSignOut().then(() => location.reload());
+    });
+
+    // Cart badge sync (cart.js bhi karta hai)
+    syncCartBadge();
+  </script>
+</body>
+</html>

@@ -92,14 +92,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   btn.addEventListener("click", (e) => {
+    e.preventDefault();
     if (btn.dataset.logged) {
-      e.preventDefault();
-      if (confirm("Sign out karna hai?")) {
-        fbSignOut().then(() => location.reload());
-      }
+      // Logged in → user dashboard (My Orders)
+      location.href = "my-orders.html";
       return;
     }
-    e.preventDefault();
     fbGoogleSignIn().catch((err) => {
       let m = err.message || err.code || "Unknown error";
       if (err.code === "auth/operation-not-allowed") {

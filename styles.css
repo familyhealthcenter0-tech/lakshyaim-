@@ -1392,6 +1392,75 @@ h1, h2, h3 { font-weight: 800; }
 #authView .checkout-success { margin-top: 30px; }
 #googleSigninBtn { display: inline-flex; align-items: center; gap: 8px; }
 
+/* ===== My Orders — user dashboard ===== */
+.uo-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.uo-head-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.uo-user {
+  background: var(--green-light);
+  color: var(--green-dark);
+  font-size: 0.84rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 999px;
+}
+.uo-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin: 24px 0 30px;
+}
+.uo-stats .dash-card { text-align: left; }
+.uo-order {
+  background: #fff;
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  padding: 20px 22px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-soft);
+}
+.uo-order-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--card-border);
+}
+.uo-order-head b { font-size: 1rem; }
+.uo-order-head .row-sub { display: block; color: var(--muted); font-size: 0.78rem; }
+.uo-status {
+  font-size: 0.76rem;
+  font-weight: 800;
+  padding: 5px 13px;
+  border-radius: 999px;
+}
+.uo-pend { background: #fef3c7; color: #b45309; }
+.uo-ship { background: #e4edfb; color: #1d4fd7; }
+.uo-done { background: #e6f7f0; color: #0b6b46; }
+.uo-items { padding: 14px 0; display: flex; flex-direction: column; gap: 10px; }
+.uo-item { display: flex; align-items: center; gap: 12px; font-size: 0.92rem; }
+.uo-item img {
+  width: 52px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex: 0 0 auto;
+}
+.uo-emoji { font-size: 1.5rem; width: 52px; text-align: center; flex: 0 0 auto; }
+.uo-item-name { flex: 1; font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.uo-item-qty { color: var(--muted); }
+.uo-item-price { font-weight: 800; }
+.uo-total { padding: 12px 0 6px; border-top: 1px solid var(--card-border); color: var(--muted); font-size: 0.92rem; }
+.uo-total b { color: var(--ink); font-size: 1.05rem; }
+.uo-address { color: var(--muted); font-size: 0.82rem; }
+
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; text-align: center; padding: 64px 6%; }
