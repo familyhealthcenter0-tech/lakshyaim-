@@ -1461,6 +1461,55 @@ h1, h2, h3 { font-weight: 800; }
 .uo-total b { color: var(--ink); font-size: 1.05rem; }
 .uo-address { color: var(--muted); font-size: 0.82rem; }
 
+/* ===== My Account (homepage user panel) ===== */
+.account-user-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  background:
+    radial-gradient(ellipse 45% 60% at 90% 0%, rgba(13, 155, 100, 0.4) 0%, transparent 100%),
+    linear-gradient(135deg, #10291f 0%, var(--dark) 85%);
+  color: #fff;
+  border-radius: 20px;
+  padding: 26px 30px;
+  margin-bottom: 26px;
+  box-shadow: var(--shadow);
+}
+.account-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(150deg, #7ee6b0, #12a96e);
+  color: #0b1613;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1.4rem;
+  font-family: "Manrope", sans-serif;
+}
+.acc-name { font-weight: 800; font-size: 1.15rem; font-family: "Manrope", sans-serif; }
+.acc-email { color: #a9bfae; font-size: 0.88rem; }
+.acc-info { flex: 1; min-width: 160px; }
+.acc-orders-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 26px 0 14px;
+}
+.acc-orders-head h3 { font-family: "Manrope", sans-serif; font-size: 1.15rem; }
+.acc-empty {
+  background: #fff;
+  border: 1px dashed var(--card-border);
+  border-radius: 18px;
+  padding: 30px;
+  text-align: center;
+  color: var(--muted);
+}
+.acc-empty a { color: var(--green-dark); font-weight: 700; }
+
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; text-align: center; padding: 64px 6%; }

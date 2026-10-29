@@ -110,3 +110,89 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+// ===== Homepage "My Account" panel (Google login state ke hisaab se) =====
+document.addEventListener("DOMContentLoaded", () => {
+  const signedOutEl = document.getElementById("accountSignedOut");
+  const loggedInEl = document.getElementById("accountLoggedIn");
+  if (!signedOutEl || !loggedInEl) return;
+
+  function renderAccountPanel(user) {
+    if (!user) {
+      signedOutEl.style.display = "";
+      loggedInEl.style.display = "none";
+      return;
+    }
+    signedOutEl.style.display = "none";
+    loggedInEl.style.display = "";
+
+    const name = user.displayName || "User";
+    document.getElementById("accAvatar").textContent = name[0].toUpperCase();
+    document.getElementById("accName").textContent = name;
+    document.getElementById("accEmail").textContent = user.email || "";
+
+    // User ke recent orders (latest 3)
+    let orders = [];
+    try {
+      orders = JSON.parse(localStorage.getItem("lakshyaim_orders") || "[]");
+    } catch {
+      orders = [];
+    }
+    const mine = orders.filter(
+      (o) => o.customer.uid === user.uid || (o.customer.email && o.customer.email === user.email)
+    );
+    const host = document.getElementById("accOrders");
+    host.innerHTML = mine.length
+      ? mine
+          .slice(-3)
+          .reverse()
+          .map(
+            (o) => `
+        <div class="uo-order">
+          <div class="uo-order-head">
+            <div>
+              <b>${o.id}</b>
+              <span class="row-sub">${o.date || ""} · ${o.pay || "COD"}</span>
+            </div>
+            <span class="uo-status ${o.status === "Delivered" ? "uo-done" : o.status === "Shipped" ? "uo-ship" : "uo-pend"}">${o.status}</span>
+          </div>
+          <div class="uo-items">
+            ${o.items
+              .map(
+                (i) => `
+              <div class="uo-item">
+                ${i.image ? '<img src="' + i.image + '" alt="" loading="lazy" />' : '<span class="uo-emoji">' + (i.emoji || "📦") + "</span>"}
+                <span class="uo-item-name">${i.name}</span>
+                <span class="uo-item-qty">× ${i.qty}</span>
+                <span class="uo-item-price">₹${Number(i.price * i.qty).toLocaleString("en-IN")}</span>
+              </div>`
+              )
+              .join("")}
+          </div>
+          <div class="uo-total">Total · <b>₹${Number(o.total).toLocaleString("en-IN")}</b></div>
+        </div>`
+          )
+          .join("")
+      : '<div class="acc-empty">Abhi koi order nahi — <a href="#products">Best Sellers se shuru karo</a>!</div>';
+  }
+
+  fbWatch(renderAccountPanel);
+
+  document.getElementById("accountGoogleBtn")?.addEventListener("click", () => {
+    const m = document.getElementById("accountMsg");
+    m.textContent = "Google window khul rahi hai...";
+    m.style.color = "var(--muted)";
+    fbGoogleSignIn().catch((err) => {
+      let t = err.message || err.code || "Unknown error";
+      if (err.code === "auth/operation-not-allowed") {
+        t = "Google sign-in Firebase Console me enable nahi hai — Console → Authentication → Google → Enable karo.";
+      }
+      m.textContent = "❌ " + t;
+      m.style.color = "#b33232";
+    });
+  });
+
+  document.getElementById("accSignOut")?.addEventListener("click", () => {
+    fbSignOut().then(() => location.reload());
+  });
+});

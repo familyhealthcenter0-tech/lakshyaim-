@@ -166,6 +166,47 @@
     </div>
   </section>
 
+  <!-- My Account — Google login user panel -->
+  <section class="section section-alt" id="account">
+    <div class="container">
+      <p class="eyebrow">My Account</p>
+      <h2 class="sec-title">Your Lakshyaim Account</h2>
+      <p class="sec-sub">Google se sign in karo — apne orders, delivery status aur details ek jagah dekho.</p>
+
+      <!-- Signed out -->
+      <div id="accountSignedOut">
+        <div class="checkout-success" style="max-width:560px;margin:0 auto;">
+          <span class="success-icon">👤</span>
+          <h1 style="font-size:1.5rem;">Sign in to see your orders</h1>
+          <p class="success-sub">Order history, delivery status — sab ek jagah, secure.</p>
+          <button type="button" class="btn" id="accountGoogleBtn" style="margin-top:20px">
+            🔵 Sign in with Google
+          </button>
+          <p class="form-msg" id="accountMsg" style="margin-top:14px"></p>
+        </div>
+      </div>
+
+      <!-- Logged in -->
+      <div id="accountLoggedIn" style="display:none">
+        <div class="account-user-card">
+          <div class="account-avatar" id="accAvatar">U</div>
+          <div class="acc-info">
+            <p class="acc-name" id="accName"></p>
+            <p class="acc-email" id="accEmail"></p>
+          </div>
+          <a href="my-orders.html" class="btn btn-sm" style="background:rgba(255,255,255,0.14);color:#fff;box-shadow:none">📦 All Orders</a>
+          <button class="btn btn-sm" id="accSignOut" style="background:rgba(255,255,255,0.12);box-shadow:none">Sign Out</button>
+        </div>
+
+        <div class="acc-orders-head">
+          <h3>Recent Orders</h3>
+          <a href="my-orders.html" class="summary-link" style="margin:0">View all orders →</a>
+        </div>
+        <div id="accOrders"></div>
+      </div>
+    </div>
+  </section>
+
   <!-- Science strip -->
   <section class="section section-dark" id="science">
     <div class="container split">
