@@ -46,16 +46,51 @@ loginForm.addEventListener("submit", (e) => {
 
 function openDashboard(user) {
   loginScreen.style.display = "none";
-  dashboard.style.display = "block";
+  document.getElementById("loginHeader").style.display = "none";
+  dashboard.style.display = "flex";
+  const chip = "👤 " + user;
+  document.getElementById("adUserChip").textContent = chip;
+  document.getElementById("adUserChipTop").textContent = chip;
   document.getElementById("welcomeMsg").textContent =
     `Welcome back, ${user}! Here's what's happening at Lakshyaim today.`;
-  dashboard.scrollIntoView({ behavior: "instant" });
+  switchView("dashboard");
 }
+
+// ===== Sidebar view switching =====
+function switchView(view) {
+  document.querySelectorAll(".ad-view").forEach((v) => {
+    v.style.display = v.id === "view-" + view ? "block" : "none";
+  });
+  document.querySelectorAll(".ad-link[data-view]").forEach((b) => {
+    b.classList.toggle("active", b.dataset.view === view);
+  });
+  const titles = { dashboard: "Dashboard", products: "Products", orders: "Orders" };
+  document.getElementById("viewTitle").textContent = titles[view] || "Dashboard";
+  closeSidebar();
+  window.scrollTo({ top: 0, behavior: "instant" });
+}
+
+document.querySelectorAll(".ad-link[data-view]").forEach((btn) => {
+  btn.addEventListener("click", () => switchView(btn.dataset.view));
+});
+document.querySelectorAll(".qa-btn[data-goto]").forEach((btn) => {
+  btn.addEventListener("click", () => switchView(btn.dataset.goto));
+});
+
+// Mobile sidebar toggle
+function closeSidebar() {
+  document.body.classList.remove("sidebar-open");
+}
+document.getElementById("adBurger")?.addEventListener("click", () => {
+  document.body.classList.toggle("sidebar-open");
+});
+document.getElementById("adOverlay")?.addEventListener("click", closeSidebar);
 
 // Logout
 logoutBtn.addEventListener("click", () => {
   sessionStorage.removeItem("lakshyaim_admin");
   dashboard.style.display = "none";
+  document.getElementById("loginHeader").style.display = "";
   loginScreen.style.display = "grid";
   loginForm.reset();
   errorMsg.classList.remove("show");
