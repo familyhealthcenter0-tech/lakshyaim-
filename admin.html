@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=202610309" />
-  <link rel="stylesheet" href="admin.css?v=202610312" />
+  <link rel="stylesheet" href="admin.css?v=202610313" />
 </head>
 <body class="admin-body">
 
@@ -57,9 +57,13 @@
         <span>Lakshyaim Admin</span>
       </a>
       <nav class="ad-nav">
+        <p class="ad-side-label">Menu</p>
         <button class="ad-link active" data-view="dashboard" data-title="Dashboard">📊 Dashboard</button>
         <button class="ad-link" data-view="products" data-title="Products">📦 Products</button>
         <button class="ad-link" data-view="orders" data-title="Orders">🧾 Orders</button>
+        <button class="ad-link" data-view="members" data-title="Members">👥 Members</button>
+        <button class="ad-link" data-view="activity" data-title="Activity">🕒 Activity Log</button>
+        <button class="ad-link" data-view="settings" data-title="Settings">⚙️ Settings</button>
         <a href="index.html" class="ad-link">🛍 View Store</a>
         <a href="gallery.html" class="ad-link">🖼 Gallery</a>
       </nav>
@@ -75,6 +79,7 @@
       <header class="ad-topbar">
         <button class="ad-burger" id="adBurger" aria-label="Menu">☰</button>
         <h1 class="ad-viewtitle" id="viewTitle">Dashboard</h1>
+        <span class="ad-date" id="adDate"></span>
         <span class="ad-userchip" id="adUserChipTop">👤 admin</span>
       </header>
 
@@ -82,39 +87,60 @@
 
         <!-- ===== View: Dashboard ===== -->
         <div class="ad-view" id="view-dashboard">
-          <p class="welcome" id="welcomeMsg"></p>
+          <div class="welcome-banner">
+            <div class="wb-text">
+              <h2 id="welcomeMsg">Welcome back!</h2>
+              <p class="wb-sub">Yahan aaj ka poora update hai — orders, products aur store performance ek nazar me.</p>
+            </div>
+            <span class="wb-badge">🟢 Store Live</span>
+          </div>
 
           <div class="dash-grid">
             <div class="dash-card">
-              <span class="dash-ico">🧾</span>
+              <span class="dash-ico ico-green">🧾</span>
+              <span class="dash-trend">Live</span>
               <p class="dash-num" id="statOrders">0</p>
-              <p>Total orders</p>
+              <p class="dash-label">Total orders</p>
             </div>
             <div class="dash-card">
-              <span class="dash-ico gold">⏳</span>
+              <span class="dash-ico ico-amber">⏳</span>
               <p class="dash-num" id="statPending">0</p>
-              <p>Pending orders</p>
+              <p class="dash-label">Pending orders</p>
             </div>
             <div class="dash-card">
-              <span class="dash-ico">📦</span>
+              <span class="dash-ico ico-blue">📦</span>
+              <span class="dash-trend">Synced</span>
               <p class="dash-num" id="statProducts">0</p>
-              <p>Products live</p>
+              <p class="dash-label">Products live</p>
             </div>
             <div class="dash-card">
-              <span class="dash-ico gold">💰</span>
+              <span class="dash-ico ico-slate">💰</span>
+              <span class="dash-trend">All time</span>
               <p class="dash-num" id="statRevenue">₹0</p>
-              <p>Total revenue</p>
+              <p class="dash-label">Total revenue</p>
             </div>
           </div>
 
-          <div class="quick-actions">
-            <button class="qa-btn" data-goto="products">➕ Add New Product</button>
-            <button class="qa-btn" data-goto="products">🛍 Manage Catalog</button>
-            <button class="qa-btn" data-goto="orders">🧾 View Orders</button>
+          <div class="qa-cards">
+            <button class="qa-card" data-goto="products">
+              <span class="qa-ico ico-green">➕</span>
+              <b>Add New Product</b>
+              <span>Photo, price, rating ke saath naya product add karo</span>
+            </button>
+            <button class="qa-card" data-goto="products">
+              <span class="qa-ico ico-amber">🛍</span>
+              <b>Manage Catalog</b>
+              <span>Edit / delete / search — poora catalog control</span>
+            </button>
+            <button class="qa-card" data-goto="orders">
+              <span class="qa-ico ico-blue">🧾</span>
+              <b>View Orders</b>
+              <span>Status update karo — Pending → Shipped → Delivered</span>
+            </button>
           </div>
 
           <div class="dash-panel">
-            <h2>🚀 Quick Tips</h2>
+            <h2><span class="panel-ico">🚀</span> Quick Tips</h2>
             <p class="ad-tip">
               Products tab me se naye product add karo — shop, products page aur
               dropdown me turant live ho jayenge. Orders tab me checkout ke
@@ -208,13 +234,63 @@
         <!-- ===== View: Orders ===== -->
         <div class="ad-view" id="view-orders" style="display:none">
           <div class="dash-panel">
-            <h2>🧾 Recent Orders <span style="font-size:0.78rem;color:var(--muted);font-weight:600">(checkout se place hue orders yahan dikhte hain)</span></h2>
+            <div class="search-row">
+              <h2>🧾 Recent Orders <span style="font-size:0.78rem;color:var(--muted);font-weight:600">(checkout se place hue)</span></h2>
+              <button class="btn btn-outline btn-sm" id="exportOrdersBtn">⬇ Orders CSV</button>
+            </div>
             <table class="orders-table orders-table--rich">
               <thead>
-                <tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Amount</th><th>Payment</th><th>Status</th></tr>
+                <tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Amount</th><th>Payment</th><th>Status</th><th></th></tr>
               </thead>
               <tbody id="ordersTableBody"></tbody>
             </table>
+          </div>
+        </div>
+
+        <!-- ===== View: Members ===== -->
+        <div class="ad-view" id="view-members" style="display:none">
+          <div class="dash-panel">
+            <div class="search-row">
+              <h2>👥 Members <span style="font-size:0.78rem;color:var(--muted);font-weight:600">(homepage join form se)</span></h2>
+              <button class="btn btn-outline btn-sm" id="exportMembersBtn">⬇ Members CSV</button>
+            </div>
+            <table class="orders-table">
+              <thead>
+                <tr><th>Email</th><th>Joined</th></tr>
+              </thead>
+              <tbody id="membersTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ===== View: Activity Log ===== -->
+        <div class="ad-view" id="view-activity" style="display:none">
+          <div class="dash-panel">
+            <div class="search-row">
+              <h2>🕒 Activity Log</h2>
+              <button class="btn btn-outline btn-sm" id="clearActivityBtn">Clear log</button>
+            </div>
+            <ul class="activity-list" id="activityList"></ul>
+          </div>
+        </div>
+
+        <!-- ===== View: Settings ===== -->
+        <div class="ad-view" id="view-settings" style="display:none">
+          <div class="dash-panel">
+            <h2>⚙️ Store Settings</h2>
+            <form id="settingsForm" class="add-form">
+              <div class="row">
+                <label>Free shipping threshold (₹)
+                  <input type="number" id="setFreeOver" min="0" placeholder="2999" />
+                </label>
+                <label>Shipping fee (₹) — threshold se neeche
+                  <input type="number" id="setShipFee" min="0" placeholder="99" />
+                </label>
+              </div>
+              <button type="submit" class="btn">Save Settings</button>
+            </form>
+            <p class="form-msg" id="settingsMsg"></p>
+            <p class="co-note">Settings cart/checkout pages par turant apply hoti hain (localStorage). Store-wide permanent karne ke liye deploy ke saath aane wale backend ka intezaar (RFP Phase-1).</p>
           </div>
         </div>
 
@@ -223,6 +299,6 @@
   </div>
 
   <script src="products.js?v=202610303"></script>
-  <script src="admin.js?v=202610312"></script>
+  <script src="admin.js?v=202610313"></script>
 </body>
 </html>

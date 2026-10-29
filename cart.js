@@ -6,9 +6,24 @@
 // ============================================================
 
 const LKEY_CART = "lakshyaim_cart";
-const FREE_SHIP_OVER = 2999;
-const SHIP_FEE = 99;
 const MAX_QTY = 20;
+
+// Store settings (admin Settings panel se) — fallback defaults
+function getSettings() {
+  try {
+    return JSON.parse(localStorage.getItem("lakshyaim_settings")) || {};
+  } catch {
+    return {};
+  }
+}
+function freeShipOver() {
+  const v = Number(getSettings().freeShipOver);
+  return v > 0 ? v : 2999;
+}
+function shipFeeAmt() {
+  const v = Number(getSettings().shipFee);
+  return isNaN(v) ? 99 : v;
+}
 
 function getCart() {
   try {
@@ -74,7 +89,7 @@ function cartSubtotal() {
 
 function shippingFee(subtotal) {
   if (subtotal <= 0) return 0;
-  return subtotal >= FREE_SHIP_OVER ? 0 : SHIP_FEE;
+  return subtotal >= freeShipOver() ? 0 : shipFeeAmt();
 }
 
 function cartGrandTotal() {

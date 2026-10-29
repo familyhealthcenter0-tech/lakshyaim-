@@ -51,8 +51,13 @@ function openDashboard(user) {
   const chip = "👤 " + user;
   document.getElementById("adUserChip").textContent = chip;
   document.getElementById("adUserChipTop").textContent = chip;
-  document.getElementById("welcomeMsg").textContent =
-    `Welcome back, ${user}! Here's what's happening at Lakshyaim today.`;
+  document.getElementById("welcomeMsg").textContent = "Welcome back, " + user + "! 👋";
+  document.getElementById("adDate").textContent = new Date().toLocaleDateString("en-IN", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
   switchView("dashboard");
 }
 
@@ -64,7 +69,14 @@ function switchView(view) {
   document.querySelectorAll(".ad-link[data-view]").forEach((b) => {
     b.classList.toggle("active", b.dataset.view === view);
   });
-  const titles = { dashboard: "Dashboard", products: "Products", orders: "Orders" };
+  const titles = {
+    dashboard: "Dashboard",
+    products: "Products",
+    orders: "Orders",
+    members: "Members",
+    activity: "Activity Log",
+    settings: "Settings",
+  };
   document.getElementById("viewTitle").textContent = titles[view] || "Dashboard";
   closeSidebar();
   window.scrollTo({ top: 0, behavior: "instant" });
@@ -172,7 +184,10 @@ function refreshProductTable() {
         <td>${p.name}</td>
         <td>${p.tag}</td>
         <td>${formatPrice(p.price)}</td>
-        <td><button class="del-btn" data-index="${i}">🗑 Delete</button></td>
+        <td class="cell-actions">
+          <button class="edit-btn" data-index="${i}">✏️ Edit</button>
+          <button class="del-btn" data-index="${i}">🗑</button>
+        </td>
       </tr>`
       )
       .join("");
@@ -235,43 +250,68 @@ if (addForm) {
       price: +document.getElementById("pPrice").value,
       mrp: +document.getElementById("pMrp").value || 0,
     };
-    list.push(product);
-    saveProducts(list);
-    refreshProductTable();
-    // nayi row highlight + dikhao
-    requestAnimationFrame(() => {
-      const lastRow = tableBody.lastElementChild;
-      if (lastRow) {
-        lastRow.classList.add("row-new");
-        lastRow.scrollIntoView({ block: "nearest", behavior: "smooth" });
-      }
-    });
-    setProdMsg(
-      `✅ "${product.name}" add ho gaya. Shop pe live hai — ab agla product bharo.`,
-      "#0b6b46"
-    );
+    if (editingIndex != null) {
+      // Update existing product
+      list[editingIndex] = product;
+      saveProducts(list);
+      refreshProductTable();
+      setProdMsg(`✅ "${product.name}" update ho gaya.`, "#0b6b46");
+      logActivity("✏️", 'Product "' + product.name + '" update kiya');
+      editingIndex = null;
+      saveBtn.textContent = "Save Product";
+    } else {
+      // Naya product add
+      list.push(product);
+      saveProducts(list);
+      refreshProductTable();
+      requestAnimationFrame(() => {
+        const lastRow = tableBody.lastElementChild;
+        if (lastRow) {
+          lastRow.classList.add("row-new");
+          lastRow.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        }
+      });
+      setProdMsg(
+        `✅ "${product.name}" add ho gaya. Shop pe live hai — ab agla product bharo.`,
+        "#0b6b46"
+      );
+      logActivity("➕", 'Naya product add kiya: "' + product.name + '" (' + formatPrice(product.price) + ")");
+    }
     addForm.reset();
     document.getElementById("pRating").value = 5;
     document.getElementById("pReviews").value = 0;
     addPreview.hidden = true;
     addPreviewImg.removeAttribute("src");
   });
-  // Delete product
+  // Delete + Edit product
   tableBody.addEventListener("click", async (e) => {
+    const editBtn = e.target.closest(".edit-btn");
+    if (editBtn) {
+      startEdit(+editBtn.dataset.index);
+      return;
+    }
     const btn = e.target.closest(".del-btn");
     if (!btn) return;
     const list = await getProducts();
-    list.splice(+btn.dataset.index, 1);
+    const removed = list.splice(+btn.dataset.index, 1)[0];
     saveProducts(list);
     refreshProductTable();
     setProdMsg("🗑 Product delete ho gaya.", "#b33232");
+    if (editingIndex != null) {
+      editingIndex = null;
+      saveBtn.textContent = "Save Product";
+    }
+    logActivity("🗑", 'Product "' + (removed ? removed.name : "?") + '" delete kiya');
   });
 
   // Reset to defaults
   document.getElementById("resetProductsBtn").addEventListener("click", async () => {
     localStorage.removeItem("lakshyaim_products");
+    editingIndex = null;
+    saveBtn.textContent = "Save Product";
     refreshProductTable();
     setProdMsg("↩ Catalog default products pe reset ho gaya.", "#5f6d66");
+    logActivity("↩", "Catalog default products pe reset kiya");
   });
 
   // Catalog JSON download — products.json file ke roop me
@@ -332,11 +372,205 @@ function renderRecentOrders() {
             <option value="Delivered" ${o.status === "Delivered" ? "selected" : ""}>Delivered</option>
           </select>
         </td>
+        <td><button class="del-order-btn" data-id="${o.id}" title="Delete order">✕</button></td>
       </tr>`;
       }
     )
     .join("");
   updateStats();
+}
+
+// Order delete
+function deleteOrder(orderId) {
+  const orders = JSON.parse(localStorage.getItem("lakshyaim_orders") || "[]");
+  const next = orders.filter((x) => x.id !== orderId);
+  localStorage.setItem("lakshyaim_orders", JSON.stringify(next));
+  logActivity("🗑", `Order ${orderId} delete kiya`);
+  renderRecentOrders();
+}
+
+const ordersTbody = document.getElementById("ordersTableBody");
+ordersTbody.addEventListener("change", (e) => {
+  const sel = e.target.closest(".status-select");
+  if (!sel) return;
+  setStatus(sel.dataset.id, sel.value);
+  logActivity("🚚", `Order ${sel.dataset.id} ka status "${sel.value}" hua`);
+});
+ordersTbody.addEventListener("click", (e) => {
+  const del = e.target.closest(".del-order-btn");
+  if (!del) return;
+  if (confirm("Order " + del.dataset.id + " delete karna hai?")) deleteOrder(del.dataset.id);
+});
+
+// ===== Members (homepage join form se) =====
+function renderMembers() {
+  const tbody = document.getElementById("membersTableBody");
+  if (!tbody) return;
+  let members = [];
+  try {
+    members = JSON.parse(localStorage.getItem("lakshyaim_members")) || [];
+  } catch {
+    members = [];
+  }
+  tbody.innerHTML = members.length
+    ? members
+        .slice()
+        .reverse()
+        .map(
+          (m) => `
+      <tr>
+        <td>${m.email}</td>
+        <td>${m.date || ""}</td>
+      </tr>`
+        )
+        .join("")
+    : '<tr><td colspan="2" style="color:var(--muted)">Abhi koi member nahi — homepage join form se log join karte hi yahan aayenge.</td></tr>';
+}
+
+// ===== Activity log (audit) =====
+function logActivity(icon, text) {
+  let log = [];
+  try {
+    log = JSON.parse(localStorage.getItem("lakshyaim_activity")) || [];
+  } catch {
+    log = [];
+  }
+  log.unshift({
+    icon,
+    text,
+    time: new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }),
+  });
+  localStorage.setItem("lakshyaim_activity", JSON.stringify(log.slice(0, 40)));
+  renderActivity();
+}
+
+function renderActivity() {
+  const list = document.getElementById("activityList");
+  if (!list) return;
+  let log = [];
+  try {
+    log = JSON.parse(localStorage.getItem("lakshyaim_activity")) || [];
+  } catch {
+    log = [];
+  }
+  list.innerHTML = log.length
+    ? log
+        .map(
+          (a) => `
+      <li class="activity-item">
+        <span class="act-ico">${a.icon}</span>
+        <span class="act-text">${a.text}</span>
+        <span class="act-time">${a.time}</span>
+      </li>`
+        )
+        .join("")
+    : '<li class="activity-item" style="color:var(--muted)">Koi activity nahi — admin actions yahan record hote hain.</li>';
+}
+
+// ===== Settings =====
+function getSettings() {
+  try {
+    return JSON.parse(localStorage.getItem("lakshyaim_settings")) || {};
+  } catch {
+    return {};
+  }
+}
+
+function renderSettings() {
+  const s = getSettings();
+  const fo = document.getElementById("setFreeOver");
+  const sf = document.getElementById("setShipFee");
+  if (fo) fo.value = s.freeShipOver != null ? s.freeShipOver : 2999;
+  if (sf) sf.value = s.shipFee != null ? s.shipFee : 99;
+}
+
+document.getElementById("settingsForm")?.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const fo = Number(document.getElementById("setFreeOver").value);
+  const sf = Number(document.getElementById("setShipFee").value);
+  localStorage.setItem(
+    "lakshyaim_settings",
+    JSON.stringify({ freeShipOver: fo > 0 ? fo : 2999, shipFee: sf >= 0 ? sf : 99 })
+  );
+  logActivity("⚙️", "Store settings update ki (free shipping / fee)");
+  const msg = document.getElementById("settingsMsg");
+  if (msg) msg.textContent = "✅ Settings save ho gayi — cart/checkout par turant apply.";
+});
+
+// ===== CSV exports =====
+function downloadCSV(filename, rows) {
+  const csv = rows.map((r) => r.map((c) => '"' + String(c == null ? "" : c).replace(/"/g, '""') + '"').join(",")).join("\n");
+  const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+document.getElementById("exportOrdersBtn")?.addEventListener("click", () => {
+  const orders = JSON.parse(localStorage.getItem("lakshyaim_orders") || "[]");
+  const rows = [["Order ID", "Date", "Customer", "Phone", "Email", "City", "Payment", "Items", "Total", "Status"]];
+  orders.forEach((o) =>
+    rows.push([
+      o.id, o.date, o.customer.name, o.customer.phone, o.customer.email,
+      o.customer.city, o.pay,
+      o.items.map((i) => i.name + " x" + i.qty).join(" | "),
+      o.total, o.status,
+    ])
+  );
+  downloadCSV("lakshyaim-orders.csv", rows);
+  logActivity("⬇", "Orders CSV export ki (" + orders.length + " orders)");
+});
+
+document.getElementById("exportMembersBtn")?.addEventListener("click", () => {
+  const members = JSON.parse(localStorage.getItem("lakshyaim_members") || "[]");
+  downloadCSV("lakshyaim-members.csv", [["Email", "Joined"], ...members.map((m) => [m.email, m.date])]);
+  logActivity("⬇", "Members CSV export ki (" + members.length + " members)");
+});
+
+document.getElementById("clearActivityBtn")?.addEventListener("click", () => {
+  localStorage.removeItem("lakshyaim_activity");
+  renderActivity();
+});
+
+// ===== Product edit flow =====
+let editingIndex = null;
+const saveBtn = addForm.querySelector('button[type="submit"]');
+
+function startEdit(index) {
+  getProducts().then((list) => {
+    const p = list[index];
+    if (!p) return;
+    editingIndex = index;
+    document.getElementById("pName").value = p.name;
+    document.getElementById("pEmoji").value = p.emoji || "";
+    const sel = document.getElementById("pImage");
+    if (p.image) {
+      let opt = [...sel.options].find((o) => o.value === p.image);
+      if (!opt) {
+        opt = document.createElement("option");
+        opt.value = p.image;
+        opt.textContent = "📷 " + p.image.split("/").pop();
+        sel.appendChild(opt);
+      }
+      sel.value = p.image;
+    } else {
+      sel.value = "";
+    }
+    document.getElementById("pImgPos").value = p.imgPos || "";
+    document.getElementById("pImgZoom").value = p.imgZoom || "";
+    document.getElementById("pTag").value = p.tag;
+    document.getElementById("pTagClass").value = p.tagClass || "tag-green";
+    document.getElementById("pPrice").value = p.price;
+    document.getElementById("pMrp").value = p.mrp || "";
+    document.getElementById("pRating").value = p.rating;
+    document.getElementById("pReviews").value = p.reviews || 0;
+    saveBtn.textContent = "Update Product";
+    updateAddPreview();
+    document.getElementById("addProductPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+    setProdMsg('✏️ "' + p.name + '" edit mode me hai — changes karke Update dabao.', "#5f6d66");
+  });
 }
 
 // Order status change — dropdown se status update hota hai, stats turant refresh
@@ -349,11 +583,8 @@ function setStatus(orderId, status) {
   renderRecentOrders();
 }
 
-// Status dropdown change — delegated listener
-document.getElementById("ordersTableBody")?.addEventListener("change", (e) => {
-  const sel = e.target.closest(".status-select");
-  if (!sel) return;
-  setStatus(sel.dataset.id, sel.value);
-});
-
+// Status dropdown change — delegated listener (main handler upar hai)
 renderRecentOrders();
+renderMembers();
+renderActivity();
+renderSettings();

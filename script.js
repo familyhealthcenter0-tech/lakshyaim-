@@ -301,4 +301,21 @@ joinForm.addEventListener("submit", (e) => {
   formMsg.textContent = `✅ Thanks! Member invite sent to ${email}`;
   formMsg.style.color = "#7ee6b0";
   joinForm.reset();
+
+  // Member capture — admin panel ke Members tab me dikhega
+  if (email) {
+    let members = [];
+    try {
+      members = JSON.parse(localStorage.getItem("lakshyaim_members")) || [];
+    } catch {
+      members = [];
+    }
+    if (!members.some((m) => m.email === email)) {
+      members.push({
+        email,
+        date: new Date().toLocaleString("en-IN", { dateStyle: "medium" }),
+      });
+      localStorage.setItem("lakshyaim_members", JSON.stringify(members));
+    }
+  }
 });
