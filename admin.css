@@ -519,6 +519,75 @@
 .cust-cell b { display: block; font-size: 0.92rem; }
 .row-sub { color: var(--muted); font-size: 0.75rem; }
 
+/* ===== Order details (expandable) ===== */
+.order-row { cursor: pointer; }
+.order-row:hover { background: #f7fbf9; }
+.view-order-btn {
+  background: var(--green-light);
+  border: none;
+  color: var(--green-dark);
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s, transform 0.15s;
+}
+.view-order-btn:hover { background: #d3f1e3; transform: scale(1.08); }
+.cell-actions { display: flex; gap: 6px; align-items: center; }
+.order-details-row > td {
+  background: #f7fbf9;
+  padding: 0 !important;
+  border-bottom: 2px solid var(--card-border) !important;
+}
+.order-detail-card { padding: 18px 20px 20px; }
+.order-detail-card .od-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 16px;
+}
+.od-sec {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--green-dark);
+  margin-bottom: 7px;
+}
+.od-line { font-size: 0.88rem; color: var(--ink); margin-bottom: 3px; word-break: break-word; }
+.od-items { display: flex; flex-direction: column; gap: 8px; margin: 10px 0 4px; }
+.od-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 9px 12px;
+  font-size: 0.88rem;
+}
+.od-item img {
+  width: 52px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex: 0 0 auto;
+}
+.od-emoji { font-size: 1.4rem; width: 52px; text-align: center; flex: 0 0 auto; }
+.od-item-name { flex: 1; font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.od-item-qty { color: var(--muted); }
+.od-item-price { font-weight: 800; }
+.od-total {
+  text-align: right;
+  padding-top: 12px;
+  margin-top: 6px;
+  border-top: 1.5px solid var(--card-border);
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.od-total b { color: var(--ink); font-size: 1.08rem; font-family: "Manrope", sans-serif; }
+
 @media (max-width: 640px) {
   .orders-table th:nth-child(3), .orders-table td:nth-child(3) { display: none; }
   .orders-table--rich th:nth-child(5), .orders-table--rich td:nth-child(5) { display: none; }

@@ -363,8 +363,9 @@ function renderRecentOrders() {
     .map(
       (o) => {
         const stClass = o.status === "Delivered" ? "st-done" : o.status === "Shipped" ? "st-ship" : "st-pend";
+        const detailId = "od-" + o.id.replace(/[^a-zA-Z0-9]/g, "");
         return `
-      <tr>
+      <tr class="order-row" data-oid="${o.id}">
         <td><b>${o.id}</b></td>
         <td>
           <div class="cust-cell"><b>${o.customer.name}</b><span class="row-sub">${o.date || ""} · ${o.customer.city || ""}</span></div>
@@ -379,12 +380,63 @@ function renderRecentOrders() {
             <option value="Delivered" ${o.status === "Delivered" ? "selected" : ""}>Delivered</option>
           </select>
         </td>
-        <td><button class="del-order-btn" data-id="${o.id}" title="Delete order">✕</button></td>
+        <td class="cell-actions">
+          <button class="view-order-btn" data-details="${detailId}" title="Poore details dekhein">👁</button>
+          <button class="del-order-btn" data-id="${o.id}" title="Delete order">✕</button>
+        </td>
+      </tr>
+      <tr class="order-details-row" id="${detailId}" style="display:none">
+        <td colspan="7">
+          <div class="order-detail-card">
+            <div class="od-grid">
+              <div>
+                <p class="od-sec">👤 Customer</p>
+                <p class="od-line"><b>${o.customer.name}</b></p>
+                <p class="od-line">📞 ${o.customer.phone || "—"}</p>
+                <p class="od-line">✉️ ${o.customer.email || "—"}</p>
+              </div>
+              <div>
+                <p class="od-sec">📍 Delivery Address</p>
+                <p class="od-line">${o.customer.address || "—"}</p>
+                <p class="od-line">${o.customer.city || ""}${o.customer.state ? ", " + o.customer.state : ""}${o.customer.pin ? " - " + o.customer.pin : ""}</p>
+              </div>
+              <div>
+                <p class="od-sec">💳 Order Info</p>
+                <p class="od-line">Payment: <b>${o.pay || "COD"}</b></p>
+                <p class="od-line">Date: ${o.date || "—"}</p>
+                <p class="od-line">Status: ${o.status}</p>
+              </div>
+            </div>
+            <p class="od-sec">📦 Items (${o.items.length})</p>
+            <div class="od-items">
+              ${o.items
+                .map(
+                  (i) => `
+                <div class="od-item">
+                  ${i.image ? '<img src="' + i.image + '" alt="" loading="lazy" />' : '<span class="od-emoji">' + (i.emoji || "📦") + "</span>"}
+                  <span class="od-item-name">${i.name}</span>
+                  <span class="od-item-qty">× ${i.qty}</span>
+                  <span class="od-item-price">${fmtN(i.price * i.qty)}</span>
+                </div>`
+                )
+                .join("")}
+            </div>
+            <div class="od-total">Order Total · <b>${fmtN(o.total)}</b></div>
+          </div>
+        </td>
       </tr>`;
       }
     )
     .join("");
   updateStats();
+}
+
+// Order details toggle — row ya 👁 button click par
+function toggleOrderDetails(orderId) {
+  const detailId = "od-" + orderId.replace(/[^a-zA-Z0-9]/g, "");
+  const row = document.getElementById(detailId);
+  if (!row) return;
+  row.style.display = row.style.display === "none" ? "" : "none";
 }
 
 // Order delete
@@ -404,9 +456,17 @@ ordersTbody.addEventListener("change", (e) => {
   logActivity("🚚", `Order ${sel.dataset.id} ka status "${sel.value}" hua`);
 });
 ordersTbody.addEventListener("click", (e) => {
+  // Delete order
   const del = e.target.closest(".del-order-btn");
-  if (!del) return;
-  if (confirm("Order " + del.dataset.id + " delete karna hai?")) deleteOrder(del.dataset.id);
+  if (del) {
+    if (confirm("Order " + del.dataset.id + " delete karna hai?")) deleteOrder(del.dataset.id);
+    return;
+  }
+  // Status select ke click par details toggle nahi hota
+  if (e.target.closest("select")) return;
+  // Row ya 👁 button click → poore details toggle karo
+  const row = e.target.closest(".order-row");
+  if (row) toggleOrderDetails(row.dataset.oid);
 });
 
 // ===== Members (homepage join form se) =====
