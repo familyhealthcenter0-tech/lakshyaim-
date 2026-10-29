@@ -533,31 +533,121 @@ h1, h2, h3 { font-weight: 800; }
 .price { font-weight: 800; font-size: 1.12rem; margin: 6px 0 12px; }
 .price s { color: var(--muted); font-weight: 400; font-size: 0.85rem; margin-left: 6px; }
 
-/* ===== Why Choose Us ===== */
-.why-grid { margin-top: 8px; }
-.why-card {
-  background: #fff;
-  border: 1px solid var(--card-border);
-  border-radius: 20px;
-  padding: 30px 26px;
-  box-shadow: var(--shadow-soft);
-  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+/* ===== Why People Choose Us — premium dark auto-slider ===== */
+.section-why {
+  background:
+    radial-gradient(ellipse 42% 46% at 92% 8%, rgba(13, 155, 100, 0.22) 0%, transparent 100%),
+    radial-gradient(ellipse 34% 40% at 4% 94%, rgba(245, 158, 11, 0.10) 0%, transparent 100%),
+    linear-gradient(135deg, #0e1f1a 0%, var(--dark) 75%);
+  color: #e7efe7;
+  overflow: hidden;
 }
-.why-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: #bfe5d5; }
+.section-why .sec-title { color: #fff; }
+.section-why .sec-sub { color: #9fb8a9; }
+.why-slider { margin-top: 10px; }
+.slider-shell { position: relative; }
+.why-viewport { overflow: hidden; padding: 10px 2px 6px; }
+.why-track {
+  display: flex;
+  gap: 20px;
+  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+.why-card {
+  position: relative;
+  flex: 0 0 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 22px;
+  padding: 32px 26px 28px;
+  box-shadow: none;
+  transition: transform 0.25s, border-color 0.25s, background 0.25s;
+  overflow: hidden;
+}
+.why-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(18, 169, 110, 0.55);
+  background: rgba(255, 255, 255, 0.08);
+}
+/* sliders me slide widths (gap 20px accounted) */
+@media (min-width: 1025px) {
+  .why-card { flex-basis: calc((100% - 40px) / 3); }
+}
+@media (min-width: 641px) and (max-width: 1024px) {
+  .why-card { flex-basis: calc((100% - 20px) / 2); }
+}
+.why-num {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-family: "Manrope", sans-serif;
+  font-weight: 800;
+  font-size: 2.4rem;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.10);
+  letter-spacing: -0.02em;
+}
+.why-card h3 { font-size: 1.06rem; margin-bottom: 8px; color: #fff; }
+.why-card p { color: #a9bfae; font-size: 0.93rem; }
 .why-icon {
   display: grid;
   place-items: center;
   width: 56px;
   height: 56px;
   border-radius: 17px;
-  background: linear-gradient(150deg, #e9faf2, #d3f1e3);
+  background: linear-gradient(150deg, rgba(18, 169, 110, 0.35), rgba(7, 122, 76, 0.25));
   font-size: 1.6rem;
   margin-bottom: 16px;
-  box-shadow: inset 0 0 0 1px rgba(13, 155, 100, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(120, 220, 175, 0.25);
 }
-.why-icon.gold { background: linear-gradient(150deg, #fff5d8, #fdedbe); box-shadow: inset 0 0 0 1px rgba(245, 158, 11, 0.18); }
-.why-card h3 { font-size: 1.05rem; margin-bottom: 8px; }
-.why-card p { color: var(--muted); font-size: 0.93rem; }
+.why-icon.gold {
+  background: linear-gradient(150deg, rgba(251, 175, 32, 0.35), rgba(180, 83, 9, 0.25));
+  box-shadow: inset 0 0 0 1px rgba(251, 191, 36, 0.28);
+}
+/* arrows */
+.why-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.10);
+  color: #fff;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.2s, border-color 0.2s;
+  backdrop-filter: blur(6px);
+}
+.why-nav:hover { background: rgba(13, 155, 100, 0.55); border-color: rgba(120, 220, 175, 0.5); }
+.wn-prev { left: -14px; }
+.wn-next { right: -14px; }
+/* dots */
+.why-dots {
+  display: flex;
+  gap: 9px;
+  justify-content: center;
+  margin-top: 22px;
+}
+.why-dots .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255, 255, 255, 0.22);
+  cursor: pointer;
+  padding: 0;
+  transition: width 0.25s, background 0.25s;
+}
+.why-dots .dot.active {
+  width: 26px;
+  background: linear-gradient(90deg, var(--green-2), var(--gold));
+}
 
 /* ===== Plans ===== */
 .plan {
@@ -1200,6 +1290,10 @@ h1, h2, h3 { font-weight: 800; }
   .ci-ctrl { width: 100%; flex-direction: row; justify-content: space-between; align-items: center; }
   .ci-thumb { width: 96px; }
   .page-wrap { padding: 40px 0 70px; }
+  /* Why-slider mobil: arrows edge pe rakho */
+  .wn-prev { left: -2px; }
+  .wn-next { right: -2px; }
+  .why-track { user-select: none; -webkit-user-drag: none; }
 }
 /* Bahut chote screens (<=420px): Sign In / Admin icon-only — logo ke saath fit */
 @media (max-width: 420px) {

@@ -119,6 +119,84 @@ document.addEventListener("keydown", (e) => {
 
 initGallery();
 
+// ===== Why People Choose Us — auto-sliding carousel =====
+(() => {
+  const track = document.getElementById("whyTrack");
+  const dotsEl = document.getElementById("whyDots");
+  if (!track || !dotsEl) return;
+
+  const slider = document.getElementById("whySlider");
+  const slides = track.children;
+  const AUTO_MS = 4200;
+  let per = 3;
+  let pos = 0;
+  let timer = null;
+
+  const GAP = 20;
+  const perView = () => {
+    if (window.innerWidth >= 1025) return 3;
+    if (window.innerWidth >= 641) return 2;
+    return 1;
+  };
+  const maxPos = () => Math.max(0, slides.length - per);
+  const step = () => slides[0].getBoundingClientRect().width + GAP;
+
+  function update() {
+    track.style.transform = "translateX(" + -(pos * step()) + "px)";
+    [...dotsEl.children].forEach((d, i) => d.classList.toggle("active", i === pos));
+  }
+
+  function go(delta) {
+    pos = delta > 0 ? (pos >= maxPos() ? 0 : pos + 1) : (pos <= 0 ? maxPos() : pos - 1);
+    update();
+  }
+
+  function buildDots() {
+    dotsEl.innerHTML = "";
+    for (let i = 0; i <= maxPos(); i++) {
+      const b = document.createElement("button");
+      b.className = "dot";
+      b.setAttribute("aria-label", "Slide " + (i + 1));
+      b.addEventListener("click", () => { pos = i; update(); restart(); });
+      dotsEl.appendChild(b);
+    }
+    update();
+  }
+
+  function layout() {
+    per = perView();
+    pos = Math.min(pos, maxPos());
+    buildDots();
+  }
+
+  function restart() {
+    clearInterval(timer);
+    timer = setInterval(() => go(1), AUTO_MS);
+  }
+
+  document.getElementById("whyPrev").addEventListener("click", () => { go(-1); restart(); });
+  document.getElementById("whyNext").addEventListener("click", () => { go(1); restart(); });
+
+  // Hover par ruk jaata hai, bahar nikal te hi continue
+  slider.addEventListener("mouseenter", () => clearInterval(timer));
+  slider.addEventListener("mouseleave", () => restart());
+  document.addEventListener("visibilitychange", () => (document.hidden ? clearInterval(timer) : restart()));
+
+  // Touch swipe
+  let startX = null;
+  slider.addEventListener("pointerdown", (e) => { startX = e.clientX; });
+  slider.addEventListener("pointerup", (e) => {
+    if (startX === null) return;
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) > 40) { go(dx < 0 ? 1 : -1); restart(); }
+    startX = null;
+  });
+
+  layout();
+  restart();
+  window.addEventListener("resize", layout);
+})();
+
 // ===== FAQ accordion (smooth open/close) =====
 const faqList = document.getElementById("faqList");
 if (faqList) {

@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=202610305" />
+  <link rel="stylesheet" href="styles.css?v=202610306" />
 </head>
 <body>
 
@@ -109,34 +109,60 @@
     </div>
   </section>
 
-  <!-- Why Choose Us -->
-  <section class="section" id="why">
+  <!-- Why Choose Us — auto-slide carousel -->
+  <section class="section section-why" id="why">
     <div class="container">
       <p class="eyebrow">Why Lakshyaim</p>
-      <h2 class="sec-title">Chosen by People Who Read Labels</h2>
+      <h2 class="sec-title">Why People Choose Us</h2>
       <p class="sec-sub">No shortcuts, no mystery blends — just clean, verified nutrition with real human support.</p>
-      <div class="grid grid-3 why-grid">
-        <div class="why-card">
-          <span class="why-icon gold">🔬</span>
-          <h3>Lab-Verified Quality</h3>
-          <p>Every batch is third-party tested for purity and potency. FSSAI-certified manufacturing, full traceability.</p>
+    </div>
+
+    <div class="why-slider" id="whySlider">
+      <div class="container slider-shell">
+        <button class="why-nav wn-prev" id="whyPrev" aria-label="Previous slide">‹</button>
+        <div class="why-viewport">
+          <div class="why-track" id="whyTrack">
+            <div class="why-card">
+              <span class="why-num">01</span>
+              <span class="why-icon gold">🔬</span>
+              <h3>Lab-Verified Quality</h3>
+              <p>Every batch is third-party tested for purity and potency. FSSAI-certified manufacturing, full traceability.</p>
+            </div>
+            <div class="why-card">
+              <span class="why-num">02</span>
+              <span class="why-icon">👩‍⚕️</span>
+              <h3>1-on-1 Expert Coaching</h3>
+              <p>Certified nutritionists build your plan, review progress weekly, and adjust until it works.</p>
+            </div>
+            <div class="why-card">
+              <span class="why-num">03</span>
+              <span class="why-icon">🚚</span>
+              <h3>Fast, Free Delivery</h3>
+              <p>Pan-India shipping in 3–5 days. Free on every order above ₹2,999 — no hidden charges, ever.</p>
+            </div>
+            <div class="why-card">
+              <span class="why-num">04</span>
+              <span class="why-icon">🛡️</span>
+              <h3>90-Day Guarantee</h3>
+              <p>Love the results or get your money back. A full season to judge us — that's how confident we are.</p>
+            </div>
+            <div class="why-card">
+              <span class="why-num">05</span>
+              <span class="why-icon">🎁</span>
+              <h3>Members Save 25%</h3>
+              <p>Preferred pricing on every order, reward points, early access to new flavours and a free monthly check-in.</p>
+            </div>
+            <div class="why-card">
+              <span class="why-num">06</span>
+              <span class="why-icon">💪</span>
+              <h3>Results at Every Level</h3>
+              <p>Weight balance se sports performance tak — 50,000+ members ke routines, results aur reviews aapke saath hain.</p>
+            </div>
+          </div>
         </div>
-        <div class="why-card">
-          <span class="why-icon">👩‍⚕️</span>
-          <h3>1-on-1 Expert Coaching</h3>
-          <p>Certified nutritionists build your plan, review progress weekly, and adjust until it works.</p>
-        </div>
-        <div class="why-card">
-          <span class="why-icon">🚚</span>
-          <h3>Fast, Free Delivery</h3>
-          <p>Pan-India shipping in 3–5 days. Free on every order above ₹2,999 — no hidden charges, ever.</p>
-        </div>
-        <div class="why-card">
-          <span class="why-icon">🛡️</span>
-          <h3>90-Day Guarantee</h3>
-          <p>Love the results or get your money back. A full season to judge us — that's how confident we are.</p>
-        </div>
+        <button class="why-nav wn-next" id="whyNext" aria-label="Next slide">›</button>
       </div>
+      <div class="why-dots" id="whyDots"></div>
     </div>
   </section>
 
@@ -368,6 +394,6 @@
 
   <script src="products.js?v=202610303"></script>
   <script src="cart.js?v=202610302"></script>
-  <script src="script.js?v=202610304"></script>
+  <script src="script.js?v=202610305"></script>
 </body>
 </html>
