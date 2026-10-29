@@ -32,6 +32,7 @@
   padding: 22px 16px;
   z-index: 120;
   transition: transform 0.25s ease;
+  overflow-y: auto;
 }
 .ad-brand {
   display: flex;
@@ -44,8 +45,19 @@
   padding: 4px 8px 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   margin-bottom: 16px;
+  flex: 0 0 auto;
 }
-.ad-nav { display: flex; flex-direction: column; gap: 6px; }
+.ad-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+.ad-nav::-webkit-scrollbar { width: 5px; }
+.ad-nav::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 999px; }
 .ad-side-label {
   font-size: 0.68rem;
   font-weight: 700;
@@ -89,6 +101,7 @@
   margin-top: auto;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding: 16px 6px 4px;
+  flex: 0 0 auto;
 }
 .ad-user { display: block; color: #a9bfae; font-size: 0.85rem; margin-bottom: 10px; }
 
