@@ -9,7 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20261104" />
+  <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+  <link rel="stylesheet" href="styles.css?v=20261105" />
 </head>
 <body>
 
@@ -20,6 +21,7 @@
         <span class="logo-text">Lakshyaim</span>
       </a>
       <div class="nav-actions">
+        <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Switch to dark mode">🌙</button>
         <a href="index.html" class="btn btn-sm btn-ghost">← Back to Home</a>
         <a href="cart.html" class="icon-btn" aria-label="Cart">🛒 <span class="cart-count">0</span></a>
       </div>
@@ -50,8 +52,8 @@
     <p class="lb-count" id="gLbCount"></p>
   </div>
 
-  <script src="cart.js?v=20261104"></script>
-  <script src="site-content.js?v=20261104"></script>
+  <script src="cart.js?v=20261105"></script>
+  <script src="site-content.js?v=20261105"></script>
   <script>
     const gGrid = document.getElementById("fullGalleryGrid");
     let gImgs = [];
@@ -117,5 +119,6 @@
 
     renderGallery();
   </script>
+  <script src="theme.js?v=20261105"></script>
 </body>
 </html>
