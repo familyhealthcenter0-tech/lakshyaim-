@@ -59,7 +59,7 @@ const CONTENT_DEFAULTS = {
   },
   footer: {
     about: "Lakshyaim Private Limited — balanced, science-backed nutrition for everyday life. Made in India, made for routines.",
-    credit: "Designed & Developed with ❤️ by <b>Sahin</b>",
+    credit: "Designed & Developed with ❤️ by <b>Mukesh Sharma</b>",
     copyright: "© 2026 Lakshyaim Private Limited — All rights reserved.",
   },
   payment: {
@@ -87,9 +87,9 @@ function getSiteContent() {
       Object.assign(out[k], saved[k]);
     }
   });
-  // Migration: old credit text "Family Health Center" → "Sahin" (auto-update)
-  if (out.footer && out.footer.credit && out.footer.credit.includes("Family Health Center")) {
-    out.footer.credit = out.footer.credit.replace("Family Health Center", "Sahin");
+  // Migration: old credit text → Mukesh Sharma (auto-update)
+  if (out.footer && out.footer.credit && (out.footer.credit.includes("Family Health Center") || out.footer.credit.includes("Sahin"))) {
+    out.footer.credit = out.footer.credit.replace("Family Health Center", "Mukesh Sharma").replace("Sahin", "Mukesh Sharma");
     if (!saved.footer) saved.footer = {};
     saved.footer.credit = out.footer.credit;
     try {
