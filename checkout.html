@@ -201,13 +201,16 @@
       e.preventDefault();
       const msg = document.getElementById("coMsg");
       const name = document.getElementById("coName").value.trim();
-      const phone = document.getElementById("coPhone").value.trim();
+      const phoneRaw = document.getElementById("coPhone").value.trim();
       const email = document.getElementById("coEmail").value.trim();
       const address = document.getElementById("coAddress").value.trim();
       const city = document.getElementById("coCity").value.trim();
-      const pin = document.getElementById("coPin").value.trim();
+      const pin = document.getElementById("coPin").value.trim().replace(/\s/g, "");
       const state = document.getElementById("coState").value;
-      const pay = document.querySelector("input[name='pay']:checked").value;
+
+      // Payment — agar koi radio checked nahi to COD default
+      const payEl = document.querySelector("input[name='pay']:checked");
+      const pay = payEl ? payEl.value : "COD";
 
       const fail = (t) => {
         msg.textContent = "❌ " + t;
@@ -215,31 +218,50 @@
         return false;
       };
 
+      // Phone flexible: +91, spaces, dashes sab chalega
+      const phoneDigits = phoneRaw.replace(/\D/g, "").replace(/^91(?=\d{10}$)/, "");
       if (!name) return fail("Full name likhein.");
-      if (!/^\d{10}$/.test(phone)) return fail("Phone ke theek 10 digits hon.");
+      if (!/^\d{10}$/.test(phoneDigits)) return fail("Phone 10 digits ka hona chahiye (+91 ya spaces chalega).");
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return fail("Email galat lag raha hai.");
       if (!address || !city) return fail("Address aur city dono bhariye.");
-      if (!/^\d{6}$/.test(pin)) return fail("PIN code 6 digits ka ho.");
+      if (!/^\d{6}$/.test(pin)) return fail("PIN code 6 digits ka ho (spaces ke bina).");
       if (!state) return fail("State chunein.");
 
-      const { cart, total } = renderSummary();
-      if (!cart.length) {
-        location.replace("cart.html");
+      let cart;
+      let orders;
+      try {
+        cart = getCart();
+        orders = JSON.parse(localStorage.getItem("lakshyaim_orders") || "[]");
+      } catch (err) {
+        msg.textContent = "❌ Browser storage block ho raha hai — private/incognito window ki jagah normal window me try karo.";
+        msg.style.color = "#b33232";
         return;
       }
 
-      const orders = JSON.parse(localStorage.getItem("lakshyaim_orders") || "[]");
+      if (!cart.length) {
+        msg.textContent = "❌ Cart khali hai — pehle shop se product add karo.";
+        msg.style.color = "#b33232";
+        setTimeout(() => (location.href = "cart.html"), 1200);
+        return;
+      }
+
       const order = {
         id: "#LA-" + String(2000 + orders.length + Math.floor(Math.random() * 90 + 10)),
         date: new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }),
-        customer: { name, phone, email, address, city, state },
+        customer: { name, phone: phoneDigits, email, address, city, state },
         pay,
         items: cart,
-        total,
+        total: cart.reduce((n, i) => n + i.price * i.qty, 0) + shippingFee(cart.reduce((n, i) => n + i.price * i.qty, 0)),
         status: "Pending",
       };
       orders.push(order);
-      localStorage.setItem("lakshyaim_orders", JSON.stringify(orders));
+      try {
+        localStorage.setItem("lakshyaim_orders", JSON.stringify(orders));
+      } catch (err) {
+        msg.textContent = "❌ Storage full/block hai — order save nahi hua. Browser settings check karo.";
+        msg.style.color = "#b33232";
+        return;
+      }
       clearCart();
 
       // Success screen
@@ -248,7 +270,7 @@
       document.getElementById("orderId").textContent = order.id;
       document.getElementById("successText").textContent =
         "Shukriya, " + name.split(" ")[0] + "! Aapka " + order.items.length +
-        "-item order (" + fmt(total) + ", " + pay + ") confirm ho gaya hai — " +
+        "-item order (" + fmt(order.total) + ", " + pay + ") confirm ho gaya hai — " +
         city + " me 3–5 working days me pahunchega. Admin dashboard me bhi status dikh jayega.";
 
       window.scrollTo({ top: 0, behavior: "smooth" });
