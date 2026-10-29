@@ -73,12 +73,14 @@ function switchView(view) {
     dashboard: "Dashboard",
     products: "Products",
     orders: "Orders",
+    database: "Database",
     members: "Members",
     content: "Site Content",
     activity: "Activity Log",
     settings: "Settings",
   };
   document.getElementById("viewTitle").textContent = titles[view] || "Dashboard";
+  if (view === "database") renderDatabase();
   closeSidebar();
   window.scrollTo({ top: 0, behavior: "instant" });
 }
@@ -778,11 +780,15 @@ function loadPaymentSettings() {
   const cod = document.getElementById("payCod");
   const upi = document.getElementById("payUpi");
   const card = document.getElementById("payCard");
+  const rzp = document.getElementById("payRzp");
+  const rzpKey = document.getElementById("payRzpKey");
   const upiId = document.getElementById("payUpiId");
   const note = document.getElementById("payNote");
   if (cod) cod.checked = !!p.cod;
   if (upi) upi.checked = !!p.upi;
   if (card) card.checked = !!p.card;
+  if (rzp) rzp.checked = !!p.razorpay;
+  if (rzpKey) rzpKey.value = p.razorpayKey || "";
   if (upiId) upiId.value = p.upiId || "";
   if (note) note.value = p.note || "";
 }
@@ -793,17 +799,139 @@ document.getElementById("savePaymentBtn")?.addEventListener("click", () => {
   c.payment.cod = document.getElementById("payCod").checked;
   c.payment.upi = document.getElementById("payUpi").checked;
   c.payment.card = document.getElementById("payCard").checked;
+  c.payment.razorpay = document.getElementById("payRzp").checked;
+  c.payment.razorpayKey = document.getElementById("payRzpKey").value.trim();
   c.payment.upiId = document.getElementById("payUpiId").value.trim();
   c.payment.note = document.getElementById("payNote").value.trim();
-  if (!c.payment.cod && !c.payment.upi && !c.payment.card) {
+  if (!c.payment.cod && !c.payment.upi && !c.payment.card && !c.payment.razorpay) {
     const pm = document.getElementById("payMsg");
     pm.textContent = "❌ Kam se kam ek payment method on rakho.";
     pm.style.color = "#b33232";
     return;
   }
   saveSiteContent(c);
-  logActivity("💳", "Payment settings update ki");
+  logActivity("💳", "Payment settings update ki (COD/UPI/Card/Razorpay)");
   const pm = document.getElementById("payMsg");
   pm.textContent = "✅ Payment settings save ho gayi — checkout par live.";
   pm.style.color = "#0b6b46";
+});
+
+// ===== Database view — localStorage overview =====
+const DB_COLLECTIONS = [
+  { key: "lakshyaim_orders", label: "Orders", icon: "🧾" },
+  { key: "lakshyaim_products", label: "Products", icon: "📦" },
+  { key: "lakshyaim_members", label: "Members", icon: "👥" },
+  { key: "lakshyaim_activity", label: "Activity Log", icon: "🕒" },
+  { key: "lakshyaim_content", label: "Site Content", icon: "🎨" },
+  { key: "lakshyaim_cart", label: "Active Cart", icon: "🛒" },
+  { key: "lakshyaim_settings", label: "Settings", icon: "⚙️" },
+];
+
+function dbRead(key) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function renderDatabase() {
+  const kpis = document.getElementById("dbKpis");
+  const tbody = document.getElementById("dbTableBody");
+  if (!tbody) return;
+
+  const orders = dbRead("lakshyaim_orders") || [];
+  const products = dbRead("lakshyaim_products") || [];
+  const members = dbRead("lakshyaim_members") || [];
+  const revenue = orders.reduce((n, o) => n + Number(o.total || 0), 0);
+
+  if (kpis) {
+    kpis.innerHTML = [
+      { ico: "🧾", n: orders.length, l: "Orders", c: "kpi-green" },
+      { ico: "📦", n: products.length, l: "Products", c: "kpi-blue" },
+      { ico: "👥", n: members.length, l: "Members", c: "kpi-amber" },
+      { ico: "💰", n: "₹" + revenue.toLocaleString("en-IN"), l: "Revenue", c: "kpi-violet" },
+    ]
+      .map(
+        (k) =>
+          '<div class="dash-card kpi ' + k.c + '"><span class="dash-ico">' + k.ico + '</span><p class="dash-num">' + k.n + '</p><p class="dash-label">' + k.l + "</p></div>"
+      )
+      .join("");
+  }
+
+  tbody.innerHTML = DB_COLLECTIONS.map((col) => {
+    const data = dbRead(col.key);
+    let count = data == null ? 0 : Array.isArray(data) ? data.length : Object.keys(data).length;
+    let size = "0 B";
+    try {
+      const raw = localStorage.getItem(col.key) || "";
+      const bytes = new Blob([raw]).size;
+      size = bytes > 1024 ? (bytes / 1024).toFixed(1) + " KB" : bytes + " B";
+    } catch {}
+    return (
+      "<tr><td><b>" + col.icon + " " + col.label + "</b><div class='row-sub'>" + col.key + "</div></td>" +
+      "<td><b>" + count + "</b></td>" +
+      "<td>" + size + "</td>" +
+      "<td class='cell-actions'><button class='edit-btn' data-dbexport='" + col.key + "'>⬇ Export</button>" +
+      "<button class='del-btn' data-dbclear='" + col.key + "'>Clear</button></td></tr>"
+    );
+  }).join("");
+}
+
+document.getElementById("dbTableBody")?.addEventListener("click", (e) => {
+  const exp = e.target.closest("[data-dbexport]");
+  const clr = e.target.closest("[data-dbclear]");
+  if (exp) {
+    const key = exp.dataset.dbexport;
+    const data = dbRead(key);
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = key + ".json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+    return;
+  }
+  if (clr) {
+    const key = clr.dataset.dbclear;
+    if (confirm(key + " ka saara data delete karna hai? (Backup le lena — Export pehle)")) {
+      localStorage.removeItem(key);
+      renderDatabase();
+      logActivity("🗄", key + " collection clear kiya");
+    }
+  }
+});
+
+document.getElementById("exportAllBtn")?.addEventListener("click", () => {
+  const all = {};
+  DB_COLLECTIONS.forEach((col) => {
+    const d = dbRead(col.key);
+    if (d != null) all[col.key] = d;
+  });
+  const blob = new Blob([JSON.stringify(all, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "lakshyaim-database-backup.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+  logActivity("🗄", "Poora database backup export kiya");
+});
+
+// ===== Sidebar keyboard navigation (↑ ↓) =====
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+  const dash = document.getElementById("dashboard");
+  if (!dash || dash.style.display === "none") return;
+  const tag = document.activeElement.tagName;
+  if (["INPUT", "TEXTAREA", "SELECT"].includes(tag)) return;
+  const items = [...document.querySelectorAll(".ad-nav .ad-link")];
+  const cur = items.indexOf(document.activeElement);
+  e.preventDefault();
+  if (cur === -1) {
+    items[e.key === "ArrowDown" ? 0 : items.length - 1].focus();
+  } else {
+    const next = e.key === "ArrowDown" ? Math.min(items.length - 1, cur + 1) : Math.max(0, cur - 1);
+    items[next].focus();
+  }
 });

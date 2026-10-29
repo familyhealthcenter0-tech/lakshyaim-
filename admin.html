@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?v=202610309" />
-  <link rel="stylesheet" href="admin.css?v=202610314" />
+  <link rel="stylesheet" href="admin.css?v=202610315" />
 </head>
 <body class="admin-body">
 
@@ -61,6 +61,7 @@
         <button class="ad-link active" data-view="dashboard" data-title="Dashboard">📊 Dashboard</button>
         <button class="ad-link" data-view="products" data-title="Products">📦 Products</button>
         <button class="ad-link" data-view="orders" data-title="Orders">🧾 Orders</button>
+        <button class="ad-link" data-view="database" data-title="Database">🗄 Database</button>
         <button class="ad-link" data-view="members" data-title="Members">👥 Members</button>
         <button class="ad-link" data-view="content" data-title="Site Content">🎨 Content</button>
         <button class="ad-link" data-view="activity" data-title="Activity">🕒 Activity Log</button>
@@ -98,24 +99,24 @@
 
           <div class="dash-grid">
             <div class="dash-card">
-              <span class="dash-ico ico-green">🧾</span>
+              <span class="dash-ico">🧾</span>
               <span class="dash-trend">Live</span>
               <p class="dash-num" id="statOrders">0</p>
               <p class="dash-label">Total orders</p>
             </div>
             <div class="dash-card">
-              <span class="dash-ico ico-amber">⏳</span>
+              <span class="dash-ico">⏳</span>
               <p class="dash-num" id="statPending">0</p>
               <p class="dash-label">Pending orders</p>
             </div>
             <div class="dash-card">
-              <span class="dash-ico ico-blue">📦</span>
+              <span class="dash-ico">📦</span>
               <span class="dash-trend">Synced</span>
               <p class="dash-num" id="statProducts">0</p>
               <p class="dash-label">Products live</p>
             </div>
             <div class="dash-card">
-              <span class="dash-ico ico-slate">💰</span>
+              <span class="dash-ico">💰</span>
               <span class="dash-trend">All time</span>
               <p class="dash-num" id="statRevenue">₹0</p>
               <p class="dash-label">Total revenue</p>
@@ -272,6 +273,24 @@
           </div>
         </div>
 
+        <!-- ===== View: Database ===== -->
+        <div class="ad-view" id="view-database" style="display:none">
+          <div class="db-kpis" id="dbKpis"></div>
+          <div class="dash-panel">
+            <div class="search-row">
+              <h2>🗄 Data Storage</h2>
+              <button class="btn btn-outline btn-sm" id="exportAllBtn">⬇ Export All (JSON)</button>
+            </div>
+            <table class="orders-table">
+              <thead>
+                <tr><th>Collection</th><th>Records</th><th>Size</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="dbTableBody"></tbody>
+            </table>
+            <p class="co-note">Ye browser ka local database hai (localStorage) — products, orders, members, content sab yahan store hote hain. Export JSON se backup lo.</p>
+          </div>
+        </div>
+
         <!-- ===== View: Members ===== -->
         <div class="ad-view" id="view-members" style="display:none">
           <div class="dash-panel">
@@ -322,7 +341,13 @@
               <label class="pay-opt"><input type="checkbox" id="payCod" />💵 COD</label>
               <label class="pay-opt"><input type="checkbox" id="payUpi" />📱 UPI / GPay</label>
               <label class="pay-opt"><input type="checkbox" id="payCard" />💳 Card</label>
+              <label class="pay-opt"><input type="checkbox" id="payRzp" />🟣 Razorpay</label>
             </div>
+            <label style="display:flex;flex-direction:column;gap:6px;font-size:0.82rem;font-weight:700;color:#2a3a34;margin-bottom:12px">
+              Razorpay Key ID (rzp_test_... / rzp_live_...)
+              <input type="text" id="payRzpKey" placeholder="rzp_test_xxxxxxxxxx" style="padding:12px 14px;border:1.5px solid #dfe7eb;background:#fbfdfe;border-radius:12px;font-size:0.95rem;font-family:inherit;outline:none" />
+            </label>
+            <p class="co-note" style="margin-bottom:14px">Razorpay on karne par checkout me <b>Razorpay</b> option dikhega — live keys integrate hone tak demo mode me order record hota hai.</p>
             <label class="settings-label" style="display:flex;flex-direction:column;gap:6px;font-size:0.82rem;font-weight:700;color:#2a3a34;margin-bottom:12px">
               UPI ID (optional — checkout par customer ko dikhega)
               <input type="text" id="payUpiId" placeholder="lakshyaim@upi" style="padding:12px 14px;border:1.5px solid #dfe7eb;background:#fbfdfe;border-radius:12px;font-size:0.95rem;font-family:inherit;outline:none" />
@@ -342,6 +367,6 @@
 
   <script src="products.js?v=202610303"></script>
   <script src="site-content.js?v=202610301"></script>
-  <script src="admin.js?v=202610314"></script>
+  <script src="admin.js?v=202610316"></script>
 </body>
 </html>
