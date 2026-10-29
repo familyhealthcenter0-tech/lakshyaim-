@@ -232,3 +232,37 @@ if (addForm) {
 
   refreshProductTable();
 }
+
+// ===== Recent Orders (checkout se place hue) =====
+function renderRecentOrders() {
+  const tbody = document.getElementById("ordersTableBody");
+  if (!tbody) return;
+  const fmtN = (n) => "₹" + Number(n).toLocaleString("en-IN");
+  let orders = [];
+  try {
+    orders = JSON.parse(localStorage.getItem("lakshyaim_orders")) || [];
+  } catch {
+    orders = [];
+  }
+  if (!orders.length) {
+    tbody.innerHTML =
+      '<tr><td colspan="5" style="color:var(--muted)">Abhi koi order nahi — site par checkout se pehla order test karo, wahi yahan live dikhega.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = orders
+    .slice()
+    .reverse()
+    .slice(0, 8)
+    .map(
+      (o) => `
+      <tr>
+        <td>${o.id}</td>
+        <td>${o.customer.name}</td>
+        <td>${o.items.length > 1 ? o.items[0].name + " +" + (o.items.length - 1) + " more" : o.items[0].name}</td>
+        <td>${fmtN(o.total)}</td>
+        <td><span class="status st-pend">${o.status}</span></td>
+      </tr>`
+    )
+    .join("");
+}
+renderRecentOrders();

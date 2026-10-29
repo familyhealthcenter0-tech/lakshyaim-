@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout – Lakshyaim Private Limited</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230d9b64'/%3E%3Ctext x='50' y='70' font-size='58' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='800'%3EL%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=202610304" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">L</span>
+        <span class="logo-text">Lakshyaim</span>
+      </a>
+      <div class="nav-actions">
+        <a href="cart.html" class="btn btn-sm btn-ghost">← Cart</a>
+        <a href="cart.html" class="icon-btn" aria-label="Cart">🛒 <span class="cart-count">0</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <div class="container">
+
+      <!-- ===== Checkout form + summary ===== -->
+      <div id="checkoutView">
+        <h1 class="page-title">Checkout</h1>
+        <p class="page-sub">Delivery details bhariye — order 3–5 working days me pahunchega.</p>
+
+        <div class="cart-layout checkout-grid">
+          <form id="coForm" class="co-form" novalidate>
+            <div class="co-section-title">📇 Contact</div>
+            <div class="row">
+              <label>Full name
+                <input type="text" id="coName" placeholder="e.g. Rahul Sharma" required />
+              </label>
+              <label>Phone (10 digits)
+                <input type="tel" id="coPhone" placeholder="9876543210" pattern="\d{10}" maxlength="10" required />
+              </label>
+            </div>
+            <label>Email
+              <input type="email" id="coEmail" placeholder="you@example.com" required />
+            </label>
+
+            <div class="co-section-title">🏠 Delivery Address</div>
+            <label>Address (flat / street / area)
+              <input type="text" id="coAddress" placeholder="Flat 402, Green Residency, MG Road" required />
+            </label>
+            <div class="row">
+              <label>City
+                <input type="text" id="coCity" placeholder="Indore" required />
+              </label>
+              <label>PIN code (6 digits)
+                <input type="text" id="coPin" placeholder="452001" pattern="\d{6}" maxlength="6" required />
+              </label>
+            </div>
+            <label>State
+              <select id="coState" required>
+                <option value="" selected disabled>State chunein</option>
+                <option>Madhya Pradesh</option>
+                <option>Maharashtra</option>
+                <option>Delhi NCR</option>
+                <option>Gujarat</option>
+                <option>Rajasthan</option>
+                <option>Karnataka</option>
+                <option>Tamil Nadu</option>
+                <option>Telangana</option>
+                <option>West Bengal</option>
+                <option>Uttar Pradesh</option>
+                <option>Punjab</option>
+                <option>Haryana</option>
+                <option>Bihar</option>
+                <option>Odisha</option>
+                <option>Assam / North-East</option>
+                <option>Kerala</option>
+                <option>Goa</option>
+                <option>Other</option>
+              </select>
+            </label>
+
+            <div class="co-section-title">💳 Payment</div>
+            <div class="pay-opts">
+              <label class="pay-opt">
+                <input type="radio" name="pay" value="COD" checked />💵 Cash on Delivery
+              </label>
+              <label class="pay-opt">
+                <input type="radio" name="pay" value="UPI" />📱 UPI / GPay
+              </label>
+              <label class="pay-opt">
+                <input type="radio" name="pay" value="Card" />💳 Card
+              </label>
+            </div>
+            <p class="co-note">Demo store — payment gateway integration next phase me hai (RFP §4.5). COD pe abhi order place hota hai.</p>
+
+            <p class="form-msg" id="coMsg"></p>
+            <button type="submit" class="btn btn-full" id="placeOrderBtn">Place Order</button>
+          </form>
+
+          <aside class="summary-card">
+            <h2>Order Summary</h2>
+            <div id="coItems"></div>
+            <div class="sum-row"><span>Subtotal</span><b id="coSub">₹0</b></div>
+            <div class="sum-row"><span>Shipping</span><b id="coShip">FREE</b></div>
+            <div class="sum-row sum-total"><span>Total</span><b id="coTotal">₹0</b></div>
+            <a href="cart.html" class="summary-link">← Edit cart</a>
+          </aside>
+        </div>
+      </div>
+
+      <!-- ===== Order success ===== -->
+      <div id="successView" style="display:none">
+        <div class="checkout-success">
+          <span class="success-icon">✅</span>
+          <h1>Order Placed!</h1>
+          <p class="sub">Order ID: <b id="orderId">#LA-0000</b></p>
+          <p class="success-sub" id="successText"></p>
+          <div class="success-btns">
+            <a href="index.html" class="btn">Continue Shopping</a>
+            <a href="admin.html" class="btn btn-outline">Admin me dekhein</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="products.js?v=202610303"></script>
+  <script src="cart.js"></script>
+  <script>
+    const fmt = (n) => "₹" + Number(n).toLocaleString("en-IN");
+
+    function renderSummary() {
+      const cart = getCart();
+      document.getElementById("coItems").innerHTML = cart
+        .map(
+          (i) =>
+            '<div class="co-item">' +
+            cartThumbHTML(i, "co-thumb") +
+            '<div class="co-item-info"><p>' + i.name + "</p><span>Qty " + i.qty + "</span></div>" +
+            '<b>' + fmt(i.price * i.qty) + '</b>' +
+            "</div>"
+        )
+        .join("");
+      const sub = cartSubtotal();
+      const ship = shippingFee(sub);
+      document.getElementById("coSub").textContent = fmt(sub);
+      document.getElementById("coShip").textContent = ship === 0 ? "FREE" : fmt(ship);
+      document.getElementById("coTotal").textContent = fmt(sub + ship);
+      return { cart, sub, ship, total: sub + ship };
+    }
+
+    // Khali cart → cart page par bhejo
+    if (!getCart().length) {
+      location.replace("cart.html");
+    }
+
+    renderSummary();
+
+    document.getElementById("coForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const msg = document.getElementById("coMsg");
+      const name = document.getElementById("coName").value.trim();
+      const phone = document.getElementById("coPhone").value.trim();
+      const email = document.getElementById("coEmail").value.trim();
+      const address = document.getElementById("coAddress").value.trim();
+      const city = document.getElementById("coCity").value.trim();
+      const pin = document.getElementById("coPin").value.trim();
+      const state = document.getElementById("coState").value;
+      const pay = document.querySelector("input[name='pay']:checked").value;
+
+      const fail = (t) => {
+        msg.textContent = "❌ " + t;
+        msg.style.color = "#b33232";
+        return false;
+      };
+
+      if (!name) return fail("Full name likhein.");
+      if (!/^\d{10}$/.test(phone)) return fail("Phone ke theek 10 digits hon.");
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return fail("Email galat lag raha hai.");
+      if (!address || !city) return fail("Address aur city dono bhariye.");
+      if (!/^\d{6}$/.test(pin)) return fail("PIN code 6 digits ka ho.");
+      if (!state) return fail("State chunein.");
+
+      const { cart, total } = renderSummary();
+      if (!cart.length) {
+        location.replace("cart.html");
+        return;
+      }
+
+      const orders = JSON.parse(localStorage.getItem("lakshyaim_orders") || "[]");
+      const order = {
+        id: "#LA-" + String(2000 + orders.length + Math.floor(Math.random() * 90 + 10)),
+        date: new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }),
+        customer: { name, phone, email, address, city, state },
+        pay,
+        items: cart,
+        total,
+        status: "Pending",
+      };
+      orders.push(order);
+      localStorage.setItem("lakshyaim_orders", JSON.stringify(orders));
+      clearCart();
+
+      // Success screen
+      document.getElementById("checkoutView").style.display = "none";
+      document.getElementById("successView").style.display = "block";
+      document.getElementById("orderId").textContent = order.id;
+      document.getElementById("successText").textContent =
+        "Shukriya, " + name.split(" ")[0] + "! Aapka " + order.items.length +
+        "-item order (" + fmt(total) + ", " + pay + ") confirm ho gaya hai — " +
+        city + " me 3–5 working days me pahunchega. Admin dashboard me bhi status dikh jayega.";
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>

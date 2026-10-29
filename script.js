@@ -17,25 +17,27 @@ window.addEventListener("scroll", () => {
   navbar.classList.toggle("scrolled", window.scrollY > 8);
 });
 
-// Add-to-cart clicks -> update cart badge (delegated, works for dynamic products too)
+// Add-to-cart clicks — cart store (cart.js) me product add hota hai
 const cartBtn = document.querySelector(".icon-btn[aria-label='Cart']");
-let cartCount = 2;
-codeClicks();
-function codeClicks() {
-  document.addEventListener("click", (e) => {
-    const btn = e.target.closest(".card .btn");
-    if (!btn) return;
-    cartCount++;
-    const badge = cartBtn.querySelector(".cart-count");
-    badge.textContent = cartCount;
-    badge.animate(
-      [{ transform: "scale(1)" }, { transform: "scale(1.5)" }, { transform: "scale(1)" }],
-      { duration: 250 }
-    );
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".card .add-cart-btn");
+  if (!btn) return;
+  getProducts().then((list) => {
+    const p = list[+btn.dataset.index];
+    if (!p) return;
+    addToCart(p);
+    const badge = cartBtn?.querySelector(".cart-count");
+    if (badge) {
+      badge.textContent = cartTotalItems();
+      badge.animate(
+        [{ transform: "scale(1)" }, { transform: "scale(1.4)" }, { transform: "scale(1)" }],
+        { duration: 250 }
+      );
+    }
     btn.textContent = "Added ✓";
-    setTimeout(() => (btn.textContent = "Add to Cart"), 1200);
+    setTimeout(() => (btn.textContent = "Add to Cart"), 1100);
   });
-}
+});
 
 // Shop grid render (products.js ke saath)
 const productGrid = document.getElementById("productGrid");

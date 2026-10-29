@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Cart – Lakshyaim Private Limited</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230d9b64'/%3E%3Ctext x='50' y='70' font-size='58' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='800'%3EL%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=202610304" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">L</span>
+        <span class="logo-text">Lakshyaim</span>
+      </a>
+      <div class="nav-actions">
+        <a href="index.html" class="btn btn-sm btn-ghost">← Back to Shop</a>
+        <a href="cart.html" class="icon-btn" aria-label="Cart">🛒 <span class="cart-count">0</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <div class="container">
+      <h1 class="page-title">Your Cart</h1>
+      <p class="page-sub" id="itemCountLine"></p>
+
+      <div class="cart-layout">
+        <div class="cart-items" id="cartItems"></div>
+        <aside class="summary-card" id="summaryCard">
+          <h2>Order Summary</h2>
+          <div class="sum-row"><span>Subtotal</span><b id="sumSub">₹0</b></div>
+          <div class="sum-row"><span>Shipping</span><b id="sumShip">FREE</b></div>
+          <div class="free-ship-hint" id="freeHint"></div>
+          <div class="sum-row sum-total"><span>Total</span><b id="sumTotal">₹0</b></div>
+          <p class="sum-note">🔒 Secure checkout · COD / UPI / Card support karta hai</p>
+          <a href="checkout.html" class="btn btn-full" id="checkoutBtn">Proceed to Checkout →</a>
+          <a href="index.html#products" class="summary-link">Continue shopping</a>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <script src="products.js?v=202610303"></script>
+  <script src="cart.js"></script>
+  <script>
+    // ===== Cart page render =====
+    const itemsEl = document.getElementById("cartItems");
+    const countLine = document.getElementById("itemCountLine");
+    const fmt = (n) => "₹" + Number(n).toLocaleString("en-IN");
+
+    function shippingProgress(sub) {
+      const hint = document.getElementById("freeHint");
+      if (sub <= 0) { hint.textContent = ""; return; }
+      if (sub >= FREE_SHIP_OVER) {
+        hint.textContent = "🎉 Aapki shipping FREE hai!";
+        return;
+      }
+      const need = FREE_SHIP_OVER - sub;
+      hint.innerHTML =
+        "Add <b>" + fmt(need) + "</b> more for FREE shipping" +
+        '<span class="free-bar"><span class="free-bar-fill" style="width:' +
+        Math.min(100, (sub / FREE_SHIP_OVER) * 100).toFixed(0) + '%"></span></span>';
+    }
+
+    function render() {
+      const cart = getCart();
+      const count = cart.reduce((n, i) => n + i.qty, 0);
+      countLine.textContent = count
+        ? count + (count === 1 ? " item" : " items") + " aapke cart me hain"
+        : "Filhaal cart khali hai";
+
+      if (!cart.length) {
+        itemsEl.innerHTML =
+          '<div class="cart-empty"><p class="empty-emoji">🛒</p><h3>Aapka cart khali hai</h3>' +
+          "<p>Best sellers se shuru karein — free shipping ₹2,999 se upar hai.</p>" +
+          '<a href="index.html#products" class="btn">Shop Best Sellers</a></div>';
+        document.getElementById("summaryCard").style.display = "none";
+        return;
+      }
+      document.getElementById("summaryCard").style.display = "";
+
+      itemsEl.innerHTML = cart
+        .map(
+          (i) =>
+            '<div class="cart-item">' +
+            cartThumbHTML(i, "ci-thumb") +
+            '<div class="ci-info">' +
+            '<p class="ci-name">' + i.name + "</p>" +
+            '<p class="ci-unit">' + fmt(i.price) + " / unit</p>" +
+            '<p class="ci-line">Line total: <b>' + fmt(i.price * i.qty) + "</b></p>" +
+            "</div>" +
+            '<div class="ci-ctrl">' +
+            '<div class="qty-stepper">' +
+            '<button data-act="dec" data-name="' + i.name + '" aria-label="Decrease">−</button>' +
+            "<b>" + i.qty + "</b>" +
+            '<button data-act="inc" data-name="' + i.name + '" aria-label="Increase">+</button>' +
+            "</div>" +
+            '<button class="rm-btn" data-act="rm" data-name="' + i.name + '">🗑 Remove</button>' +
+            "</div>" +
+            "</div>"
+        )
+        .join("");
+
+      const sub = cartSubtotal();
+      const ship = shippingFee(sub);
+      document.getElementById("sumSub").textContent = fmt(sub);
+      document.getElementById("sumShip").textContent = ship === 0 ? "FREE" : fmt(ship);
+      document.getElementById("sumTotal").textContent = fmt(sub + ship);
+      shippingProgress(sub);
+    }
+
+    // stepper/remove — event delegation
+    itemsEl.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-act]");
+      if (!btn) return;
+      const name = btn.dataset.name;
+      const item = getCart().find((i) => i.name === name);
+      if (!item) return;
+      if (btn.dataset.act === "inc") setQty(name, item.qty + 1);
+      else if (btn.dataset.act === "dec") setQty(name, item.qty - 1);
+      else removeFromCart(name);
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>

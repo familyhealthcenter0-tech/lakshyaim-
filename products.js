@@ -44,7 +44,7 @@ function productImgAttrs(p) {
   return "";
 }
 
-function productCardHTML(p) {
+function productCardHTML(p, index) {
   const stars = "★".repeat(p.rating) + "☆".repeat(5 - p.rating);
   const mrp = p.mrp && p.mrp > p.price ? ` <s>${formatPrice(p.mrp)}</s>` : "";
   // Image ho to photo, warna emoji. Emoji peeche rehta hai — image load fail ho to wahi dikhega.
@@ -58,6 +58,6 @@ function productCardHTML(p) {
       <h3>${p.name}</h3>
       <p class="stars">${stars} <span>(${p.reviews})</span></p>
       <p class="price">${formatPrice(p.price)}${mrp}</p>
-      <button class="btn btn-full">Add to Cart</button>
+      <button class="btn btn-full add-cart-btn" data-index="${index}">Add to Cart</button>
     </div>`;
 }

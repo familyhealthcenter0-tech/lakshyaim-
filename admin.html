@@ -153,17 +153,12 @@
       </div>
 
       <div class="dash-panel">
-        <h2>Recent Orders</h2>
+        <h2>Recent Orders <span style="font-size:0.78rem;color:var(--muted);font-weight:600">(checkout se place hue orders yahan dikhte hain)</span></h2>
         <table class="orders-table">
           <thead>
             <tr><th>Order ID</th><th>Customer</th><th>Product</th><th>Amount</th><th>Status</th></tr>
           </thead>
-          <tbody>
-            <tr><td>#LA-2041</td><td>Riya S.</td><td>Formula 1 – Vanilla</td><td>₹2,349</td><td><span class="status st-done">Delivered</span></td></tr>
-            <tr><td>#LA-2040</td><td>Arun K.</td><td>Herbal Tea – Peach</td><td>₹1,699</td><td><span class="status st-ship">Shipped</span></td></tr>
-            <tr><td>#LA-2039</td><td>Meera P.</td><td>Healthy Active Kit</td><td>₹8,499</td><td><span class="status st-pend">Pending</span></td></tr>
-            <tr><td>#LA-2038</td><td>Vikas T.</td><td>Protein Drink Mix</td><td>₹2,799</td><td><span class="status st-done">Delivered</span></td></tr>
-          </tbody>
+          <tbody id="ordersTableBody"></tbody>
         </table>
       </div>
     </div>
