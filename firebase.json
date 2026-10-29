@@ -27,6 +27,10 @@
       {
         "source": "/gallery",
         "destination": "/gallery.html"
+      },
+      {
+        "source": "/my-orders",
+        "destination": "/my-orders.html"
       }
     ],
     "headers": [
@@ -60,6 +64,10 @@
       },
       {
         "source": "/gallery",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+      },
+      {
+        "source": "/my-orders",
         "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
       },
       {
