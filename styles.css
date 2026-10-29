@@ -144,25 +144,15 @@ h1, h2, h3 { font-weight: 800; }
   transition: box-shadow 0.2s;
 }
 .navbar.scrolled { box-shadow: var(--shadow-soft); }
-/* Header layout: hamburger LEFT | logo dead-CENTER | actions RIGHT
-   Logo absolute-center hai — side buttons jitne bhi chauras hon,
-   site ka naam har device par bilkul beech mein rehta hai */
+/* Header layout: hamburger + logo LEFT (ek saath) · actions RIGHT
+   Actions auto-margin se right edge par chipke rehte hain */
 .nav-inner {
-  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 12px;
   padding: 12px 0;
 }
-.navbar .nav-inner > .logo {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-.nav-inner > .hamburger { position: relative; z-index: 2; }
-.nav-inner > .nav-actions { position: relative; z-index: 2; }
 .logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
 .logo-mark {
   display: grid;
@@ -178,7 +168,7 @@ h1, h2, h3 { font-weight: 800; }
 }
 .logo-text { font-weight: 800; font-size: 1.18rem; color: var(--ink); white-space: nowrap; }
 .logo-light .logo-text { color: #fff; }
-.nav-actions { display: flex; align-items: center; gap: 8px; }
+.nav-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
 .icon-btn {
   background: none;
   border: none;
