@@ -8,7 +8,7 @@
   background:
     radial-gradient(ellipse 45% 40% at 85% 10%, rgba(13, 155, 100, 0.35) 0%, transparent 100%),
     radial-gradient(ellipse 40% 35% at 10% 90%, rgba(245, 158, 11, 0.18) 0%, transparent 100%),
-    linear-gradient(135deg, #0e211a 0%, #0b1613 80%);
+    linear-gradient(135deg, #0f172a 0%, #0f172a 80%);
   min-height: 100vh;
 }
 .admin-body .navbar { background: #fff; }
@@ -25,7 +25,7 @@
   width: 252px;
   background:
     radial-gradient(ellipse 60% 30% at 0% 0%, rgba(13, 155, 100, 0.28) 0%, transparent 100%),
-    linear-gradient(180deg, #0e211a 0%, #0b1613 85%);
+    linear-gradient(180deg, #0f172a 0%, #0f172a 85%);
   color: #e7efe7;
   display: flex;
   flex-direction: column;
@@ -197,7 +197,7 @@
   width: 64px;
   height: 64px;
   border-radius: 20px;
-  background: linear-gradient(150deg, #12a96e, var(--green-dark));
+  background: linear-gradient(150deg, #14b8a6, var(--green-dark));
   box-shadow: 0 10px 24px rgba(13, 155, 100, 0.4);
   font-size: 1.7rem;
 }
@@ -237,8 +237,8 @@
 .pass-wrap button:hover { background: var(--green-light); }
 .error-msg {
   display: none;
-  background: #fae8ef;
-  border: 1px solid #f3cdd3;
+  background: #ffe4e6;
+  border: 1px solid #fecdd3;
   color: #b33232;
   font-size: 0.85rem;
   font-weight: 600;
@@ -355,9 +355,9 @@
 }
 
 /* ===== Colorful KPI cards ===== */
-.kpi-green { background: linear-gradient(135deg, #14b372 0%, #077a4c 100%) !important; border: none !important; color: #fff !important; }
+.kpi-green { background: linear-gradient(135deg, #14b372 0%, #0f766e 100%) !important; border: none !important; color: #fff !important; }
 .kpi-amber { background: linear-gradient(135deg, #f7b32b 0%, #d97706 100%) !important; border: none !important; color: #fff !important; }
-.kpi-blue { background: linear-gradient(135deg, #4f8fd9 0%, #1d4fd7 100%) !important; border: none !important; color: #fff !important; }
+.kpi-blue { background: linear-gradient(135deg, #4f8fd9 0%, #1d4ed8 100%) !important; border: none !important; color: #fff !important; }
 .kpi-violet { background: linear-gradient(135deg, #9d6bff 0%, #6d28d9 100%) !important; border: none !important; color: #fff !important; }
 .kpi-green .dash-num, .kpi-amber .dash-num, .kpi-blue .dash-num, .kpi-violet .dash-num,
 .kpi-green .dash-label, .kpi-amber .dash-label, .kpi-blue .dash-label, .kpi-violet .dash-label,
@@ -369,9 +369,9 @@
   background: rgba(255, 255, 255, 0.22) !important;
   box-shadow: none !important;
 }
-.dash-grid .dash-card:nth-child(1) { background: linear-gradient(135deg, #14b372 0%, #077a4c 100%); border: none; color: #fff; }
+.dash-grid .dash-card:nth-child(1) { background: linear-gradient(135deg, #14b372 0%, #0f766e 100%); border: none; color: #fff; }
 .dash-grid .dash-card:nth-child(2) { background: linear-gradient(135deg, #f7b32b 0%, #d97706 100%); border: none; color: #fff; }
-.dash-grid .dash-card:nth-child(3) { background: linear-gradient(135deg, #4f8fd9 0%, #1d4fd7 100%); border: none; color: #fff; }
+.dash-grid .dash-card:nth-child(3) { background: linear-gradient(135deg, #4f8fd9 0%, #1d4ed8 100%); border: none; color: #fff; }
 .dash-grid .dash-card:nth-child(4) { background: linear-gradient(135deg, #9d6bff 0%, #6d28d9 100%); border: none; color: #fff; }
 .dash-grid .dash-card .dash-num { color: #fff; }
 .dash-grid .dash-card .dash-label { color: rgba(255, 255, 255, 0.85); }
@@ -483,13 +483,13 @@
   padding: 10px 12px;
   border-bottom: 2px solid var(--card-border);
 }
-.orders-table td { padding: 13px 12px; border-bottom: 1px solid #eef2f4; }
+.orders-table td { padding: 13px 12px; border-bottom: 1px solid #e2e8f0; }
 .orders-table tbody tr { transition: background 0.15s; }
-.orders-table tbody tr:hover { background: #f3f0e8; }
+.orders-table tbody tr:hover { background: #f1f5f9; }
 .status { padding: 4px 11px; border-radius: 999px; font-size: 0.74rem; font-weight: 700; }
-.st-done { background: #e6f7f0; color: #0b6b46; }
-.st-ship { background: #e4edfb; color: #1d4fd7; }
-.st-pend { background: #fef3c7; color: #b45309; }
+.st-done { background: #ccfbf1; color: #0f766e; }
+.st-ship { background: #dbeafe; color: #1d4ed8; }
+.st-pend { background: #ffe4e6; color: #be123c; }
 .status-select {
   appearance: none;
   -webkit-appearance: none;
@@ -521,7 +521,7 @@
 
 /* ===== Order details (expandable) ===== */
 .order-row { cursor: pointer; }
-.order-row:hover { background: #f3f0e8; }
+.order-row:hover { background: #f1f5f9; }
 .view-order-btn {
   background: var(--green-light);
   border: none;
@@ -536,7 +536,7 @@
 .view-order-btn:hover { background: #d3f1e3; transform: scale(1.08); }
 .cell-actions { display: flex; gap: 6px; align-items: center; }
 .order-details-row > td {
-  background: #f3f0e8;
+  background: #f1f5f9;
   padding: 0 !important;
   border-bottom: 2px solid var(--card-border) !important;
 }
@@ -649,7 +649,7 @@
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid var(--card-border);
-  background: #f5f0e6;
+  background: #f1f5f9;
   position: relative;
   align-self: end;
   box-shadow: var(--shadow-soft);
@@ -670,7 +670,7 @@
 }
 tr.row-new { animation: rowFlash 2s ease-out; }
 .del-btn {
-  background: #fae8ef;
+  background: #ffe4e6;
   color: #b33232;
   border: none;
   padding: 7px 13px;
@@ -680,7 +680,7 @@ tr.row-new { animation: rowFlash 2s ease-out; }
   cursor: pointer;
   transition: background 0.2s, transform 0.15s;
 }
-.del-btn:hover { background: #f3cdd3; transform: scale(1.04); }
+.del-btn:hover { background: #fecdd3; transform: scale(1.04); }
 .edit-btn {
   background: var(--green-light);
   color: var(--green-dark);
@@ -704,7 +704,7 @@ tr.row-new { animation: rowFlash 2s ease-out; }
   border-radius: 8px;
   transition: background 0.15s;
 }
-.del-order-btn:hover { background: #fae8ef; }
+.del-order-btn:hover { background: #ffe4e6; }
 
 /* Activity log */
 .activity-list {
@@ -717,7 +717,7 @@ tr.row-new { animation: rowFlash 2s ease-out; }
   align-items: center;
   gap: 12px;
   padding: 12px 6px;
-  border-bottom: 1px solid #eef2f4;
+  border-bottom: 1px solid #e2e8f0;
   font-size: 0.9rem;
 }
 .activity-item:last-child { border-bottom: none; }
@@ -849,7 +849,7 @@ tr.row-new { animation: rowFlash 2s ease-out; }
   width: 100%;
   max-width: 46px;
   border-radius: 10px 10px 4px 4px;
-  background: linear-gradient(180deg, #12a96e, var(--green-dark));
+  background: linear-gradient(180deg, #14b8a6, var(--green-dark));
   position: relative;
   transition: height 0.4s;
   display: flex;
