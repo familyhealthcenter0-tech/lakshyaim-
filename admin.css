@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    Lakshyaim Admin — modern panel styles (v3)
    Uses shared tokens from styles.css (emerald/slate theme)
    ============================================================ */
@@ -208,8 +208,8 @@
 #loginForm label { font-size: 0.82rem; font-weight: 700; margin-top: 10px; color: #2a3a34; }
 #loginForm input {
   padding: 12px 15px;
-  border: 1.5px solid #dfe7eb;
-  background: #fbfdfe;
+  border: 1.5px solid #e2e9ec;
+  background: #faf8f4;
   border-radius: 12px;
   font-size: 0.95rem;
   font-family: inherit;
@@ -237,8 +237,8 @@
 .pass-wrap button:hover { background: var(--green-light); }
 .error-msg {
   display: none;
-  background: #fdeef0;
-  border: 1px solid #f6cdd3;
+  background: #fae8ef;
+  border: 1px solid #f3cdd3;
   color: #b33232;
   font-size: 0.85rem;
   font-weight: 600;
@@ -459,8 +459,8 @@
 .search-row h2 { margin-bottom: 0; }
 .search-input {
   padding: 10px 14px;
-  border: 1.5px solid #dfe7eb;
-  background: #fbfdfe;
+  border: 1.5px solid #e2e9ec;
+  background: #faf8f4;
   border-radius: 12px;
   font-size: 0.9rem;
   font-family: inherit;
@@ -485,7 +485,7 @@
 }
 .orders-table td { padding: 13px 12px; border-bottom: 1px solid #eef2f4; }
 .orders-table tbody tr { transition: background 0.15s; }
-.orders-table tbody tr:hover { background: #f7fbf9; }
+.orders-table tbody tr:hover { background: #f3f0e8; }
 .status { padding: 4px 11px; border-radius: 999px; font-size: 0.74rem; font-weight: 700; }
 .st-done { background: #e6f7f0; color: #0b6b46; }
 .st-ship { background: #e4edfb; color: #1d4fd7; }
@@ -521,7 +521,7 @@
 
 /* ===== Order details (expandable) ===== */
 .order-row { cursor: pointer; }
-.order-row:hover { background: #f7fbf9; }
+.order-row:hover { background: #f3f0e8; }
 .view-order-btn {
   background: var(--green-light);
   border: none;
@@ -536,7 +536,7 @@
 .view-order-btn:hover { background: #d3f1e3; transform: scale(1.08); }
 .cell-actions { display: flex; gap: 6px; align-items: center; }
 .order-details-row > td {
-  background: #f7fbf9;
+  background: #f3f0e8;
   padding: 0 !important;
   border-bottom: 2px solid var(--card-border) !important;
 }
@@ -610,8 +610,8 @@
 .add-form input,
 .add-form select {
   padding: 11px 13px;
-  border: 1.5px solid #dfe7eb;
-  background: #fbfdfe;
+  border: 1.5px solid #e2e9ec;
+  background: #faf8f4;
   border-radius: 12px;
   font-size: 0.95rem;
   outline: none;
@@ -649,7 +649,7 @@
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid var(--card-border);
-  background: #f2f7f5;
+  background: #f5f0e6;
   position: relative;
   align-self: end;
   box-shadow: var(--shadow-soft);
@@ -670,7 +670,7 @@
 }
 tr.row-new { animation: rowFlash 2s ease-out; }
 .del-btn {
-  background: #fdeef0;
+  background: #fae8ef;
   color: #b33232;
   border: none;
   padding: 7px 13px;
@@ -680,7 +680,7 @@ tr.row-new { animation: rowFlash 2s ease-out; }
   cursor: pointer;
   transition: background 0.2s, transform 0.15s;
 }
-.del-btn:hover { background: #f9d3d8; transform: scale(1.04); }
+.del-btn:hover { background: #f3cdd3; transform: scale(1.04); }
 .edit-btn {
   background: var(--green-light);
   color: var(--green-dark);
@@ -704,7 +704,7 @@ tr.row-new { animation: rowFlash 2s ease-out; }
   border-radius: 8px;
   transition: background 0.15s;
 }
-.del-order-btn:hover { background: #fdeef0; }
+.del-order-btn:hover { background: #fae8ef; }
 
 /* Activity log */
 .activity-list {
@@ -736,7 +736,7 @@ tr.row-new { animation: rowFlash 2s ease-out; }
 /* ===== CMS content editor ===== */
 .panel-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .cms-group {
-  background: #fbfdfe;
+  background: #faf8f4;
   border: 1px solid var(--card-border);
   border-radius: 14px;
   margin-bottom: 12px;
@@ -769,7 +769,7 @@ tr.row-new { animation: rowFlash 2s ease-out; }
 .cms-field input,
 .cms-field textarea {
   padding: 11px 13px;
-  border: 1.5px solid #dfe7eb;
+  border: 1.5px solid #e2e9ec;
   background: #fff;
   border-radius: 11px;
   font-size: 0.92rem;
