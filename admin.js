@@ -1119,6 +1119,7 @@ const CMS_SCHEMA = [
     key: "footer", icon: "🦶", label: "Footer",
     fields: [
       { p: "footer.about", t: "textarea", l: "About text" },
+      { p: "footer.credit", t: "textarea", l: "Credit line (HTML allowed — <b> use karo)", html: true },
       { p: "footer.copyright", t: "text", l: "Copyright line" },
     ],
   },

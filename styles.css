@@ -1019,11 +1019,51 @@ h1, h2, h3 { font-weight: 800; }
 }
 .footer a:hover { color: #35c98c; }
 .footer-sub { font-size: 0.88rem; margin-top: 14px; max-width: 300px; color: #9aaea3; }
+.footer-social { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.footer-social a {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #c5d3c6;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.footer-social a:hover {
+  background: var(--green);
+  color: #fff;
+  transform: translateY(-3px);
+}
+.footer-social svg { width: 17px; height: 17px; }
+
+.footer-credit-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 20px 0;
+}
+.credit-text { color: #9db1a2; font-size: 0.86rem; }
+.credit-text b { color: #fff; }
+.credit-text .heart { color: #f43f5e; }
+.pay-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+.pay-badge {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #c5d3c6;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 4px 11px;
+  border-radius: 8px;
+}
 .copyright {
   text-align: center;
   font-size: 0.8rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 22px;
+  padding-top: 6px;
   color: #6f8376;
 }
 

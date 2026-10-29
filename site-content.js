@@ -59,6 +59,7 @@ const CONTENT_DEFAULTS = {
   },
   footer: {
     about: "Lakshyaim Private Limited — balanced, science-backed nutrition for everyday life. Made in India, made for routines.",
+    credit: "Designed & Developed with ❤️ by <b>Family Health Center</b>",
     copyright: "© 2026 Lakshyaim Private Limited — All rights reserved.",
   },
   payment: {
