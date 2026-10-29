@@ -195,6 +195,38 @@ function applySiteContent() {
   buildPlans();
 }
 
+// ===== Gallery config (admin Gallery Manager ke liye) =====
+function getGalleryConfig() {
+  try {
+    return JSON.parse(localStorage.getItem("lakshyaim_gallery")) || { hidden: [], extra: [] };
+  } catch {
+    return { hidden: [], extra: [] };
+  }
+}
+
+function saveGalleryConfig(cfg) {
+  localStorage.setItem(
+    "lakshyaim_gallery",
+    JSON.stringify({ hidden: cfg.hidden || [], extra: cfg.extra || [] })
+  );
+}
+
+// manifest + uploaded photos merge → hidden hata ke final list
+async function getGalleryList() {
+  let base = [];
+  try {
+    base = await fetch("gallery/manifest.json").then((r) => r.json());
+  } catch {
+    base = [];
+  }
+  const cfg = getGalleryConfig();
+  const extra = Array.isArray(cfg.extra) ? cfg.extra : [];
+  const hidden = Array.isArray(cfg.hidden) ? cfg.hidden : [];
+  const all = base.concat(extra);
+  const visible = all.filter((src) => !hidden.includes(src));
+  return { all, visible, hidden, extra };
+}
+
 // Page ke hisaab se: index par sections build honge
 if (document.querySelector(".hero") || document.getElementById("whyTrack")) {
   applySiteContent();

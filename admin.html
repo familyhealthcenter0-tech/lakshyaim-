@@ -61,6 +61,8 @@
         <button class="ad-link active" data-view="dashboard" data-title="Dashboard">📊 Dashboard</button>
         <button class="ad-link" data-view="products" data-title="Products">📦 Products</button>
         <button class="ad-link" data-view="orders" data-title="Orders">🧾 Orders</button>
+        <button class="ad-link" data-view="analytics" data-title="Analytics">📈 Analytics</button>
+        <button class="ad-link" data-view="gallerymgmt" data-title="Gallery Manager">🖼️ Gallery Manager</button>
         <button class="ad-link" data-view="database" data-title="Database">🗄 Database</button>
         <button class="ad-link" data-view="members" data-title="Members">👥 Members</button>
         <button class="ad-link" data-view="content" data-title="Site Content">🎨 Content</button>
@@ -273,6 +275,53 @@
           </div>
         </div>
 
+        <!-- ===== View: Analytics ===== -->
+        <div class="ad-view" id="view-analytics" style="display:none">
+          <div class="kpi-grid-12" id="analyticsKpis"></div>
+
+          <div class="analytics-grid">
+            <div class="dash-panel">
+              <h2><span class="panel-ico">💰</span> Revenue — Last Orders</h2>
+              <div class="chart-bars" id="chartRevenue"></div>
+            </div>
+            <div class="dash-panel">
+              <h2><span class="panel-ico">🧾</span> Order Status</h2>
+              <div class="donut-wrap">
+                <div class="donut" id="donutStatus"><span class="donut-center" id="donutTotal">0</span></div>
+                <div class="legend" id="statusLegend"></div>
+              </div>
+            </div>
+            <div class="dash-panel">
+              <h2><span class="panel-ico">💳</span> Payment Split</h2>
+              <div class="hbars" id="chartPay"></div>
+            </div>
+            <div class="dash-panel">
+              <h2><span class="panel-ico">🏆</span> Top Products</h2>
+              <div class="hbars" id="chartTop"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== View: Gallery Manager ===== -->
+        <div class="ad-view" id="view-gallerymgmt" style="display:none">
+          <div class="dash-panel" style="margin-bottom:24px">
+            <div class="search-row">
+              <h2>⬆️ Upload Photos</h2>
+              <label class="btn btn-sm" for="galleryUpload" style="cursor:pointer">📁 Choose Photos</label>
+              <input type="file" id="galleryUpload" accept="image/*" multiple hidden />
+            </div>
+            <p class="co-note">Photos auto-compress hoti hain (max 900px, ~100KB). Upload karne ke baad shop gallery me live ho jayengi. Total limit: 20 uploaded photos.</p>
+          </div>
+          <div class="dash-panel">
+            <div class="search-row">
+              <h2>🖼 Gallery Manager</h2>
+              <span class="prod-count-chip" id="gmCount">0 / 0 visible</span>
+            </div>
+            <p class="co-note" style="margin-bottom:14px">👁 Visible = homepage + gallery page par dikhega · 🚫 Hidden = sirf yahan rahega · 🗑 sirf uploaded photos delete hote hain</p>
+            <div class="gm-grid" id="gmGrid"></div>
+          </div>
+        </div>
+
         <!-- ===== View: Database ===== -->
         <div class="ad-view" id="view-database" style="display:none">
           <div class="db-kpis" id="dbKpis"></div>
@@ -336,6 +385,18 @@
             <p class="form-msg" id="settingsMsg"></p>
             <p class="co-note">Shipping settings cart/checkout pages par turant apply hoti hain (localStorage).</p>
 
+            <div class="co-section-title" style="margin-top:28px">🧾 GST Details</div>
+            <div class="row">
+              <label>GSTIN (optional — checkout par dikhega)
+                <input type="text" id="setGstin" placeholder="e.g. 23ABCDE1234F1Z5" maxlength="15" />
+              </label>
+              <label>GST rate (%) — 0 = off
+                <input type="number" id="setGstRate" min="0" max="28" placeholder="5" />
+              </label>
+            </div>
+            <button type="button" class="btn btn-outline" id="saveGstBtn">Save GST</button>
+            <p class="form-msg" id="gstMsg"></p>
+
             <div class="co-section-title" style="margin-top:28px">💳 Payment Gateway</div>
             <div class="pay-opts" style="margin-bottom:12px">
               <label class="pay-opt"><input type="checkbox" id="payCod" />💵 COD</label>
@@ -367,6 +428,6 @@
 
   <script src="products.js?v=202610303"></script>
   <script src="site-content.js?v=202610301"></script>
-  <script src="admin.js?v=202610320"></script>
+  <script src="admin.js?v=202610321"></script>
 </body>
 </html>

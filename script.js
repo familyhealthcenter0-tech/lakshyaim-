@@ -50,12 +50,8 @@ let galleryImages = [];
 
 async function initGallery() {
   if (!galleryGrid) return;
-  try {
-    const res = await fetch("gallery/manifest.json");
-    galleryImages = await res.json();
-  } catch {
-    galleryImages = [];
-  }
+  const gl = await getGalleryList();
+  galleryImages = gl.visible;
   if (!Array.isArray(galleryImages) || !galleryImages.length) {
     galleryGrid.innerHTML = '<p class="gallery-empty">Gallery abhi load nahi hui — thodi der baad refresh karein.</p>';
     return;

@@ -742,6 +742,150 @@ tr.row-new { animation: rowFlash 2s ease-out; }
 }
 .cms-save-row { margin-top: 18px; }
 
+/* ===== Analytics (12 KPIs + charts) ===== */
+.kpi-grid-12 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.kpi-grid-12 .dash-card { text-align: left; }
+.kpi-grid-12 .dash-num { font-size: 1.55rem; }
+.kpi-teal { background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%) !important; border: none !important; color: #fff !important; }
+.kpi-rose { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%) !important; border: none !important; color: #fff !important; }
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+/* Vertical bar chart */
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  height: 190px;
+  padding-top: 22px;
+}
+.chart-bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  justify-content: flex-end;
+}
+.chart-bar {
+  width: 100%;
+  max-width: 46px;
+  border-radius: 10px 10px 4px 4px;
+  background: linear-gradient(180deg, #12a96e, var(--green-dark));
+  position: relative;
+  transition: height 0.4s;
+  display: flex;
+  justify-content: center;
+}
+.chart-bar-val {
+  position: absolute;
+  top: -20px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--green-dark);
+  white-space: nowrap;
+}
+.chart-bar-label { font-size: 0.7rem; color: var(--muted); font-weight: 600; }
+.chart-empty { color: var(--muted); font-size: 0.9rem; padding: 20px 0; }
+
+/* Donut */
+.donut-wrap { display: flex; align-items: center; gap: 26px; flex-wrap: wrap; padding: 12px 0; }
+.donut {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+.donut-center {
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1.3rem;
+  font-family: "Manrope", sans-serif;
+  color: var(--ink);
+}
+.legend { display: flex; flex-direction: column; gap: 8px; }
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.86rem; color: var(--ink); }
+.legend-item b { margin-left: 2px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex: 0 0 auto; }
+
+/* Horizontal bars */
+.hbars { display: flex; flex-direction: column; gap: 14px; padding: 10px 0; }
+.hbar { display: flex; align-items: center; gap: 12px; }
+.hbar-label { width: 110px; font-size: 0.82rem; font-weight: 700; color: var(--ink); flex: 0 0 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hbar-track { flex: 1; height: 14px; border-radius: 999px; background: var(--alt); overflow: hidden; }
+.hbar-fill { display: block; height: 100%; border-radius: 999px; transition: width 0.4s; }
+.hbar-val { font-size: 0.8rem; font-weight: 800; color: var(--ink); width: 68px; text-align: right; flex: 0 0 auto; }
+
+/* ===== Gallery Manager ===== */
+.gm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+}
+.gm-card {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+  background: #fff;
+  aspect-ratio: 3 / 4;
+}
+.gm-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gm-card.gm-hidden img { opacity: 0.25; filter: grayscale(1); }
+.gm-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(10, 24, 18, 0.75);
+  color: #fff;
+  font-size: 0.66rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+.gm-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 6px;
+  padding: 8px;
+  background: linear-gradient(0deg, rgba(10, 24, 18, 0.85), transparent);
+}
+.gm-btn {
+  flex: 1;
+  border: none;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 6px 4px;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--ink);
+}
+.gm-btn:hover { background: var(--green-light); }
+.gm-del { flex: 0 0 34px; color: #b33232; }
+
 /* ===== Database view ===== */
 .db-kpis {
   display: grid;

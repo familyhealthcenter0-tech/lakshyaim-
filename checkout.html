@@ -97,6 +97,7 @@
             <div id="coItems"></div>
             <div class="sum-row"><span>Subtotal</span><b id="coSub">₹0</b></div>
             <div class="sum-row"><span>Shipping</span><b id="coShip">FREE</b></div>
+            <div class="sum-row" id="coGstRow" style="display:none"><span id="coGstLabel">Incl. GST</span><b id="coGst">₹0</b></div>
             <div class="sum-row sum-total"><span>Total</span><b id="coTotal">₹0</b></div>
             <a href="cart.html" class="summary-link">← Edit cart</a>
           </aside>
@@ -175,6 +176,16 @@
       const ship = shippingFee(sub);
       document.getElementById("coSub").textContent = fmt(sub);
       document.getElementById("coShip").textContent = ship === 0 ? "FREE" : fmt(ship);
+      const gstRate = Number(getSettings().gstRate) || 0;
+      const gstRow = document.getElementById("coGstRow");
+      if (gstRate > 0) {
+        const gstAmt = Math.round((sub + ship) * gstRate / (100 + gstRate));
+        gstRow.style.display = "";
+        document.getElementById("coGstLabel").textContent = "Incl. GST (" + gstRate + "%)" + (getSettings().gstin ? " · GSTIN " + getSettings().gstin : "");
+        document.getElementById("coGst").textContent = fmt(gstAmt);
+      } else {
+        gstRow.style.display = "none";
+      }
       document.getElementById("coTotal").textContent = fmt(sub + ship);
       return { cart, sub, ship, total: sub + ship };
     }

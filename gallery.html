@@ -51,6 +51,7 @@
   </div>
 
   <script src="cart.js?v=202610304"></script>
+  <script src="site-content.js?v=202610302"></script>
   <script>
     const gGrid = document.getElementById("fullGalleryGrid");
     let gImgs = [];
@@ -61,11 +62,8 @@
     const gCnt = document.getElementById("gLbCount");
 
     async function renderGallery() {
-      try {
-        gImgs = await fetch("gallery/manifest.json").then((r) => r.json());
-      } catch {
-        gImgs = [];
-      }
+      const gl = await getGalleryList();
+      gImgs = gl.visible;
       if (!Array.isArray(gImgs) || !gImgs.length) {
         gGrid.innerHTML = '<p class="gallery-empty"> Gallery load nahi hui — thodi der baad refresh karein.</p>';
         return;

@@ -73,6 +73,8 @@ function switchView(view) {
     dashboard: "Dashboard",
     products: "Products",
     orders: "Orders",
+    analytics: "Analytics",
+    gallerymgmt: "Gallery Manager",
     database: "Database",
     members: "Members",
     content: "Site Content",
@@ -81,6 +83,8 @@ function switchView(view) {
   };
   document.getElementById("viewTitle").textContent = titles[view] || "Dashboard";
   if (view === "database") renderDatabase();
+  if (view === "analytics") renderAnalytics();
+  if (view === "gallerymgmt") renderGalleryManager();
   closeSidebar();
   window.scrollTo({ top: 0, behavior: "instant" });
 }
@@ -483,8 +487,12 @@ function renderSettings() {
   const s = getSettings();
   const fo = document.getElementById("setFreeOver");
   const sf = document.getElementById("setShipFee");
+  const gstin = document.getElementById("setGstin");
+  const gstRate = document.getElementById("setGstRate");
   if (fo) fo.value = s.freeShipOver != null ? s.freeShipOver : 2999;
   if (sf) sf.value = s.shipFee != null ? s.shipFee : 99;
+  if (gstin) gstin.value = s.gstin || "";
+  if (gstRate) gstRate.value = s.gstRate != null ? s.gstRate : 0;
 }
 
 document.getElementById("settingsForm")?.addEventListener("submit", (e) => {
@@ -591,6 +599,269 @@ renderRecentOrders();
 renderMembers();
 renderActivity();
 renderSettings();
+
+// ===== GST settings =====
+document.getElementById("saveGstBtn")?.addEventListener("click", () => {
+  const gstin = document.getElementById("setGstin").value.trim();
+  const rate = Number(document.getElementById("setGstRate").value) || 0;
+  const s = getSettings();
+  s.gstin = gstin;
+  s.gstRate = Math.min(28, Math.max(0, rate));
+  localStorage.setItem("lakshyaim_settings", JSON.stringify(s));
+  const msg = document.getElementById("gstMsg");
+  msg.textContent = gstRate > 0
+    ? "✅ GST save ho gaya — checkout par " + rate + "% (incl.) auto-calculate hoga."
+    : "✅ GST save ho gaya (off).";
+  msg.style.color = "#0b6b46";
+  logActivity("🧮", "GST settings update ki (" + (rate || 0) + "%)");
+});
+
+// ============================================================
+// Gallery Manager — photos hide/show/delete/upload
+// ============================================================
+const GM_LIMIT = 20;
+
+async function renderGalleryManager() {
+  const grid = document.getElementById("gmGrid");
+  if (!grid) return;
+  const gl = await getGalleryList();
+  const countEl = document.getElementById("gmCount");
+  if (countEl) countEl.textContent = gl.visible.length + " / " + gl.all.length + " visible";
+  grid.innerHTML = gl.all
+    .map((src, i) => {
+      const hidden = gl.hidden.includes(src);
+      const isExtra = gl.extra.includes(src);
+      return `
+      <div class="gm-card ${hidden ? "gm-hidden" : ""}">
+        <img src="${src}" loading="lazy" alt="Gallery photo ${i + 1}" />
+        <div class="gm-badge">${hidden ? "🚫 Hidden" : "👁 Visible"}</div>
+        <div class="gm-actions">
+          <button class="gm-btn" data-gm="toggle" data-src="${src}">${hidden ? "Show" : "Hide"}</button>
+          ${isExtra ? '<button class="gm-btn gm-del" data-gm="del" data-src="' + src + '">🗑</button>' : ""}
+        </div>
+      </div>`;
+    })
+    .join("");
+}
+
+document.getElementById("gmGrid")?.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-gm]");
+  if (!btn) return;
+  const cfg = getGalleryConfig();
+  const src = btn.dataset.src;
+  if (btn.dataset.gm === "toggle") {
+    cfg.hidden = cfg.hidden.includes(src) ? cfg.hidden.filter((s) => s !== src) : [...cfg.hidden, src];
+    saveGalleryConfig(cfg);
+    logActivity("🖼", "Gallery photo " + (cfg.hidden.includes(src) ? "hide" : "show") + " kiya");
+    renderGalleryManager();
+  } else if (btn.dataset.gm === "del") {
+    cfg.extra = cfg.extra.filter((s) => s !== src);
+    saveGalleryConfig(cfg);
+    logActivity("🗑", "Uploaded gallery photo delete ki");
+    renderGalleryManager();
+  }
+});
+
+document.getElementById("galleryUpload")?.addEventListener("change", async (e) => {
+  const files = [...e.target.files];
+  if (!files.length) return;
+  const cfg = getGalleryConfig();
+  cfg.extra = Array.isArray(cfg.extra) ? cfg.extra : [];
+  let added = 0;
+  for (const file of files) {
+    if (cfg.extra.length >= GM_LIMIT) break;
+    try {
+      const dataUrl = await compressImage(file);
+      cfg.extra.push(dataUrl);
+      added++;
+    } catch {}
+  }
+  saveGalleryConfig(cfg);
+  logActivity("🖼", added + " gallery photos upload kiye");
+  renderGalleryManager();
+  e.target.value = "";
+});
+
+function compressImage(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const max = 900;
+        const scale = Math.min(1, max / Math.max(img.width, img.height));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", 0.72));
+      };
+      img.onerror = reject;
+      img.src = reader.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// ============================================================
+// Analytics — 12 KPIs + charts
+// ============================================================
+const ANALYTICS_COLORS = ["kpi-green", "kpi-blue", "kpi-amber", "kpi-violet", "kpi-teal", "kpi-rose"];
+
+async function renderAnalytics() {
+  const orders = JSON.parse(localStorage.getItem("lakshyaim_orders") || "[]");
+  const products = await getProducts();
+  const members = JSON.parse(localStorage.getItem("lakshyaim_members") || "[]");
+  const activity = JSON.parse(localStorage.getItem("lakshyaim_activity") || "[]");
+  const cartItems = JSON.parse(localStorage.getItem("lakshyaim_cart") || "[]").reduce(
+    (n, i) => n + (Number(i.qty) || 0),
+    0
+  );
+  const gallery = await getGalleryList();
+  const settings = getSettings();
+  const gstRate = Number(settings.gstRate) || 0;
+
+  const revenue = orders.reduce((n, o) => n + Number(o.total || 0), 0);
+  const aov = orders.length ? Math.round(revenue / orders.length) : 0;
+  const pending = orders.filter((o) => o.status === "Pending").length;
+  const shipped = orders.filter((o) => o.status === "Shipped").length;
+  const delivered = orders.filter((o) => o.status === "Delivered").length;
+  const gstCollected = gstRate
+    ? orders.reduce((n, o) => n + Math.round(Number(o.total || 0) * gstRate / (100 + gstRate)), 0)
+    : 0;
+
+  const kpis = [
+    { icon: "🧾", n: orders.length, l: "Total Orders", c: "kpi-green" },
+    { icon: "💰", n: "₹" + revenue.toLocaleString("en-IN"), l: "Total Revenue", c: "kpi-violet" },
+    { icon: "📊", n: "₹" + aov.toLocaleString("en-IN"), l: "Avg Order Value", c: "kpi-blue" },
+    { icon: "⏳", n: pending, l: "Pending Orders", c: "kpi-amber" },
+    { icon: "🚚", n: shipped, l: "Shipped", c: "kpi-teal" },
+    { icon: "✅", n: delivered, l: "Delivered", c: "kpi-green" },
+    { icon: "👥", n: members.length, l: "Members", c: "kpi-amber" },
+    { icon: "📦", n: products.length, l: "Products Live", c: "kpi-blue" },
+    { icon: "🖼", n: gallery.visible.length, l: "Gallery Photos", c: "kpi-violet" },
+    { icon: "🛒", n: cartItems, l: "In Active Carts", c: "kpi-rose" },
+    { icon: "🕒", n: activity.length, l: "Log Events", c: "kpi-teal" },
+    { icon: "🧮", n: "₹" + gstCollected.toLocaleString("en-IN"), l: "GST Collected" + (gstRate ? " (" + gstRate + "%)" : ""), c: "kpi-rose" },
+  ];
+
+  const kpiHost = document.getElementById("analyticsKpis");
+  if (kpiHost) {
+    kpiHost.innerHTML = kpis
+      .map(
+        (k) =>
+          '<div class="dash-card kpi ' + k.c + '"><span class="dash-ico">' + k.icon + '</span><p class="dash-num">' + k.n + '</p><p class="dash-label">' + k.l + "</p></div>"
+      )
+      .join("");
+  }
+
+  // Chart 1 — Revenue last 8 orders
+  const revEl = document.getElementById("chartRevenue");
+  if (revEl) {
+    const last = orders.slice(-8);
+    const max = Math.max(1, ...last.map((o) => Number(o.total || 0)));
+    revEl.innerHTML = last.length
+      ? '<div class="chart-bar-row">' +
+        last
+          .map(
+            (o) =>
+              '<div class="chart-bar-col"><div class="chart-bar" style="height:' +
+              Math.max(8, (Number(o.total || 0) / max) * 130) + 'px"><span class="chart-bar-val">' +
+              fmtAnalytics(o.total) +
+              "</span></div><span class=\"chart-bar-label\">" +
+              o.id.replace("#LA-", "") +
+              "</span></div>"
+          )
+          .join("") +
+        "</div>"
+      : '<p class="chart-empty">Koi order nahi — checkout se test order karo, chart yahan banega.</p>';
+  }
+
+  // Chart 2 — Status donut
+  const donut = document.getElementById("donutStatus");
+  if (donut) {
+    const total = orders.length || 0;
+    const segs = [
+      { n: pending, color: "#f59e0b", l: "Pending" },
+      { n: shipped, color: "#3b82c4", l: "Shipped" },
+      { n: delivered, color: "#12a96e", l: "Delivered" },
+    ].filter((s) => s.n > 0);
+    const sum = segs.reduce((n, s) => n + s.n, 0);
+    if (total > 0 && sum) {
+      let acc = 0;
+      const parts = segs
+        .map((s) => {
+          const start = (acc / sum) * 360;
+          acc += s.n;
+          const end = (acc / sum) * 360;
+          return s.color + " " + start + "deg " + end + "deg";
+        })
+        .join(", ");
+      donut.style.background = "conic-gradient(" + parts + ")";
+    } else {
+      donut.style.background = "rgba(255,255,255,0.08)";
+    }
+    const totalEl = document.getElementById("donutTotal");
+    if (totalEl) totalEl.textContent = total;
+    const legend = document.getElementById("statusLegend");
+    if (legend) {
+      legend.innerHTML = segs.length
+        ? segs
+            .map((s) => '<div class="legend-item"><span class="legend-dot" style="background:' + s.color + '"></span>' + s.l + " — <b>" + s.n + "</b></div>")
+            .join("")
+        : '<div class="legend-item" style="color:var(--muted)">No orders yet</div>';
+    }
+  }
+
+  // Chart 3 — Payment split
+  const payEl = document.getElementById("chartPay");
+  if (payEl) {
+    const pays = {};
+    orders.forEach((o) => {
+      const k = o.pay || "COD";
+      pays[k] = (pays[k] || 0) + 1;
+    });
+    const keys = Object.keys(pays);
+    const colors = { COD: "#12a96e", UPI: "#3b82c4", Card: "#f59e0b", Razorpay: "#9d6bff" };
+    payEl.innerHTML = keys.length
+      ? keys
+          .map((k) => {
+            const pct = Math.round((pays[k] / orders.length) * 100);
+            return (
+              '<div class="hbar"><span class="hbar-label">' + k + '</span>' +
+              '<span class="hbar-track"><span class="hbar-fill" style="width:' + pct + '%;background:' + (colors[k] || "#9d6bff") + '"></span></span>' +
+              '<span class="hbar-val">' + pays[k] + " (" + pct + "%)</span></div>"
+            );
+          })
+          .join("")
+      : '<p class="chart-empty">No orders yet.</p>';
+  }
+
+  // Chart 4 — Top products
+  const topEl = document.getElementById("chartTop");
+  if (topEl) {
+    const counts = {};
+    orders.forEach((o) => o.items.forEach((i) => (counts[i.name] = (counts[i.name] || 0) + i.qty)));
+    const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+    const maxC = Math.max(1, ...top.map((t) => t[1]));
+    topEl.innerHTML = top.length
+      ? top
+          .map(
+            (t) =>
+              '<div class="hbar"><span class="hbar-label">' + t[0].slice(0, 18) + '</span>' +
+              '<span class="hbar-track"><span class="hbar-fill" style="width:' + Math.round((t[1] / maxC) * 100) + '%;background:linear-gradient(90deg,#f59e0b,#d97706)"></span></span>' +
+              '<span class="hbar-val">' + t[1] + "</span></div>"
+          )
+          .join("")
+      : '<p class="chart-empty">No order items yet.</p>';
+  }
+}
+
+function fmtAnalytics(n) {
+  const v = Number(n) || 0;
+  return v >= 1000 ? "₹" + (v / 1000).toFixed(1) + "k" : "₹" + v;
+}
 
 // ============================================================
 // CMS — Site Content Editor (header/hero/why/testimonials/plans/footer)
