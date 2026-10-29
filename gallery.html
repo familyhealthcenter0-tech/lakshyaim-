@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photo Gallery – Lakshyaim Private Limited</title>
+  <meta name="description" content="Complete Lakshyaim photo gallery — products, offers and results posters. Click any photo to view full size." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230d9b64'/%3E%3Ctext x='50' y='70' font-size='58' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='800'%3EL%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=202610307" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">L</span>
+        <span class="logo-text">Lakshyaim</span>
+      </a>
+      <div class="nav-actions">
+        <a href="index.html" class="btn btn-sm btn-ghost">← Back to Home</a>
+        <a href="cart.html" class="icon-btn" aria-label="Cart">🛒 <span class="cart-count">0</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <div class="container">
+      <p class="eyebrow">Gallery</p>
+      <h1 class="page-title">Photo Gallery</h1>
+      <p class="page-sub">Products, offers aur results — saari 69 photos ek jagah. Photo par click karke bada dekhein, ‹ › keys se navigate karein.</p>
+
+      <div class="prod-meta" id="galleryMeta">
+        <span class="prod-count-chip"><b id="galleryCount">0</b> photos</span>
+        <span class="prod-note">🖼️ Click karke full size dekhein · keyboard arrows se navigate</span>
+      </div>
+
+      <div class="gallery-grid" id="fullGalleryGrid"></div>
+    </div>
+  </main>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="gLightbox" aria-hidden="true" role="dialog" aria-label="Photo viewer">
+    <button class="lb-btn lb-close" id="gLbClose" aria-label="Close">✕</button>
+    <button class="lb-btn lb-prev" id="gLbPrev" aria-label="Previous photo">‹</button>
+    <img id="gLbImg" src="" alt="Gallery photo" />
+    <button class="lb-btn lb-next" id="gLbNext" aria-label="Next photo">›</button>
+    <p class="lb-count" id="gLbCount"></p>
+  </div>
+
+  <script src="cart.js?v=202610303"></script>
+  <script>
+    const gGrid = document.getElementById("fullGalleryGrid");
+    let gImgs = [];
+    let gIndex = 0;
+
+    const gBox = document.getElementById("gLightbox");
+    const gImg = document.getElementById("gLbImg");
+    const gCnt = document.getElementById("gLbCount");
+
+    async function renderGallery() {
+      try {
+        gImgs = await fetch("gallery/manifest.json").then((r) => r.json());
+      } catch {
+        gImgs = [];
+      }
+      if (!Array.isArray(gImgs) || !gImgs.length) {
+        gGrid.innerHTML = '<p class="gallery-empty"> Gallery load nahi hui — thodi der baad refresh karein.</p>';
+        return;
+      }
+      document.getElementById("galleryCount").textContent = gImgs.length;
+      gGrid.innerHTML = gImgs
+        .map(
+          (src, i) => `
+        <figure class="gallery-item" data-index="${i}">
+          <img src="${src}" alt="Lakshyaim photo ${i + 1}" loading="lazy" />
+        </figure>`
+        )
+        .join("");
+    }
+
+    function show(i) {
+      gIndex = (i + gImgs.length) % gImgs.length;
+      gImg.src = gImgs[gIndex];
+      gCnt.textContent = `${gIndex + 1} / ${gImgs.length}`;
+    }
+    function openLb(i) {
+      show(i);
+      gBox.classList.add("open");
+      gBox.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+    function closeLb() {
+      gBox.classList.remove("open");
+      gBox.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      gImg.src = "";
+    }
+    function stepLb(d) { show(gIndex + d); }
+
+    gGrid.addEventListener("click", (e) => {
+      const item = e.target.closest(".gallery-item");
+      if (item) openLb(+item.dataset.index);
+    });
+    document.getElementById("gLbClose").addEventListener("click", closeLb);
+    document.getElementById("gLbPrev").addEventListener("click", () => stepLb(-1));
+    document.getElementById("gLbNext").addEventListener("click", () => stepLb(1));
+    gBox.addEventListener("click", (e) => {
+      if (e.target === gBox) closeLb();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (!gBox.classList.contains("open")) return;
+      if (e.key === "Escape") closeLb();
+      else if (e.key === "ArrowLeft") stepLb(-1);
+      else if (e.key === "ArrowRight") stepLb(1);
+    });
+
+    renderGallery();
+  </script>
+</body>
+</html>

@@ -23,6 +23,10 @@
       {
         "source": "/products",
         "destination": "/products.html"
+      },
+      {
+        "source": "/gallery",
+        "destination": "/gallery.html"
       }
     ],
     "headers": [

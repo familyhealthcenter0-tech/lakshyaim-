@@ -60,7 +60,9 @@ async function initGallery() {
     galleryGrid.innerHTML = '<p class="gallery-empty">Gallery abhi load nahi hui — thodi der baad refresh karein.</p>';
     return;
   }
+  // Homepage par sirf pehli 6 photos — baaki gallery.html par
   galleryGrid.innerHTML = galleryImages
+    .slice(0, 6)
     .map(
       (src, i) => `
     <figure class="gallery-item" data-index="${i}">
@@ -68,6 +70,8 @@ async function initGallery() {
     </figure>`
     )
     .join("");
+  const btn = document.getElementById("galleryViewBtn");
+  if (btn) btn.textContent = `View Full Gallery (${galleryImages.length} photos) →`;
 }
 
 // ===== Lightbox =====
