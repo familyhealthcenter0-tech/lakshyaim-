@@ -123,7 +123,6 @@ function setProdMsg(text, color) {
   prodMsg.textContent = text;
   prodMsg.style.color = color;
 }
-
 function refreshProductTable() {
   if (!tableBody) return;
   getProducts().then((list) => {
@@ -156,7 +155,7 @@ if (addForm) {
     if (!image && !emoji) {
       setProdMsg(
         "❌ Emoji ya photo — koi ek to do. Gallery se photo choose karo, ya chhota emoji type karo.",
-        "#ffd6d6"
+        "#b33232"
       );
       return;
     }
@@ -190,7 +189,7 @@ if (addForm) {
     });
     setProdMsg(
       `✅ "${product.name}" add ho gaya. Shop pe live hai — ab agla product bharo.`,
-      "#bff0c8"
+      "#0b6b46"
     );
     addForm.reset();
     document.getElementById("pRating").value = 5;
@@ -198,7 +197,6 @@ if (addForm) {
     addPreview.hidden = true;
     addPreviewImg.removeAttribute("src");
   });
-
   // Delete product
   tableBody.addEventListener("click", async (e) => {
     const btn = e.target.closest(".del-btn");
@@ -207,14 +205,14 @@ if (addForm) {
     list.splice(+btn.dataset.index, 1);
     saveProducts(list);
     refreshProductTable();
-    setProdMsg("🗑 Product delete ho gaya.", "#ffd6d6");
+    setProdMsg("🗑 Product delete ho gaya.", "#b33232");
   });
 
   // Reset to defaults
   document.getElementById("resetProductsBtn").addEventListener("click", async () => {
     localStorage.removeItem("lakshyaim_products");
     refreshProductTable();
-    setProdMsg("↩ Catalog default products pe reset ho gaya.", "#eef7ef");
+    setProdMsg("↩ Catalog default products pe reset ho gaya.", "#5f6d66");
   });
 
   // Catalog JSON download — products.json file ke roop me
@@ -228,7 +226,7 @@ if (addForm) {
     URL.revokeObjectURL(a.href);
     setProdMsg(
       "⬇ products.json download ho gayi. Isse product/products.json replace karke batao — deploy karke sabko naye products dikha denge.",
-      "#eef7ef"
+      "#5f6d66"
     );
   });
 

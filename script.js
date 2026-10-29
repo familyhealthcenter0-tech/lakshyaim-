@@ -200,6 +200,6 @@ joinForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const email = document.getElementById("email").value.trim();
   formMsg.textContent = `✅ Thanks! Member invite sent to ${email}`;
-  formMsg.style.color = "#bff0c8";
+  formMsg.style.color = "#7ee6b0";
   joinForm.reset();
 });
