@@ -28,8 +28,25 @@
   <main class="page-wrap">
     <div class="container">
 
+      <!-- ===== Google sign-in prompt (login nahi hai to) ===== -->
+      <div id="authView" style="display:none">
+        <div class="checkout-success">
+          <span class="success-icon">🔐</span>
+          <h1>Sign in to Place Order</h1>
+          <p class="success-sub">
+            Order place karne ke liye Google account se sign in karo — isse tumhara
+            order track hota hai aur delivery details safe rehti hain.
+          </p>
+          <button type="button" class="btn" id="googleSigninBtn" style="margin-top:22px">
+            🔵 Sign in with Google
+          </button>
+          <p class="form-msg" id="authMsg" style="margin-top:14px"></p>
+          <p class="summary-link"><a href="cart.html">← Back to cart</a></p>
+        </div>
+      </div>
+
       <!-- ===== Checkout form + summary ===== -->
-      <div id="checkoutView">
+      <div id="checkoutView" style="display:none">
         <h1 class="page-title">Checkout</h1>
         <p class="page-sub">Delivery details bhariye — order 3–5 working days me pahunchega.</p>
 
@@ -123,6 +140,7 @@
   <script src="products.js?v=202610303"></script>
   <script src="cart.js"></script>
   <script src="site-content.js?v=202610301"></script>
+  <script src="auth.js?v=202610301"></script>
   <script>
     // Payment options — admin Settings se control hote hain
     (function buildPay() {
@@ -160,6 +178,54 @@
   <script>
     const fmt = (n) => "₹" + Number(n).toLocaleString("en-IN");
 
+    // Google sign-in button (auth prompt view)
+    document.getElementById("googleSigninBtn").addEventListener("click", () => {
+      const m = document.getElementById("authMsg");
+      m.textContent = "Google window khul rahi hai...";
+      m.style.color = "var(--muted)";
+      fbGoogleSignIn().catch((err) => {
+        let t = err.message || err.code || "Unknown error";
+        if (err.code === "auth/operation-not-allowed") {
+          t = "Google sign-in enable nahi hai — Firebase Console → Authentication → Sign-in method → Google → Enable karo.";
+        }
+        if (err.code === "auth/unauthorized-domain") {
+          t = "Ye domain authorized nahi — Firebase Console → Authentication → Settings → Authorized domains me add karo.";
+        }
+        m.textContent = "❌ " + t;
+        m.style.color = "#b33232";
+      });
+    });
+
+    // ===== Auth guard: Google sign-in ke baad hi checkout dikhta hai =====
+    let authedUser = null;
+
+    fbWatch((user) => {
+      const authView = document.getElementById("authView");
+      const checkoutView = document.getElementById("checkoutView");
+      if (!user) {
+        authView.style.display = "block";
+        checkoutView.style.display = "none";
+        return;
+      }
+      authedUser = user;
+      authView.style.display = "none";
+      checkoutView.style.display = "block";
+
+      // Google profile se prefill (khali fields me)
+      const nameEl = document.getElementById("coName");
+      const emailEl = document.getElementById("coEmail");
+      if (!nameEl.value && user.displayName) nameEl.value = user.displayName;
+      if (!emailEl.value && user.email) emailEl.value = user.email;
+      document.getElementById("adUserChipTop").textContent = "👤 " + (user.displayName || user.email);
+
+      // Cart khali → cart page par bhejo
+      if (!getCart().length) {
+        location.replace("cart.html");
+        return;
+      }
+      renderSummary();
+    });
+
     function renderSummary() {
       const cart = getCart();
       document.getElementById("coItems").innerHTML = cart
@@ -190,16 +256,17 @@
       return { cart, sub, ship, total: sub + ship };
     }
 
-    // Khali cart → cart page par bhejo
-    if (!getCart().length) {
-      location.replace("cart.html");
-    }
-
+    // Khali cart → cart page par bhejo (auth flow me bhi handle hota hai)
     renderSummary();
 
     document.getElementById("coForm").addEventListener("submit", (e) => {
       e.preventDefault();
       const msg = document.getElementById("coMsg");
+      if (!authedUser) {
+        msg.textContent = "❌ Pehle Google se sign in karo.";
+        msg.style.color = "#b33232";
+        return;
+      }
       const name = document.getElementById("coName").value.trim();
       const phoneRaw = document.getElementById("coPhone").value.trim();
       const email = document.getElementById("coEmail").value.trim();
@@ -248,7 +315,7 @@
       const order = {
         id: "#LA-" + String(2000 + orders.length + Math.floor(Math.random() * 90 + 10)),
         date: new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }),
-        customer: { name, phone: phoneDigits, email, address, city, state },
+        customer: { name, phone: phoneDigits, email: authedUser.email || email, address, city, state, uid: authedUser.uid },
         pay,
         items: cart,
         total: cart.reduce((n, i) => n + i.price * i.qty, 0) + shippingFee(cart.reduce((n, i) => n + i.price * i.qty, 0)),
