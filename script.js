@@ -185,9 +185,6 @@ function initAutoCarousel(cfg) {
   prevBtn?.addEventListener("click", () => { go(-1); restart(); });
   nextBtn?.addEventListener("click", () => { go(1); restart(); });
 
-  // Hover par ruk jaata hai, bahar nikal te hi continue
-  slider.addEventListener("mouseenter", () => clearInterval(timer));
-  slider.addEventListener("mouseleave", () => restart());
   document.addEventListener("visibilitychange", () => (document.hidden ? clearInterval(timer) : restart()));
 
   // Touch swipe
