@@ -314,7 +314,9 @@ function renderRecentOrders() {
     .reverse()
     .slice(0, 8)
     .map(
-      (o) => `
+      (o) => {
+        const stClass = o.status === "Delivered" ? "st-done" : o.status === "Shipped" ? "st-ship" : "st-pend";
+        return `
       <tr>
         <td><b>${o.id}</b></td>
         <td>
@@ -323,10 +325,35 @@ function renderRecentOrders() {
         <td>${o.items.length > 1 ? o.items[0].name + " +" + (o.items.length - 1) + " more" : o.items[0].name}</td>
         <td><b>${fmtN(o.total)}</b></td>
         <td><span class="pay-chip">${o.pay || "COD"}</span></td>
-        <td><span class="status st-pend">${o.status}</span></td>
-      </tr>`
+        <td>
+          <select class="status-select ${stClass}" data-id="${o.id}" aria-label="Order status">
+            <option value="Pending" ${o.status === "Pending" ? "selected" : ""}>Pending</option>
+            <option value="Shipped" ${o.status === "Shipped" ? "selected" : ""}>Shipped</option>
+            <option value="Delivered" ${o.status === "Delivered" ? "selected" : ""}>Delivered</option>
+          </select>
+        </td>
+      </tr>`;
+      }
     )
     .join("");
   updateStats();
 }
+
+// Order status change — dropdown se status update hota hai, stats turant refresh
+function setStatus(orderId, status) {
+  const orders = JSON.parse(localStorage.getItem("lakshyaim_orders") || "[]");
+  const order = orders.find((x) => x.id === orderId);
+  if (!order) return;
+  order.status = status;
+  localStorage.setItem("lakshyaim_orders", JSON.stringify(orders));
+  renderRecentOrders();
+}
+
+// Status dropdown change — delegated listener
+document.getElementById("ordersTableBody")?.addEventListener("change", (e) => {
+  const sel = e.target.closest(".status-select");
+  if (!sel) return;
+  setStatus(sel.dataset.id, sel.value);
+});
+
 renderRecentOrders();
