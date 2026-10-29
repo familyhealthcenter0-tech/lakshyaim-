@@ -1510,6 +1510,74 @@ h1, h2, h3 { font-weight: 800; }
 }
 .acc-empty a { color: var(--green-dark); font-weight: 700; }
 
+/* ===== Header user dropdown ===== */
+.user-menu { position: relative; }
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: 0;
+  width: 264px;
+  background: #fff;
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity 0.18s, transform 0.18s, visibility 0.18s;
+  z-index: 80;
+}
+.user-dropdown.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.ud-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-bottom: 1px solid var(--card-border);
+  margin-bottom: 6px;
+}
+.ud-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(150deg, #7ee6b0, #12a96e);
+  color: #0b1613;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1.05rem;
+  flex: 0 0 auto;
+}
+.ud-head-info { min-width: 0; }
+.ud-name { font-weight: 800; font-size: 0.95rem; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ud-email { color: var(--muted); font-size: 0.78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ud-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 13px;
+  border-radius: 11px;
+  border: none;
+  background: none;
+  color: var(--ink);
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.ud-link:hover { background: var(--green-light); color: var(--green-dark); }
+.ud-signout { color: #b33232; }
+.ud-signout:hover { background: #fdeef0; color: #b33232; }
+
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; text-align: center; padding: 64px 6%; }

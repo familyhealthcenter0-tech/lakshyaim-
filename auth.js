@@ -73,42 +73,78 @@ window.__fbReady
   .then(() => firebase.auth().getRedirectResult())
   .catch(() => {});
 
-// ===== Header Sign In button auto-integration =====
-// index.html ka Sign In button: login → naam dikhata hai, click = sign out
+// ===== Header Sign In button + User dropdown =====
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("signInBtn");
   if (!btn) return;
   const label = btn.querySelector(".btn-label");
+  const dropdown = document.getElementById("userDropdown");
+
+  function fillDropdown(user) {
+    if (!user) return;
+    const name = user.displayName || "User";
+    document.getElementById("udAvatar").textContent = name[0].toUpperCase();
+    document.getElementById("udName").textContent = name;
+    document.getElementById("udEmail").textContent = user.email || "";
+  }
+
+  function toggleDropdown(force) {
+    if (!btn.dataset.logged) return; // logged-out me dropdown nahi
+    const open = dropdown.classList.toggle("open", force);
+    btn.setAttribute("aria-expanded", String(open));
+  }
 
   fbWatch((user) => {
     if (user) {
       const name = (user.displayName || user.email || "User").split(" ")[0];
-      if (label) label.textContent = "👋 " + name;
+      if (label) label.textContent = "📦 " + name;
       btn.dataset.logged = "1";
+      fillDropdown(user);
     } else {
       if (label) label.textContent = "Sign In";
       btn.dataset.logged = "";
+      dropdown.classList.remove("open");
     }
   });
 
   btn.addEventListener("click", (e) => {
     e.preventDefault();
-    if (btn.dataset.logged) {
-      // Logged in → user dashboard (My Orders)
-      location.href = "my-orders.html";
+    if (!btn.dataset.logged) {
+      fbGoogleSignIn().catch((err) => {
+        let m = err.message || err.code || "Unknown error";
+        if (err.code === "auth/operation-not-allowed") {
+          m = "Google sign-in Firebase Console me enable nahi hai — Authentication → Sign-in method → Google → Enable karo.";
+        }
+        if (err.code === "auth/unauthorized-domain") {
+          m = "Ye domain authorized nahi hai — Firebase Console → Authentication → Settings → Authorized domains me add karo.";
+        }
+        alert("Google sign-in fail: " + m);
+      });
       return;
     }
-    fbGoogleSignIn().catch((err) => {
-      let m = err.message || err.code || "Unknown error";
-      if (err.code === "auth/operation-not-allowed") {
-        m = "Google sign-in Firebase Console me enable nahi hai — Authentication → Sign-in method → Google → Enable karo.";
-      }
-      if (err.code === "auth/unauthorized-domain") {
-        m = "Ye domain authorized nahi hai — Firebase Console → Authentication → Settings → Authorized domains me add karo.";
-      }
-      alert("Google sign-in fail: " + m);
-    });
+    // Logged in → user dashboard dropdown toggle
+    toggleDropdown();
   });
+
+  // Bahar click → dropdown band
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("#userMenu")) dropdown.classList.remove("open");
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") dropdown.classList.remove("open");
+  });
+  // Dropdown ke andar link click → band
+  dropdown?.addEventListener("click", (e) => {
+    if (e.target.closest(".ud-link")) dropdown.classList.remove("open");
+  });
+
+  // Sign out
+  document.getElementById("udSignOut")?.addEventListener("click", () => {
+    fbSignOut().then(() => location.reload());
+  });
+
+  // Testing/preview ke liye expose
+  window.renderUserMenu = fillDropdown;
 });
 
 // ===== Homepage "My Account" panel (Google login state ke hisaab se) =====
