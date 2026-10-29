@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=202610304" />
+  <link rel="stylesheet" href="styles.css?v=202610305" />
 </head>
 <body>
 
@@ -54,6 +54,29 @@
     const countLine = document.getElementById("itemCountLine");
     const fmt = (n) => "₹" + Number(n).toLocaleString("en-IN");
 
+    // Self-heal: purani cart entries (image/mrp gayab) ko catalog se repair karo
+    async function healCart() {
+      let changed = false;
+      const cart = getCart();
+      try {
+        const list = await fetch("product/products.json").then((r) => r.json());
+        cart.forEach((i) => {
+          const p = list.find((x) => x.name === i.name);
+          if (!p) return;
+          if (!i.image && p.image) {
+            i.image = p.image;
+            i.imgPos = p.imgPos || "";
+            i.imgZoom = p.imgZoom || 0;
+            changed = true;
+          }
+          if (!i.emoji && p.emoji) { i.emoji = p.emoji; changed = true; }
+          if (!i.price && p.price) { i.price = p.price; changed = true; }
+        });
+      } catch { /* catalog load na ho to ignore */ }
+      if (changed) saveCart(cart);
+      return cart;
+    }
+
     function shippingProgress(sub) {
       const hint = document.getElementById("freeHint");
       if (sub <= 0) { hint.textContent = ""; return; }
@@ -79,7 +102,7 @@
         itemsEl.innerHTML =
           '<div class="cart-empty"><p class="empty-emoji">🛒</p><h3>Aapka cart khali hai</h3>' +
           "<p>Best sellers se shuru karein — free shipping ₹2,999 se upar hai.</p>" +
-          '<a href="index.html#products" class="btn">Shop Best Sellers</a></div>';
+          '<a href="#" class="btn">Shop Best Sellers</a></div>';
         document.getElementById("summaryCard").style.display = "none";
         return;
       }
@@ -92,8 +115,10 @@
             cartThumbHTML(i, "ci-thumb") +
             '<div class="ci-info">' +
             '<p class="ci-name">' + i.name + "</p>" +
-            '<p class="ci-unit">' + fmt(i.price) + " / unit</p>" +
-            '<p class="ci-line">Line total: <b>' + fmt(i.price * i.qty) + "</b></p>" +
+            '<p class="ci-unit">' + fmt(i.price) +
+            (i.mrp && i.mrp > i.price ? ' <s style="font-size:0.78rem;opacity:0.6">' + fmt(i.mrp) + "</s>" : "") +
+            " / unit</p>" +
+            '<p class="ci-line">Line total · <b>' + fmt(i.price * i.qty) + "</b></p>" +
             "</div>" +
             '<div class="ci-ctrl">' +
             '<div class="qty-stepper">' +
@@ -128,7 +153,8 @@
       render();
     });
 
-    render();
+    // pehle healing, phir render
+    healCart().then(render);
   </script>
 </body>
 </html>
