@@ -144,14 +144,26 @@ h1, h2, h3 { font-weight: 800; }
   transition: box-shadow 0.2s;
 }
 .navbar.scrolled { box-shadow: var(--shadow-soft); }
+/* Header layout: hamburger LEFT | logo dead-CENTER | actions RIGHT
+   Logo absolute-center hai — side buttons jitne bhi chauras hon,
+   site ka naam har device par bilkul beech mein rehta hai */
 .nav-inner {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 13px 0;
-  gap: 18px;
+  gap: 12px;
+  padding: 12px 0;
 }
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.navbar .nav-inner > .logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.nav-inner > .hamburger { position: relative; z-index: 2; }
+.nav-inner > .nav-actions { position: relative; z-index: 2; }
+.logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
 .logo-mark {
   display: grid;
   place-items: center;
@@ -166,37 +178,7 @@ h1, h2, h3 { font-weight: 800; }
 }
 .logo-text { font-weight: 800; font-size: 1.18rem; color: var(--ink); white-space: nowrap; }
 .logo-light .logo-text { color: #fff; }
-.nav-links { display: flex; align-items: center; gap: 26px; }
-.nav-links > a,
-.drop-toggle {
-  text-decoration: none;
-  color: #2a3a34;
-  font-weight: 600;
-  font-size: 0.93rem;
-  position: relative;
-  padding: 4px 0;
-  transition: color 0.2s;
-}
-.nav-links > a:hover,
-.drop-toggle:hover { color: var(--green-dark); }
-.nav-links > a::after,
-.drop-toggle::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: 2.5px;
-  border-radius: 3px;
-  background: linear-gradient(90deg, var(--green), var(--gold));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.22s;
-}
-.nav-links > a:hover::after,
-.drop-toggle:hover::after,
-.nav-drop.open .drop-toggle::after { transform: scaleX(1); }
-.nav-actions { display: flex; align-items: center; gap: 6px; }
+.nav-actions { display: flex; align-items: center; gap: 8px; }
 .icon-btn {
   background: none;
   border: none;
@@ -221,7 +203,74 @@ h1, h2, h3 { font-weight: 800; }
   border: 2px solid var(--cream);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
-.hamburger { display: none; background: none; border: none; font-size: 1.4rem; cursor: pointer; padding: 4px 8px; }
+/* Hamburger — sab devices par dikhta hai */
+.hamburger {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  background: #fff;
+  border: 1.5px solid var(--card-border);
+  border-radius: 13px;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.hamburger:hover {
+  background: var(--green-light);
+  border-color: #bfe5d5;
+  box-shadow: var(--shadow-soft);
+}
+
+/* Nav panel — hamburger se khulne wala full-width dropdown */
+.nav-links {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-bottom: 1px solid var(--card-border);
+  box-shadow: var(--shadow);
+  display: none;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  z-index: 49;
+}
+.nav-links.open { display: block; animation: navFade 0.22s ease; }
+@keyframes navFade {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: none; }
+}
+.nav-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  padding: 18px 0 22px;
+}
+.nav-panel > a {
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 13px 16px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.15s, color 0.15s;
+}
+.nav-panel > a:hover { background: var(--green-light); color: var(--green-dark); }
+.nav-cta {
+  background: var(--green-light);
+  color: var(--green-dark) !important;
+  margin-top: 6px;
+}
+.nav-cta:hover { background: #d3f1e3 !important; }
+@media (min-width: 901px) {
+  .nav-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; align-items: start; padding: 22px 0 26px; }
+}
 
 /* ===== Hero ===== */
 .hero {
@@ -308,29 +357,34 @@ h1, h2, h3 { font-weight: 800; }
 .shake-card p:first-of-type { font-weight: 800; margin-top: 14px; font-size: 1.02rem; }
 .shake-sub { color: var(--muted); font-size: 0.85rem; margin-top: 2px; }
 
-/* ===== Header dropdown (Products) ===== */
+/* ===== Products dropdown (accordion — nav panel ke andar) ===== */
 .nav-drop { position: relative; }
-.drop-toggle .drop-caret { font-size: 0.72em; display: inline-block; transition: transform 0.2s; }
-.nav-drop.open .drop-caret { transform: rotate(180deg); }
-.drop-menu {
-  position: absolute;
-  top: calc(100% + 12px);
-  left: 50%;
-  transform: translateX(-50%) translateY(6px);
-  background: #fff;
-  border: 1px solid var(--card-border);
-  border-radius: 18px;
-  box-shadow: var(--shadow);
-  padding: 8px;
-  min-width: 320px;
-  max-height: 420px;
-  overflow-y: auto;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.18s, transform 0.18s, visibility 0.18s;
-  z-index: 60;
+.drop-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 13px 16px;
+  border-radius: 14px;
+  transition: background 0.15s, color 0.15s;
 }
-.nav-drop.open .drop-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+.drop-toggle:hover { background: var(--green-light); color: var(--green-dark); }
+.drop-toggle .drop-caret { font-size: 0.8em; display: inline-block; transition: transform 0.2s; }
+.nav-drop.open .drop-caret { transform: rotate(180deg); }
+.nav-drop.open .drop-menu { display: block; }
+.drop-menu {
+  display: none;
+  padding: 4px 8px 8px;
+  margin: 2px 6px 6px;
+  background: var(--cream);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+}
 .drop-item {
   display: flex;
   align-items: center;
@@ -747,48 +801,36 @@ h1, h2, h3 { font-weight: 800; }
   .hero .sub { margin-inline: auto; }
   .hero-btns, .hero-stats { justify-content: center; }
   .split { grid-template-columns: 1fr; }
-  .section-dark .eyebrow { left: 50%; transform: translateX(-50%); }
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
-@media (max-width: 720px) {
+@media (max-width: 620px) {
   .section { padding: 64px 0; }
-  .nav-links {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    align-items: stretch;
-    background: var(--cream);
-    padding: 18px 6% 22px;
-    gap: 14px;
-    border-bottom: 1px solid var(--card-border);
-    box-shadow: var(--shadow);
-    display: none;
-  }
-  .nav-links.open { display: flex; }
-  .nav-links > a::after, .drop-toggle::after { display: none; }
-  .hamburger { display: block; }
-  .btn-sm { display: none; }
+  /* Chote screens: container thoda wide + header compact */
+  .container { width: min(1140px, 96%); }
+  .nav-inner { gap: 6px; padding: 10px 0; }
+  .hamburger { width: 36px; height: 36px; font-size: 1rem; border-radius: 11px; }
+  .logo-mark { width: 30px; height: 30px; border-radius: 10px; font-size: 0.95rem; }
+  .logo-text { font-size: 0.95rem; }
+  .nav-actions { gap: 5px; }
+  .icon-btn { padding: 5px; font-size: 0.95rem; }
+  .btn-sm { padding: 7px 10px; font-size: 0.72rem; }
+  .cart-count { border-width: 1px; top: -3px; right: -4px; }
   .footer-grid { grid-template-columns: 1fr; }
   .lightbox { padding: 52px 54px 20px; }
   .lb-prev { left: 4px; }
   .lb-next { right: 4px; }
-  /* Mobile: dropdown inline khulta hai (accordion) */
-  .drop-toggle .drop-caret { margin-left: auto; }
-  .drop-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; }
-  .drop-menu {
-    position: static;
-    transform: none;
-    box-shadow: none;
-    border: none;
-    padding: 2px 0 2px 12px;
-    max-height: none;
-    min-width: 0;
-    width: 100%;
-    display: none;
-    opacity: 1;
-    visibility: visible;
-  }
-  .nav-drop.open .drop-menu { display: block; transform: none; }
+}
+/* Bahut chote screens (<=420px): Sign In / Admin icon-only — logo ke saath fit */
+@media (max-width: 420px) {
+  .logo-mark { width: 28px; height: 28px; border-radius: 9px; font-size: 0.88rem; }
+  .logo-text { font-size: 0.88rem; }
+  .logo { gap: 6px; }
+  .btn-sm { padding: 7px 9px; }
+  .btn-sm .btn-label { display: none; }
+  .btn-sm::before { content: "👤"; font-size: 0.9rem; }
+  .btn-ghost::before { content: "⚙️"; }
+}
+/* <=360px: sirf logo-mark center, tabhi sab kuch mushkil se bhi fit hota hai */
+@media (max-width: 360px) {
+  .logo-text { display: none; }
 }

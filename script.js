@@ -162,13 +162,18 @@ if (navDrop && dropToggle && dropMenu) {
     const open = navDrop.classList.toggle("open");
     dropToggle.setAttribute("aria-expanded", String(open));
   });
-  // Bahar click → band
+  // Bahar click → dropdown band + pura menu panel band
   document.addEventListener("click", (e) => {
-    if (!navDrop.contains(e.target)) closeDrop();
+    if (e.target.closest("#navbar")) return;
+    closeDrop();
+    navLinks?.classList.remove("open");
   });
   // Escape → band
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeDrop();
+    if (e.key === "Escape") {
+      closeDrop();
+      navLinks?.classList.remove("open");
+    }
   });
   // Catalog se items bharo (products.js ka data)
   getProducts().then((list) => {

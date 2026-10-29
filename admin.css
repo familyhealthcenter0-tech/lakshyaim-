@@ -12,6 +12,9 @@
   min-height: 100vh;
 }
 .admin-body .navbar { background: #fff; }
+/* Admin header simple flex + logo left — store ka absolute-center logo yahan nahi chahiye */
+.admin-body .nav-inner { display: flex; justify-content: space-between; }
+.admin-body .navbar .nav-inner > .logo { position: static; transform: none; }
 
 .login-wrap {
   display: grid;
