@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261106" />
+  <link rel="stylesheet" href="styles.css?v=20261107" />
 </head>
 <body>
 
@@ -139,19 +139,16 @@
     </div>
   </main>
 
-  <script src="products.js?v=20261106"></script>
+  <script src="products.js?v=20261107"></script>
   <script src="cart.js"></script>
-  <script src="site-content.js?v=20261106"></script>
-  <script src="auth.js?v=20261106"></script>
+  <script src="site-content.js?v=20261107"></script>
+  <script src="auth.js?v=20261107"></script>
   <script>
     // Payment options — admin Settings se control hote hain
     (function buildPay() {
       const c = getSiteContent();
       const opts = [
-        { key: "cod", val: "COD", label: "💵 Cash on Delivery" },
-        { key: "upi", val: "UPI", label: "📱 UPI / GPay" },
-        { key: "card", val: "Card", label: "💳 Card" },
-        { key: "razorpay", val: "Razorpay", label: "🟣 Razorpay — UPI / Card / Netbanking" },
+        { key: "razorpay", val: "Razorpay", label: "Razorpay - UPI / Card / Netbanking" },
       ];
       const enabled = opts.filter((o) => c.payment[o.key]);
       const host = document.getElementById("payOpts");
@@ -171,9 +168,6 @@
         : '<span style="color:var(--muted);font-size:0.88rem">Koi payment method enabled nahi — admin Settings me on karo.</span>';
       const note = document.getElementById("payNote");
       let noteText = c.payment.note || "";
-      if (c.payment.upi && c.payment.upiId) {
-        noteText += " UPI ID: " + c.payment.upiId;
-      }
       note.textContent = noteText;
     })();
   </script>
@@ -360,6 +354,6 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   </script>
-  <script src="theme.js?v=20261106"></script>
+  <script src="theme.js?v=20261107"></script>
 </body>
 </html>

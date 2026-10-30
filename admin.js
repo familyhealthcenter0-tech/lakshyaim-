@@ -1301,40 +1301,28 @@ document.getElementById("importContentFile")?.addEventListener("change", (e) => 
 // ===== Payment settings =====
 function loadPaymentSettings() {
   const p = getSiteContent().payment;
-  const cod = document.getElementById("payCod");
-  const upi = document.getElementById("payUpi");
-  const card = document.getElementById("payCard");
   const rzp = document.getElementById("payRzp");
   const rzpKey = document.getElementById("payRzpKey");
-  const upiId = document.getElementById("payUpiId");
   const note = document.getElementById("payNote");
-  if (cod) cod.checked = !!p.cod;
-  if (upi) upi.checked = !!p.upi;
-  if (card) card.checked = !!p.card;
-  if (rzp) rzp.checked = !!p.razorpay;
+  if (rzp) rzp.checked = p.razorpay !== false;
   if (rzpKey) rzpKey.value = p.razorpayKey || "";
-  if (upiId) upiId.value = p.upiId || "";
   if (note) note.value = p.note || "";
 }
 loadPaymentSettings();
 
 document.getElementById("savePaymentBtn")?.addEventListener("click", () => {
   const c = getSiteContent();
-  c.payment.cod = document.getElementById("payCod").checked;
-  c.payment.upi = document.getElementById("payUpi").checked;
-  c.payment.card = document.getElementById("payCard").checked;
   c.payment.razorpay = document.getElementById("payRzp").checked;
   c.payment.razorpayKey = document.getElementById("payRzpKey").value.trim();
-  c.payment.upiId = document.getElementById("payUpiId").value.trim();
   c.payment.note = document.getElementById("payNote").value.trim();
-  if (!c.payment.cod && !c.payment.upi && !c.payment.card && !c.payment.razorpay) {
+  if (!c.payment.razorpay) {
     const pm = document.getElementById("payMsg");
     pm.textContent = "❌ Kam se kam ek payment method on rakho.";
     pm.style.color = "#b33232";
     return;
   }
   saveSiteContent(c);
-  logActivity("💳", "Payment settings update ki (COD/UPI/Card/Razorpay)");
+  logActivity("💳", "Payment settings update ki (Razorpay)");
   const pm = document.getElementById("payMsg");
   pm.textContent = "✅ Payment settings save ho gayi — checkout par live.";
   pm.style.color = "#0b6b46";
