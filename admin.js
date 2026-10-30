@@ -1439,6 +1439,35 @@ document.getElementById("saveAdminCredsBtn")?.addEventListener("click", () => {
   document.getElementById("adminConfirmPass").value = "";
 });
 
+// ===== Company details settings =====
+function loadCompanySettings() {
+  const s = getSettings();
+  const name = document.getElementById("setCompanyName");
+  const phone = document.getElementById("setCompanyPhone");
+  const email = document.getElementById("setCompanyEmail");
+  const address = document.getElementById("setCompanyAddress");
+  if (name) name.value = s.companyName || "Lakshyaim Private Limited";
+  if (phone) phone.value = s.companyPhone || "";
+  if (email) email.value = s.companyEmail || "";
+  if (address) address.value = s.companyAddress || "";
+}
+loadCompanySettings();
+
+document.getElementById("saveCompanyBtn")?.addEventListener("click", () => {
+  const s = getSettings();
+  s.companyName = document.getElementById("setCompanyName").value.trim() || "Lakshyaim Private Limited";
+  s.companyPhone = document.getElementById("setCompanyPhone").value.trim();
+  s.companyEmail = document.getElementById("setCompanyEmail").value.trim();
+  s.companyAddress = document.getElementById("setCompanyAddress").value.trim();
+  localStorage.setItem("lakshyaim_settings", JSON.stringify(s));
+  const msg = document.getElementById("companyMsg");
+  if (msg) {
+    msg.textContent = "Company details save ho gaye - invoice par live.";
+    msg.style.color = "#0b6b46";
+  }
+  logActivity("C", "Company details update kiye");
+});
+
 // ===== Database view — localStorage overview =====
 const DB_COLLECTIONS = [
   { key: "lakshyaim_orders", label: "Orders", icon: "🧾" },

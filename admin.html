@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261123" />
-  <link rel="stylesheet" href="admin.css?v=20261123" />
+  <link rel="stylesheet" href="styles.css?v=20261124" />
+  <link rel="stylesheet" href="admin.css?v=20261124" />
 </head>
 <body class="admin-body">
 
@@ -463,6 +463,35 @@
               <p class="co-note">Cart and checkout pages par turant apply hoti hain.</p>
             </div>
 
+            <!-- Company Details -->
+            <div class="settings-group">
+              <div class="settings-group-head">
+                <span class="settings-group-icon">C</span>
+                <div>
+                  <h3>Company Details</h3>
+                  <p class="settings-group-sub">Invoice par company ka naam, address, phone aur email dikhega</p>
+                </div>
+              </div>
+              <div class="row">
+                <label>Company Name
+                  <input type="text" id="setCompanyName" placeholder="Lakshyaim Private Limited" />
+                </label>
+                <label>Company Phone
+                  <input type="tel" id="setCompanyPhone" placeholder="+91 9999999999" />
+                </label>
+              </div>
+              <div class="row">
+                <label>Company Email
+                  <input type="email" id="setCompanyEmail" placeholder="info@lakshyaim.com" />
+                </label>
+                <label>Company Address
+                  <input type="text" id="setCompanyAddress" placeholder="Street, City, State - PIN" />
+                </label>
+              </div>
+              <button type="button" class="btn btn-outline" id="saveCompanyBtn">Save Company Details</button>
+              <p class="form-msg" id="companyMsg"></p>
+            </div>
+
             <!-- GST -->
             <div class="settings-group">
               <div class="settings-group-head">
@@ -588,9 +617,9 @@
     </div>
   </div>
 
-  <script src="products.js?v=20261123"></script>
-  <script src="site-content.js?v=20261123"></script>
-  <script src="admin.js?v=20261123"></script>
-  <script src="theme.js?v=20261123"></script>
+  <script src="products.js?v=20261124"></script>
+  <script src="site-content.js?v=20261124"></script>
+  <script src="admin.js?v=20261124"></script>
+  <script src="theme.js?v=20261124"></script>
 </body>
 </html>

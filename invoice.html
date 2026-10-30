@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261123" />
+  <link rel="stylesheet" href="styles.css?v=20261124" />
   <style>
     /* Invoice-specific styles */
     .invoice-wrap {
@@ -203,8 +203,8 @@
     <p style="text-align:center;color:var(--muted);padding:60px 0">Loading invoice...</p>
   </div>
 
-  <script src="products.js?v=20261123"></script>
-  <script src="site-content.js?v=20261123"></script>
+  <script src="products.js?v=20261124"></script>
+  <script src="site-content.js?v=20261124"></script>
   <script>
     (function() {
       const params = new URLSearchParams(location.search);
@@ -226,6 +226,10 @@
       try { settings = JSON.parse(localStorage.getItem("lakshyaim_settings") || "{}"); } catch {}
       const gstin = settings.gstin || "";
       const gstRate = settings.gstRate || 0;
+      const companyName = settings.companyName || "Lakshyaim Private Limited";
+      const companyPhone = settings.companyPhone || "";
+      const companyEmail = settings.companyEmail || "";
+      const companyAddress = settings.companyAddress || "";
       const shipping = 0; // shipping already included in total
       const subtotal = order.total; // total includes everything
       const fmt = (n) => "\u20B9" + Number(n).toLocaleString("en-IN");
@@ -245,9 +249,12 @@
           <div class="invoice-brand">
             <span class="logo-mark">L</span>
             <div>
-              <h1>Lakshyaim Private Limited</h1>
+              <h1>${companyName}</h1>
               <p>Science-backed nutrition for everyday life</p>
-              <p>Made in India</p>
+              ${companyAddress ? `<p style="font-size:0.82rem;color:var(--muted)">${companyAddress}</p>` : ""}
+              ${companyPhone ? `<p style="font-size:0.82rem;color:var(--muted)">Phone: ${companyPhone}</p>` : ""}
+              ${companyEmail ? `<p style="font-size:0.82rem;color:var(--muted)">Email: ${companyEmail}</p>` : ""}
+              ${gstin ? `<p style="font-size:0.82rem;color:var(--muted)">GSTIN: ${gstin}</p>` : ""}
             </div>
           </div>
           <div class="invoice-meta">
@@ -276,7 +283,7 @@
           </div>
         </div>
 
-        ${gstin ? `<div style="background:var(--green-light);border:1px solid #cbeadd;border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:0.88rem;color:var(--green-dark)"><b>GSTIN:</b> ${gstin}</div>` : ""}
+
 
         <table class="invoice-table">
           <thead>
@@ -331,7 +338,7 @@
       document.getElementById("invoiceContent").innerHTML = html;
     })();
   </script>
-  <script src="theme.js?v=20261123"></script>
+  <script src="theme.js?v=20261124"></script>
 </body>
 </html>
 PY
