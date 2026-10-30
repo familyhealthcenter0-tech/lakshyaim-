@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261117" />
+  <link rel="stylesheet" href="styles.css?v=20261118" />
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
@@ -87,8 +87,8 @@
             </div>
             <label>State
               <select id="coState" required>
-                <option value="" selected disabled>State chunein</option>
-                <option>Madhya Pradesh</option>
+                <option value="">State chunein</option>
+                <option selected>Madhya Pradesh</option>
                 <option>Maharashtra</option>
                 <option>Delhi NCR</option>
                 <option>Gujarat</option>
@@ -144,10 +144,10 @@
     </div>
   </main>
 
-  <script src="products.js?v=20261117"></script>
+  <script src="products.js?v=20261118"></script>
   <script src="cart.js"></script>
-  <script src="site-content.js?v=20261117"></script>
-  <script src="auth.js?v=20261117"></script>
+  <script src="site-content.js?v=20261118"></script>
+  <script src="auth.js?v=20261118"></script>
   
   <script>
     const fmt = (n) => "₹" + Number(n).toLocaleString("en-IN");
@@ -293,7 +293,13 @@
           document.getElementById("coCity").value = a.city || "";
           document.getElementById("coPin").value = a.pin || "";
           const stateEl = document.getElementById("coState");
-          if (stateEl && a.state) stateEl.value = a.state;
+          if (stateEl && a.state) {
+            // Check if the state exists in the dropdown
+            const opts = Array.from(stateEl.options).map(o => o.value);
+            if (opts.includes(a.state)) {
+              stateEl.value = a.state;
+            }
+          }
           // Highlight selected
           container.querySelectorAll(".saved-addr-card").forEach((c) => { c.style.borderColor = "var(--card-border)"; c.style.background = ""; });
           card.style.borderColor = "var(--green)";
@@ -330,7 +336,7 @@
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return fail("Email galat lag raha hai.");
       if (!address || !city) return fail("Address aur city dono bhariye.");
       if (!/^\d{6}$/.test(pin)) return fail("PIN code 6 digits ka ho (spaces ke bina).");
-      if (!state) return fail("State chunein.");
+      if (!state) return fail("State select karo - dropdown se apna state chunein.");
 
       let cart;
       let orders;
@@ -437,6 +443,6 @@
       }
     });
   </script>
-  <script src="theme.js?v=20261117"></script>
+  <script src="theme.js?v=20261118"></script>
 </body>
 </html>
