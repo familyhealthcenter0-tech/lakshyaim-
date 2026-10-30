@@ -194,13 +194,17 @@ function refreshProductTable() {
       .map(
         (p, i) => `
       <tr data-search="${(p.name + " " + p.tag).toLowerCase()}">
-        <td class="cell-emoji"><span class="p-thumb" style="background:${p.bg}">${p.image ? `<img src="${p.image}" alt="" onerror="this.remove()" />` : p.emoji}</span></td>
-        <td>${p.name}</td>
+        <td class="cell-emoji"><span class="p-thumb" style="background:${p.bg}">${p.image ? `<img src="${p.image}" alt="" onerror="this.remove()" />` : (p.emoji || "")}</span></td>
+        <td><a href="product.html?id=${i}" target="_blank" style="color:var(--green);text-decoration:none;font-weight:600">${p.name}</a></td>
         <td>${p.tag}</td>
         <td>${formatPrice(p.price)}</td>
+        <td>${p.mrp ? formatPrice(p.mrp) : "-"}</td>
+        <td>${"\u2605".repeat(p.rating || 0)}</td>
         <td class="cell-actions">
-          <button class="edit-btn" data-index="${i}">✏️ Edit</button>
-          <button class="del-btn" data-index="${i}">🗑</button>
+          <button class="edit-btn" data-index="${i}">Edit</button>
+        </td>
+        <td class="cell-actions">
+          <button class="del-btn" data-index="${i}">Delete</button>
         </td>
       </tr>`
       )
@@ -250,8 +254,10 @@ if (addForm) {
 
     const imgPos = document.getElementById("pImgPos").value.trim();
     const imgZoom = parseFloat(document.getElementById("pImgZoom").value) || 0;
+    const benefitsRaw = document.getElementById("pBenefits").value.trim();
+    const benefits = benefitsRaw ? benefitsRaw.split(",").map((b) => b.trim()).filter(Boolean) : [];
     const product = {
-      emoji: emoji || "📦",
+      emoji: "",
       bg: "#eef5ec",
       ...(image ? { image } : {}),
       ...(image && imgPos ? { imgPos } : {}),
@@ -263,6 +269,12 @@ if (addForm) {
       reviews: +document.getElementById("pReviews").value || 0,
       price: +document.getElementById("pPrice").value,
       mrp: +document.getElementById("pMrp").value || 0,
+      description: document.getElementById("pDesc").value.trim(),
+      benefits: benefits,
+      ingredients: document.getElementById("pIngredients").value.trim(),
+      usage: document.getElementById("pUsage").value.trim(),
+      weight: document.getElementById("pWeight").value.trim(),
+      servings: +document.getElementById("pServings").value || 0,
     };
     if (editingIndex != null) {
       // Update existing product

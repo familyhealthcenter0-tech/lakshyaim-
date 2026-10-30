@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261115" />
-  <link rel="stylesheet" href="admin.css?v=20261115" />
+  <link rel="stylesheet" href="styles.css?v=20261116" />
+  <link rel="stylesheet" href="admin.css?v=20261116" />
 </head>
 <body class="admin-body">
 
@@ -206,6 +206,34 @@
                   <input type="number" id="pReviews" min="0" value="0" required />
                 </label>
               </div>
+              <div class="row">
+                <label style="grid-column:1/-1">Description
+                  <textarea id="pDesc" placeholder="Product ka detailed description..." rows="3" style="width:100%;padding:10px 14px;border:1.5px solid var(--card-border);border-radius:10px;font-size:0.92rem;font-family:inherit;resize:vertical"></textarea>
+                </label>
+              </div>
+              <div class="row">
+                <label style="grid-column:1/-1">Benefits (comma separated)
+                  <input type="text" id="pBenefits" placeholder="e.g. 18g Protein, Low sugar, Vegan friendly" />
+                </label>
+              </div>
+              <div class="row">
+                <label style="grid-column:1/-1">Ingredients
+                  <textarea id="pIngredients" placeholder="Soy Protein, Vitamins, Minerals..." rows="2" style="width:100%;padding:10px 14px;border:1.5px solid var(--card-border);border-radius:10px;font-size:0.92rem;font-family:inherit;resize:vertical"></textarea>
+                </label>
+              </div>
+              <div class="row">
+                <label>How to Use
+                  <input type="text" id="pUsage" placeholder="e.g. Mix 2 scoops with 250ml water" />
+                </label>
+                <label>Weight / Size
+                  <input type="text" id="pWeight" placeholder="e.g. 550g" />
+                </label>
+              </div>
+              <div class="row">
+                <label>Servings
+                  <input type="number" id="pServings" min="0" placeholder="21" />
+                </label>
+              </div>
               <button type="submit" class="btn">Save Product</button>
               <button type="button" class="btn btn-outline" id="resetProductsBtn">Reset to Default</button>
               <button type="button" class="btn btn-outline" id="downloadCatalogBtn">⬇ Download products.json</button>
@@ -220,7 +248,7 @@
             </div>
             <table class="orders-table">
               <thead>
-                <tr><th>Image</th><th>Name</th><th>Tag</th><th>Price</th><th>Delete</th></tr>
+                <tr><th>Image</th><th>Name</th><th>Tag</th><th>Price</th><th>MRP</th><th>Rating</th><th>Edit</th><th>Delete</th></tr>
               </thead>
               <tbody id="productTableBody"></tbody>
             </table>
@@ -549,9 +577,9 @@
     </div>
   </div>
 
-  <script src="products.js?v=20261115"></script>
-  <script src="site-content.js?v=20261115"></script>
-  <script src="admin.js?v=20261115"></script>
-  <script src="theme.js?v=20261115"></script>
+  <script src="products.js?v=20261116"></script>
+  <script src="site-content.js?v=20261116"></script>
+  <script src="admin.js?v=20261116"></script>
+  <script src="theme.js?v=20261116"></script>
 </body>
 </html>

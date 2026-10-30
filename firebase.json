@@ -25,6 +25,10 @@
         "destination": "/products.html"
       },
       {
+        "source": "/product",
+        "destination": "/product.html"
+      },
+      {
         "source": "/gallery",
         "destination": "/gallery.html"
       },
@@ -60,6 +64,10 @@
       },
       {
         "source": "/products",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+      },
+      {
+        "source": "/product",
         "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
       },
       {

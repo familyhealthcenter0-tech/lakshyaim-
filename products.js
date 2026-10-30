@@ -45,19 +45,21 @@ function productImgAttrs(p) {
 }
 
 function productCardHTML(p, index) {
-  const stars = "★".repeat(p.rating) + "☆".repeat(5 - p.rating);
+  const stars = "\u2605".repeat(p.rating) + "\u2606".repeat(5 - p.rating);
   const mrp = p.mrp && p.mrp > p.price ? ` <s>${formatPrice(p.mrp)}</s>` : "";
-  // Image ho to photo, warna emoji. Emoji peeche rehta hai — image load fail ho to wahi dikhega.
   const media = p.image
     ? `<img src="${p.image}" alt="${p.name}" loading="lazy" ${productImgAttrs(p)} onerror="this.remove()" />`
     : "";
   return `
-    <div class="card">
+    <div class="card" style="cursor:pointer" onclick="location.href='product.html?id=${index}'">
       <div class="card-img" style="background:${p.bg}"><span>${p.emoji}</span>${media}</div>
       <p class="tag ${p.tagClass}">${p.tag}</p>
-      <h3>${p.name}</h3>
+      <h3><a href="product.html?id=${index}" style="color:inherit;text-decoration:none">${p.name}</a></h3>
       <p class="stars">${stars} <span>(${p.reviews})</span></p>
       <p class="price">${formatPrice(p.price)}${mrp}</p>
-      <button class="btn btn-full add-cart-btn" data-index="${index}">Add to Cart</button>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn btn-full add-cart-btn" data-index="${index}" onclick="event.stopPropagation()">Add to Cart</button>
+        <a href="product.html?id=${index}" class="btn btn-outline" style="flex:0 0 auto;padding:10px 16px" onclick="event.stopPropagation()">Details</a>
+      </div>
     </div>`;
 }
