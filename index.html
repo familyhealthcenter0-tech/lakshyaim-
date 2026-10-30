@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261128" />
+  <link rel="stylesheet" href="styles.css?v=20261129" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#1e40af" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -26,6 +26,13 @@
     <span data-cms="topbar.t1"></span>
     <span class="topbar-sep">|</span>
     <span data-cms="topbar.t2"></span>
+  </div>
+
+  <!-- PWA Install Banner -->
+  <div id="pwaInstallBanner" style="display:none;background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;padding:12px 16px;text-align:center;position:sticky;top:0;z-index:200">
+    <span style="font-weight:600;margin-right:12px">Install Lakshyaim App for better experience</span>
+    <button id="pwaInstallBtn" style="background:#fff;color:var(--green);font-weight:700;padding:6px 16px;border-radius:8px;border:none;cursor:pointer;margin-right:8px">Install App</button>
+    <button id="pwaDismissBtn" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:4px 8px" aria-label="Dismiss">&times;</button>
   </div>
 
   <!-- Navbar : left hamburger · center logo · right actions -->
@@ -378,12 +385,44 @@
     <p class="lb-count" id="lbCount"></p>
   </div>
 
-  <script src="products.js?v=20261128"></script>
-  <script src="cart.js?v=20261128"></script>
-  <script src="site-content.js?v=20261128"></script>
-  <script src="script.js?v=20261128"></script>
-  <script src="auth.js?v=20261128"></script>
-  <script src="theme.js?v=20261128"></script>
+  <script src="products.js?v=20261129"></script>
+  <script src="cart.js?v=20261129"></script>
+  <script src="site-content.js?v=20261129"></script>
+  <script src="script.js?v=20261129"></script>
+  <script src="auth.js?v=20261129"></script>
+  <script src="theme.js?v=20261129"></script>
+  <script>
+    let deferredPrompt = null;
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const banner = document.getElementById("pwaInstallBanner");
+      if (banner) {
+        const dismissed = localStorage.getItem("pwa_dismissed");
+        if (!dismissed || (Date.now() - Number(dismissed)) > 7 * 24 * 60 * 60 * 1000) {
+          banner.style.display = "block";
+        }
+      }
+    });
+    document.getElementById("pwaInstallBtn")?.addEventListener("click", async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      const banner = document.getElementById("pwaInstallBanner");
+      if (banner) banner.style.display = "none";
+    });
+    document.getElementById("pwaDismissBtn")?.addEventListener("click", () => {
+      const banner = document.getElementById("pwaInstallBanner");
+      if (banner) banner.style.display = "none";
+      localStorage.setItem("pwa_dismissed", Date.now().toString());
+    });
+    window.addEventListener("appinstalled", () => {
+      const banner = document.getElementById("pwaInstallBanner");
+      if (banner) banner.style.display = "none";
+      deferredPrompt = null;
+    });
+  </script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js').catch(() => {});

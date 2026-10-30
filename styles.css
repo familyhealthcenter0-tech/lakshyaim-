@@ -1859,3 +1859,25 @@ h1, h2, h3 { font-weight: 800; }
 @media (max-width: 360px) {
   .logo-text { display: none; }
 }
+
+
+/* ===== PWA Install Banner ===== */
+#pwaInstallBanner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+}
+@media (max-width: 620px) {
+  #pwaInstallBanner {
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+  #pwaInstallBanner span {
+    font-size: 0.85rem;
+  }
+}
