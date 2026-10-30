@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261112" />
+  <link rel="stylesheet" href="styles.css?v=20261113" />
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
@@ -55,7 +55,12 @@
 
         <div class="cart-layout checkout-grid">
           <form id="coForm" class="co-form" novalidate>
-            <div class="co-section-title">📇 Contact</div>
+            <div id="savedAddressBox" style="display:none;margin-bottom:16px">
+              <div class="co-section-title">Saved Address</div>
+              <div id="savedAddressList"></div>
+            </div>
+
+            <div class="co-section-title">Contact</div>
             <div class="row">
               <label>Full name
                 <input type="text" id="coName" placeholder="e.g. Rahul Sharma" required />
@@ -104,9 +109,8 @@
               </select>
             </label>
 
-            <div class="co-section-title">💳 Payment</div>
-            <div class="pay-opts" id="payOpts"></div>
-            <p class="co-note" id="payNote"></p>
+            <div class="co-section-title">Payment</div>
+            <p class="co-note">Payment Razorpay ke through hoga - Place Order click karne par Razorpay gateway khulega.</p>
 
             <p class="form-msg" id="coMsg"></p>
             <button type="submit" class="btn btn-full" id="placeOrderBtn">Place Order</button>
@@ -140,38 +144,11 @@
     </div>
   </main>
 
-  <script src="products.js?v=20261112"></script>
+  <script src="products.js?v=20261113"></script>
   <script src="cart.js"></script>
-  <script src="site-content.js?v=20261112"></script>
-  <script src="auth.js?v=20261112"></script>
-  <script>
-    // Payment options — admin Settings se control hote hain
-    (function buildPay() {
-      const c = getSiteContent();
-      const opts = [
-        { key: "razorpay", val: "Razorpay", label: "Razorpay - UPI / Card / Netbanking" },
-      ];
-      const enabled = opts.filter((o) => c.payment[o.key]);
-      const host = document.getElementById("payOpts");
-      host.innerHTML = enabled.length
-        ? enabled
-            .map(
-              (o, i) =>
-                '<label class="pay-opt"><input type="radio" name="pay" value="' +
-                o.val +
-                '"' +
-                (i === 0 ? " checked" : "") +
-                " />" +
-                o.label +
-                "</label>"
-            )
-            .join("")
-        : '<span style="color:var(--muted);font-size:0.88rem">Koi payment method enabled nahi — admin Settings me on karo.</span>';
-      const note = document.getElementById("payNote");
-      let noteText = c.payment.note || "";
-      note.textContent = noteText;
-    })();
-  </script>
+  <script src="site-content.js?v=20261113"></script>
+  <script src="auth.js?v=20261113"></script>
+  
   <script>
     const fmt = (n) => "₹" + Number(n).toLocaleString("en-IN");
 
@@ -213,6 +190,9 @@
       const emailEl = document.getElementById("coEmail");
       if (!nameEl.value && user.displayName) nameEl.value = user.displayName;
       if (!emailEl.value && user.email) emailEl.value = user.email;
+
+      // Saved address load karo
+      loadSavedAddress(user.uid);
       document.getElementById("adUserChipTop").textContent = "👤 " + (user.displayName || user.email);
 
       // Cart khali → cart page par bhejo
@@ -267,6 +247,60 @@
 
     // Khali cart → cart page par bhejo (auth flow me bhi handle hota hai)
     renderSummary();
+
+    function getSavedAddresses(uid) {
+      try {
+        return JSON.parse(localStorage.getItem("lakshyaim_addresses_" + uid) || "[]");
+      } catch { return []; }
+    }
+
+    function saveAddress(uid, addr) {
+      const list = getSavedAddresses(uid);
+      // Check if same address already exists
+      const exists = list.some((a) => a.address === addr.address && a.city === addr.city && a.pin === addr.pin);
+      if (!exists) {
+        list.unshift(addr);
+        if (list.length > 5) list.pop(); // max 5 saved addresses
+        localStorage.setItem("lakshyaim_addresses_" + uid, JSON.stringify(list));
+      }
+    }
+
+    function loadSavedAddress(uid) {
+      const list = getSavedAddresses(uid);
+      const box = document.getElementById("savedAddressBox");
+      const container = document.getElementById("savedAddressList");
+      if (!list.length || !box || !container) { if (box) box.style.display = "none"; return; }
+      box.style.display = "block";
+      container.innerHTML = list.map((a, i) => `
+        <div class="saved-addr-card" data-idx="${i}" style="border:1.5px solid var(--card-border);border-radius:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:border-color .2s,background .2s">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <strong style="font-size:0.92rem">${a.name || "Address " + (i+1)}</strong>
+            <span style="font-size:0.78rem;color:var(--muted)">${a.city}, ${a.pin}</span>
+          </div>
+          <p style="margin:4px 0 0;font-size:0.84rem;color:var(--muted)">${a.address}, ${a.city} - ${a.pin}, ${a.state}</p>
+          <p style="margin:2px 0 0;font-size:0.82rem;color:var(--muted)">Phone: ${a.phone}</p>
+        </div>
+      `).join("");
+
+      container.querySelectorAll(".saved-addr-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          const i = Number(card.dataset.idx);
+          const a = list[i];
+          document.getElementById("coName").value = a.name || "";
+          document.getElementById("coPhone").value = a.phone || "";
+          document.getElementById("coEmail").value = a.email || "";
+          document.getElementById("coAddress").value = a.address || "";
+          document.getElementById("coCity").value = a.city || "";
+          document.getElementById("coPin").value = a.pin || "";
+          const stateEl = document.getElementById("coState");
+          if (stateEl && a.state) stateEl.value = a.state;
+          // Highlight selected
+          container.querySelectorAll(".saved-addr-card").forEach((c) => { c.style.borderColor = "var(--card-border)"; c.style.background = ""; });
+          card.style.borderColor = "var(--green)";
+          card.style.background = "var(--green-light)";
+        });
+      });
+    }
 
     document.getElementById("coForm").addEventListener("submit", (e) => {
       e.preventDefault();
@@ -364,6 +398,10 @@
             if (btn) { btn.disabled = false; btn.textContent = "Place Order"; }
             return;
           }
+          // Save address for future use
+          if (authedUser && authedUser.uid) {
+            saveAddress(authedUser.uid, { name, phone: phoneDigits, email: authedUser.email || email, address, city, pin, state });
+          }
           clearCart();
           document.getElementById("checkoutView").style.display = "none";
           document.getElementById("successView").style.display = "block";
@@ -399,6 +437,6 @@
       }
     });
   </script>
-  <script src="theme.js?v=20261112"></script>
+  <script src="theme.js?v=20261113"></script>
 </body>
 </html>
