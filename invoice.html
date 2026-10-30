@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261120" />
+  <link rel="stylesheet" href="styles.css?v=20261121" />
   <style>
     /* Invoice-specific styles */
     .invoice-wrap {
@@ -203,8 +203,8 @@
     <p style="text-align:center;color:var(--muted);padding:60px 0">Loading invoice...</p>
   </div>
 
-  <script src="products.js?v=20261120"></script>
-  <script src="site-content.js?v=20261120"></script>
+  <script src="products.js?v=20261121"></script>
+  <script src="site-content.js?v=20261121"></script>
   <script>
     (function() {
       const params = new URLSearchParams(location.search);
@@ -276,7 +276,7 @@
           </div>
         </div>
 
-        ${gstin ? `<p style="font-size:0.85rem;color:var(--muted);margin-bottom:16px">GSTIN: ${gstin}</p>` : ""}
+        ${gstin ? `<div style="background:var(--green-light);border:1px solid #cbeadd;border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:0.88rem;color:var(--green-dark)"><b>GSTIN:</b> ${gstin}</div>` : ""}
 
         <table class="invoice-table">
           <thead>
@@ -294,15 +294,27 @@
         </table>
 
         <div class="invoice-totals">
+          ${gstRate ? (() => {
+            const gstAmount = Math.round((order.total * gstRate) / (100 + gstRate));
+            const baseAmount = order.total - gstAmount;
+            return `
+          <div class="total-row">
+            <span>Taxable Amount</span>
+            <b>${fmt(baseAmount)}</b>
+          </div>
+          <div class="total-row">
+            <span>GST (${gstRate}%)</span>
+            <b>${fmt(gstAmount)}</b>
+          </div>`;
+          })() : `
           <div class="total-row">
             <span>Subtotal</span>
             <b>${fmt(order.total)}</b>
-          </div>
+          </div>`}
           <div class="total-row">
             <span>Shipping</span>
             <b>FREE</b>
           </div>
-          ${gstRate ? `<div class="total-row"><span>GST (${gstRate}%)</span><b>Included</b></div>` : ""}
           <div class="total-row grand">
             <span>Total</span>
             <b>${fmt(order.total)}</b>
@@ -324,7 +336,7 @@
       document.getElementById("invoiceContent").innerHTML = html;
     })();
   </script>
-  <script src="theme.js?v=20261120"></script>
+  <script src="theme.js?v=20261121"></script>
 </body>
 </html>
 PY
