@@ -596,16 +596,16 @@ document.getElementById("logoFile")?.addEventListener("change", async (e) => {
     applyLogo();
     const preview = document.getElementById("logoPreview");
     if (preview) preview.innerHTML = '<img src="' + dataUrl + '" alt="Logo" />';
-    logActivity("🖼", "Website logo upload kiya");
+    logActivity("L", "Website logo upload kiya");
     const msg = document.getElementById("settingsMsg");
     if (msg) {
-      msg.textContent = "✅ Logo upload ho gaya — header aur sidebar me turant apply.";
+      msg.textContent = "Logo upload ho gaya - header aur sidebar me turant apply.";
       msg.style.color = "#0b6b46";
     }
   } catch {
     const msg = document.getElementById("settingsMsg");
     if (msg) {
-      msg.textContent = "❌ Logo upload fail — chhota image try karo.";
+      msg.textContent = "Logo upload fail - chhota image try karo.";
       msg.style.color = "#b33232";
     }
   }
@@ -619,10 +619,10 @@ document.getElementById("removeLogoBtn")?.addEventListener("click", () => {
   applyLogo();
   const preview = document.getElementById("logoPreview");
   if (preview) preview.innerHTML = '<span class="logo-mark">L</span>';
-  logActivity("🖼", "Website logo remove kiya");
+  logActivity("L", "Website logo remove kiya");
   const msg = document.getElementById("settingsMsg");
   if (msg) {
-    msg.textContent = "✅ Logo remove ho gaya — default L mark wapas.";
+    msg.textContent = "Logo remove ho gaya - default L mark wapas.";
     msg.style.color = "#0b6b46";
   }
 });
