@@ -164,10 +164,32 @@
 
     /* Print styles */
     @media print {
-      body { background: #fff !important; }
+      body { background: #fff !important; font-size: 11px; }
       .navbar, .invoice-actions, .topbar { display: none !important; }
-      .invoice-wrap { box-shadow: none; border: none; margin: 0; padding: 20px; }
-      @page { margin: 15mm; }
+      .invoice-wrap { box-shadow: none; border: none; margin: 0; padding: 12px 16px; max-width: 100%; }
+      .invoice-header { margin-bottom: 16px; padding-bottom: 12px; }
+      .invoice-brand .logo-mark, .invoice-brand img { width: 36px; height: 36px; }
+      .invoice-brand h1 { font-size: 1.2rem; }
+      .invoice-brand p { font-size: 0.75rem; margin: 0; }
+      .invoice-meta h2 { font-size: 1.4rem; }
+      .invoice-meta p { font-size: 0.78rem; margin: 1px 0; }
+      .invoice-parties { gap: 12px; margin-bottom: 16px; }
+      .invoice-party h3 { font-size: 0.78rem; margin: 0 0 4px; }
+      .invoice-party p { font-size: 0.82rem; margin: 1px 0; }
+      .invoice-party .party-name { font-size: 0.92rem; }
+      .invoice-table th { padding: 6px 8px; font-size: 0.75rem; }
+      .invoice-table td { padding: 6px 8px; font-size: 0.82rem; }
+      .invoice-totals { width: 280px; margin-bottom: 12px; }
+      .invoice-totals .total-row { padding: 4px 0; font-size: 0.82rem; }
+      .invoice-totals .total-row.grand { font-size: 1rem; padding-top: 8px; }
+      .invoice-footer { padding-top: 12px; font-size: 0.75rem; }
+      .invoice-footer p { margin: 2px 0; }
+      .invoice-wrap > div[style*="margin-top:24px"] { margin-top: 12px !important; padding: 10px !important; }
+      .invoice-wrap > div[style*="margin-top:24px"] ul { margin: 0; }
+      .invoice-wrap > div[style*="margin-top:24px"] li { font-size: 0.75rem; line-height: 1.5; }
+      .invoice-wrap > div[style*="display:flex"] { margin-bottom: 12px !important; }
+      .invoice-wrap > div[style*="display:flex"] div { margin-top: 24px !important; }
+      @page { margin: 8mm; size: A4; }
     }
 
     @media (max-width: 640px) {
