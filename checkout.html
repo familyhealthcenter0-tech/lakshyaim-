@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261127" />
+  <link rel="stylesheet" href="styles.css?v=20261128" />
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
@@ -144,10 +144,10 @@
     </div>
   </main>
 
-  <script src="products.js?v=20261127"></script>
+  <script src="products.js?v=20261128"></script>
   <script src="cart.js"></script>
-  <script src="site-content.js?v=20261127"></script>
-  <script src="auth.js?v=20261127"></script>
+  <script src="site-content.js?v=20261128"></script>
+  <script src="auth.js?v=20261128"></script>
   
   <script>
     const fmt = (n) => "₹" + Number(n).toLocaleString("en-IN");
@@ -371,7 +371,7 @@
       if (btn) { btn.disabled = true; btn.textContent = "Processing..."; }
 
       const order = {
-        id: "#LA-" + String(2000 + orders.length + Math.floor(Math.random() * 90 + 10)),
+        id: "#LA-" + new Date().toISOString().slice(0,10).replace(/-/g,"") + "-" + String(Math.floor(Math.random() * 9000 + 1000)),
         date: new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }),
         customer: { name, phone: phoneDigits, email: authedUser.email || email, address, city, state, uid: authedUser.uid },
         pay: "Razorpay",
@@ -443,6 +443,6 @@
       }
     });
   </script>
-  <script src="theme.js?v=20261127"></script>
+  <script src="theme.js?v=20261128"></script>
 </body>
 </html>
