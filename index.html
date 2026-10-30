@@ -582,7 +582,7 @@
     }
   </script>
   <script>
-    function toggleChatbot() {
+    window.toggleChatbot = function() {
       var w = document.getElementById("chatbotWindow");
       if (w) {
         if (w.style.display === "none" || !w.style.display) {
