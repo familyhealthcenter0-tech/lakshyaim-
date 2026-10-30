@@ -796,8 +796,7 @@
         sugDiv.appendChild(btn);
       });
       chatbotMessages.parentElement.insertBefore(sugDiv, chatbotMessages.nextSibling);
-    })();
-
+      // sendMessage defined below, inside IIFE
       async function sendMessage() {
         const text = chatbotInput.value.trim();
         if (!text) return;
@@ -819,20 +818,7 @@
         if (e.key === "Enter") sendMessage();
       });
 
-      const suggestions = ["Products list", "Formula 1 price", "Shipping info", "Payment options"];
-      const sugDiv = document.createElement("div");
-      sugDiv.style.cssText = "display:flex;gap:6px;flex-wrap:wrap;padding:8px 16px;background:#f0f2f5";
-      suggestions.forEach((sug) => {
-        const btn = document.createElement("button");
-        btn.textContent = sug;
-        btn.style.cssText = "background:#fff;border:1px solid var(--card-border);border-radius:999px;padding:4px 12px;font-size:0.78rem;cursor:pointer;color:var(--green)";
-        btn.addEventListener("click", () => {
-          chatbotInput.value = sug;
-          sendMessage();
-        });
-        sugDiv.appendChild(btn);
-      });
-      chatbotMessages.parentElement.insertBefore(sugDiv, chatbotMessages.nextSibling);
+      // suggestions already rendered above
     })();
   </script>
 
