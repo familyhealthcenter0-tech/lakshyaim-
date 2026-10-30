@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261143" />
+  <link rel="stylesheet" href="styles.css?v=20261144" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#1e40af" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -366,7 +366,7 @@
         <h4>Support</h4>
         <a href="#">FAQs</a><a href="#">Shipping</a><a href="#">Returns</a><a href="#">Privacy</a>
         <a href="admin.html">Admin Login</a>
-        <a href="#" onclick="document.getElementById('chatbotFabBtn').click();return false;">Chat with Us</a>
+        <a href="#" onclick="window.toggleChatbot();return false;">Chat with Us</a>
       </div>
     </div>
     <div class="footer-credit-inner">
@@ -392,11 +392,11 @@
     <p class="lb-count" id="lbCount"></p>
   </div>
 
-  <script src="products.js?v=20261143"></script>
-  <script src="cart.js?v=20261143"></script>
-  <script src="site-content.js?v=20261143"></script>
-  <script src="script.js?v=20261143"></script>
-  <script src="auth.js?v=20261143"></script>
+  <script src="products.js?v=20261144"></script>
+  <script src="cart.js?v=20261144"></script>
+  <script src="site-content.js?v=20261144"></script>
+  <script src="script.js?v=20261144"></script>
+  <script src="auth.js?v=20261144"></script>
   <!-- PWA Install Popup -->
   <div id="pwaPopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;padding:16px">
     <div style="background:#fff;border-radius:20px;padding:32px;max-width:400px;width:100%;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,0.2);position:relative">
@@ -418,12 +418,7 @@
     </button>
   </div>
 
-  <!-- Chatbot Widget -->
-  <div id="chatbotFab" style="position:fixed;bottom:20px;left:20px;z-index:100">
-    <button id="chatbotFabBtn" onclick="toggleChatbot()" style="background:var(--green);color:#fff;border:none;border-radius:50%;width:56px;height:56px;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 16px rgba(30,64,175,0.3);display:flex;align-items:center;justify-content:center;z-index:9999;position:relative" title="Chat with us">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-    </button>
-  </div>
+  <!-- Chatbot Widget (no floating button - accessible via footer link) -->
 
   <div id="chatbotWindow" style="display:none;position:fixed;bottom:90px;left:20px;z-index:1001;width:360px;max-width:calc(100vw - 40px);height:500px;max-height:calc(100vh - 120px);background:#fff;border-radius:20px;box-shadow:0 8px 40px rgba(0,0,0,0.15);flex-direction:column;overflow:hidden">
     <div style="background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between">
@@ -450,7 +445,7 @@
     </div>
   </div>
 
-  <script src="theme.js?v=20261143"></script>
+  <script src="theme.js?v=20261144"></script>
   <script>
     let deferredPrompt = null;
 
@@ -595,14 +590,6 @@
       }
     };
     (function() {
-      var btn = document.getElementById("chatbotFabBtn");
-      if (btn) {
-        btn.addEventListener("click", function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          window.toggleChatbot();
-        });
-      }
       var closeBtn = document.getElementById("chatbotClose");
       if (closeBtn) {
         closeBtn.addEventListener("click", function() {
@@ -612,21 +599,11 @@
       }
     })();
     (function() {
-      const chatbotFab = document.getElementById("chatbotFabBtn");
       const chatbotWindow = document.getElementById("chatbotWindow");
       const chatbotClose = document.getElementById("chatbotClose");
       const chatbotInput = document.getElementById("chatbotInput");
       const chatbotSend = document.getElementById("chatbotSend");
       const chatbotMessages = document.getElementById("chatbotMessages");
-
-      chatbotFab?.addEventListener("click", () => {
-        if (chatbotWindow.style.display === "none" || !chatbotWindow.style.display) {
-          chatbotWindow.style.display = "flex";
-          chatbotInput?.focus();
-        } else {
-          chatbotWindow.style.display = "none";
-        }
-      });
 
       chatbotClose?.addEventListener("click", () => {
         chatbotWindow.style.display = "none";
