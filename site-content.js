@@ -63,11 +63,9 @@ const CONTENT_DEFAULTS = {
     copyright: "© 2026 Lakshyaim Private Limited — All rights reserved.",
   },
   payment: {
-    cod: true,
-    upi: true,
-    card: true,
-    upiId: "",
-    note: "Demo store — payment gateway integration next phase me hai (RFP §4.5). COD pe abhi order place hota hai.",
+    razorpay: false,
+    razorpayKey: "",
+    note: "Secure payment via Razorpay",
   },
 };
 

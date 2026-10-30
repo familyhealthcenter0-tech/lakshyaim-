@@ -9,7 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261108" />
+  <link rel="stylesheet" href="styles.css?v=20261109" />
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
 
@@ -139,10 +140,10 @@
     </div>
   </main>
 
-  <script src="products.js?v=20261108"></script>
+  <script src="products.js?v=20261109"></script>
   <script src="cart.js"></script>
-  <script src="site-content.js?v=20261108"></script>
-  <script src="auth.js?v=20261108"></script>
+  <script src="site-content.js?v=20261109"></script>
+  <script src="auth.js?v=20261109"></script>
   <script>
     // Payment options — admin Settings se control hote hain
     (function buildPay() {
@@ -271,7 +272,7 @@
       e.preventDefault();
       const msg = document.getElementById("coMsg");
       if (!authedUser) {
-        msg.textContent = "❌ Pehle Google se sign in karo.";
+        msg.textContent = "Pehle Google se sign in karo.";
         msg.style.color = "#b33232";
         return;
       }
@@ -283,17 +284,12 @@
       const pin = document.getElementById("coPin").value.trim().replace(/\s/g, "");
       const state = document.getElementById("coState").value;
 
-      // Payment — agar koi radio checked nahi to COD default
-      const payEl = document.querySelector("input[name='pay']:checked");
-      const pay = payEl ? payEl.value : "COD";
-
       const fail = (t) => {
-        msg.textContent = "❌ " + t;
+        msg.textContent = t;
         msg.style.color = "#b33232";
         return false;
       };
 
-      // Phone flexible: +91, spaces, dashes sab chalega
       const phoneDigits = phoneRaw.replace(/\D/g, "").replace(/^91(?=\d{10}$)/, "");
       if (!name) return fail("Full name likhein.");
       if (!/^\d{10}$/.test(phoneDigits)) return fail("Phone 10 digits ka hona chahiye (+91 ya spaces chalega).");
@@ -308,52 +304,101 @@
         cart = getCart();
         orders = JSON.parse(localStorage.getItem("lakshyaim_orders") || "[]");
       } catch (err) {
-        msg.textContent = "❌ Browser storage block ho raha hai — private/incognito window ki jagah normal window me try karo.";
+        msg.textContent = "Browser storage block ho raha hai - private/incognito window ki jagah normal window me try karo.";
         msg.style.color = "#b33232";
         return;
       }
 
       if (!cart.length) {
-        msg.textContent = "❌ Cart khali hai — pehle shop se product add karo.";
+        msg.textContent = "Cart khali hai - pehle shop se product add karo.";
         msg.style.color = "#b33232";
         setTimeout(() => (location.href = "cart.html"), 1200);
         return;
       }
 
-      // Total — renderSummary ke computed values se (consistent)
       const total = renderSummary().total;
+      const c = getSiteContent();
+      const rzpKey = (c.payment && c.payment.razorpayKey) ? c.payment.razorpayKey.trim() : "";
+
+      if (!rzpKey) {
+        msg.textContent = "Razorpay key configure nahi hai - admin Settings me key add karo.";
+        msg.style.color = "#b33232";
+        return;
+      }
+
+      // Disable button while processing
+      const btn = document.getElementById("placeOrderBtn");
+      if (btn) { btn.disabled = true; btn.textContent = "Processing..."; }
 
       const order = {
         id: "#LA-" + String(2000 + orders.length + Math.floor(Math.random() * 90 + 10)),
         date: new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }),
         customer: { name, phone: phoneDigits, email: authedUser.email || email, address, city, state, uid: authedUser.uid },
-        pay,
+        pay: "Razorpay",
         items: cart,
         total,
         status: "Pending",
       };
-      orders.push(order);
+
+      const options = {
+        key: rzpKey,
+        amount: Math.round(total * 100),
+        currency: "INR",
+        name: "Lakshyaim Private Limited",
+        description: "Order " + order.id,
+        prefill: {
+          name: name,
+          email: authedUser.email || email,
+          contact: phoneDigits,
+        },
+        theme: { color: "#0d7377" },
+        handler: function (response) {
+          order.paymentId = response.razorpay_payment_id;
+          order.status = "Paid";
+          orders.push(order);
+          try {
+            localStorage.setItem("lakshyaim_orders", JSON.stringify(orders));
+          } catch (err) {
+            msg.textContent = "Storage full/block hai - order save nahi hua.";
+            msg.style.color = "#b33232";
+            if (btn) { btn.disabled = false; btn.textContent = "Place Order"; }
+            return;
+          }
+          clearCart();
+          document.getElementById("checkoutView").style.display = "none";
+          document.getElementById("successView").style.display = "block";
+          document.getElementById("orderId").textContent = order.id;
+          document.getElementById("successText").textContent =
+            "Shukriya, " + name.split(" ")[0] + "! Payment successful (ID: " + response.razorpay_payment_id + "). Aapka " + order.items.length +
+            "-item order (" + fmt(order.total) + ") confirm ho gaya hai - " +
+            city + " me 3-5 working days me pahunchega.";
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          if (btn) { btn.disabled = false; btn.textContent = "Place Order"; }
+        },
+        modal: {
+          ondismiss: function () {
+            msg.textContent = "Payment cancel ho gaya. Dobara try karo.";
+            msg.style.color = "#b33232";
+            if (btn) { btn.disabled = false; btn.textContent = "Place Order"; }
+          },
+        },
+      };
+
       try {
-        localStorage.setItem("lakshyaim_orders", JSON.stringify(orders));
+        const rzp = new Razorpay(options);
+        rzp.on("payment.failed", function (response) {
+          msg.textContent = "Payment failed: " + (response.error.description || "Unknown error");
+          msg.style.color = "#b33232";
+          if (btn) { btn.disabled = false; btn.textContent = "Place Order"; }
+        });
+        rzp.open();
       } catch (err) {
-        msg.textContent = "❌ Storage full/block hai — order save nahi hua. Browser settings check karo.";
+        msg.textContent = "Razorpay load nahi hua - internet check karo.";
         msg.style.color = "#b33232";
-        return;
+        if (btn) { btn.disabled = false; btn.textContent = "Place Order"; }
       }
-      clearCart();
-
-      // Success screen
-      document.getElementById("checkoutView").style.display = "none";
-      document.getElementById("successView").style.display = "block";
-      document.getElementById("orderId").textContent = order.id;
-      document.getElementById("successText").textContent =
-        "Shukriya, " + name.split(" ")[0] + "! Aapka " + order.items.length +
-        "-item order (" + fmt(order.total) + ", " + pay + ") confirm ho gaya hai — " +
-        city + " me 3–5 working days me pahunchega. Admin dashboard me bhi status dikh jayega.";
-
-      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   </script>
-  <script src="theme.js?v=20261108"></script>
+  <script src="theme.js?v=20261109"></script>
 </body>
 </html>
