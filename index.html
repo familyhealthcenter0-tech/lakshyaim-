@@ -420,7 +420,7 @@
 
   <!-- Chatbot Widget -->
   <div id="chatbotFab" style="position:fixed;bottom:20px;left:20px;z-index:100">
-    <button id="chatbotFabBtn" style="background:var(--green);color:#fff;border:none;border-radius:50%;width:56px;height:56px;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 16px rgba(30,64,175,0.3);display:flex;align-items:center;justify-content:center" title="Chat with us">
+    <button id="chatbotFabBtn" onclick="toggleChatbot()" style="background:var(--green);color:#fff;border:none;border-radius:50%;width:56px;height:56px;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 16px rgba(30,64,175,0.3);display:flex;align-items:center;justify-content:center;z-index:9999;position:relative" title="Chat with us">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
     </button>
   </div>
@@ -582,6 +582,18 @@
     }
   </script>
   <script>
+    function toggleChatbot() {
+      var w = document.getElementById("chatbotWindow");
+      if (w) {
+        if (w.style.display === "none" || !w.style.display) {
+          w.style.display = "flex";
+          var input = document.getElementById("chatbotInput");
+          if (input) input.focus();
+        } else {
+          w.style.display = "none";
+        }
+      }
+    }
     (function() {
       const chatbotFab = document.getElementById("chatbotFabBtn");
       const chatbotWindow = document.getElementById("chatbotWindow");
