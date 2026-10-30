@@ -445,6 +445,7 @@
 .st-done { background: #e6f7f0; color: #0b6b46; }
 .st-ship { background: #e4edfb; color: #1d4fd7; }
 .st-pend { background: #fef3c7; color: #b45309; }
+.st-paid { background: #e0f5f4; color: #0a5a5e; }
 .pay-chip {
   background: var(--green-light);
   color: var(--green-dark);

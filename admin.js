@@ -381,7 +381,7 @@ function renderRecentOrders() {
     .slice(0, 8)
     .map(
       (o) => {
-        const stClass = o.status === "Delivered" ? "st-done" : o.status === "Shipped" ? "st-ship" : "st-pend";
+        const stClass = o.status === "Delivered" ? "st-done" : o.status === "Shipped" ? "st-ship" : o.status === "Paid" ? "st-paid" : "st-pend";
         const detailId = "od-" + o.id.replace(/[^a-zA-Z0-9]/g, "");
         return `
       <tr class="order-row" data-oid="${o.id}">
@@ -395,6 +395,7 @@ function renderRecentOrders() {
         <td>
           <select class="status-select ${stClass}" data-id="${o.id}" aria-label="Order status">
             <option value="Pending" ${o.status === "Pending" ? "selected" : ""}>Pending</option>
+            <option value="Paid" ${o.status === "Paid" ? "selected" : ""}>Paid</option>
             <option value="Shipped" ${o.status === "Shipped" ? "selected" : ""}>Shipped</option>
             <option value="Delivered" ${o.status === "Delivered" ? "selected" : ""}>Delivered</option>
           </select>
