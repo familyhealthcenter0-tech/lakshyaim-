@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261121" />
+  <link rel="stylesheet" href="styles.css?v=20261122" />
   <style>
     /* Invoice-specific styles */
     .invoice-wrap {
@@ -203,8 +203,8 @@
     <p style="text-align:center;color:var(--muted);padding:60px 0">Loading invoice...</p>
   </div>
 
-  <script src="products.js?v=20261121"></script>
-  <script src="site-content.js?v=20261121"></script>
+  <script src="products.js?v=20261122"></script>
+  <script src="site-content.js?v=20261122"></script>
   <script>
     (function() {
       const params = new URLSearchParams(location.search);
@@ -294,23 +294,18 @@
         </table>
 
         <div class="invoice-totals">
+          <div class="total-row">
+            <span>Subtotal</span>
+            <b>${fmt(order.total)}</b>
+          </div>
           ${gstRate ? (() => {
             const gstAmount = Math.round((order.total * gstRate) / (100 + gstRate));
-            const baseAmount = order.total - gstAmount;
             return `
-          <div class="total-row">
-            <span>Taxable Amount</span>
-            <b>${fmt(baseAmount)}</b>
-          </div>
           <div class="total-row">
             <span>GST (${gstRate}%)</span>
             <b>${fmt(gstAmount)}</b>
           </div>`;
-          })() : `
-          <div class="total-row">
-            <span>Subtotal</span>
-            <b>${fmt(order.total)}</b>
-          </div>`}
+          })() : ""}
           <div class="total-row">
             <span>Shipping</span>
             <b>FREE</b>
@@ -336,7 +331,7 @@
       document.getElementById("invoiceContent").innerHTML = html;
     })();
   </script>
-  <script src="theme.js?v=20261121"></script>
+  <script src="theme.js?v=20261122"></script>
 </body>
 </html>
 PY
