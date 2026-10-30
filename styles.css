@@ -174,16 +174,20 @@ h1, h2, h3 { font-weight: 800; }
 .logo-light .logo-text { color: #fff; }
 .nav-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
 .icon-btn {
-  background: none;
-  border: none;
+  background: #fff;
+  border: 1.5px solid var(--card-border);
   font-size: 1.05rem;
   cursor: pointer;
   position: relative;
   padding: 7px;
   border-radius: 11px;
-  transition: background 0.2s;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
 }
-.icon-btn:hover { background: var(--green-light); }
+.icon-btn:hover { background: var(--green-light); border-color: #cfe6d9; box-shadow: var(--shadow-soft); }
 .cart-count {
   position: absolute;
   top: -1px;
@@ -1670,8 +1674,7 @@ h1, h2, h3 { font-weight: 800; }
 [data-theme="dark"] .cta-box { background: linear-gradient(135deg, #0f172a, #1e293b); }
 [data-theme="dark"] .footer { background: #0b1220; }
 [data-theme="dark"] .topbar { background: linear-gradient(90deg, #0b1220, #0f172a); }
-[data-theme="dark"] .icon-btn:hover { background: var(--green-light); }
-[data-theme="dark"] .btn-outline { background: var(--alt); color: var(--green-dark); border-color: var(--card-border); }
+[data-theme="dark"] [data-theme="dark"] .btn-outline { background: var(--alt); color: var(--green-dark); border-color: var(--card-border); }
 [data-theme="dark"] .btn-outline:hover { background: var(--green-light); border-color: var(--green); }
 [data-theme="dark"] .btn-ghost:hover { background: var(--green-light); }
 [data-theme="dark"] .hero { background: radial-gradient(ellipse 46% 42% at 90% 8%, rgba(20, 184, 166, 0.10) 0%, transparent 100%), radial-gradient(ellipse 40% 36% at 4% 96%, rgba(244, 63, 94, 0.08) 0%, transparent 100%), linear-gradient(120deg, var(--cream) 55%, #1e293b); }
