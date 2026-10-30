@@ -11,6 +11,12 @@
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
   <link rel="stylesheet" href="styles.css?v=20261128" />
   <link rel="stylesheet" href="admin.css?v=20261128" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1e40af" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Lakshyaim" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='40' fill='%231e40af'/%3E%3Ctext x='96' y='128' font-size='100' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='800'%3EL%3C/text%3E%3C/svg%3E" />
 </head>
 <body class="admin-body">
 
@@ -621,5 +627,10 @@
   <script src="site-content.js?v=20261128"></script>
   <script src="admin.js?v=20261128"></script>
   <script src="theme.js?v=20261128"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+  </script>
 </body>
 </html>
