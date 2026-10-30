@@ -1,4 +1,4 @@
-const CACHE_NAME = "lakshyaim-v1";
+const CACHE_NAME = "lakshyaim-v2";
 const OFFLINE_URLS = [
   "/",
   "/index.html",
@@ -10,12 +10,17 @@ const OFFLINE_URLS = [
   "/cart.js",
   "/auth.js",
   "/manifest.json",
+  "/icon-192.svg",
+  "/icon-512.svg",
+  "/sw.js",
 ];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(OFFLINE_URLS).catch(() => {});
+      return cache.addAll(OFFLINE_URLS).catch((err) => {
+        console.log("Cache addAll error:", err);
+      });
     })
   );
   self.skipWaiting();
