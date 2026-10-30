@@ -259,7 +259,7 @@
           </div>
           <div class="invoice-meta">
             <h2>INVOICE</h2>
-            <p class="invoice-no">${order.id}</p>
+            <p class="invoice-no"># ${order.id}</p>
             <p>Date: ${order.date}</p>
             <p>Status: ${order.status}</p>
             ${order.paymentId ? `<p>Payment ID: ${order.paymentId}</p>` : ""}
@@ -328,9 +328,31 @@
           ${order.paymentId ? `<p style="font-size:0.88rem;color:var(--muted)"><b>Transaction ID:</b> ${order.paymentId}</p>` : ""}
         </div>
 
+        <div style="margin-top:24px;padding:16px;background:var(--alt);border-radius:10px;margin-bottom:24px">
+          <h3 style="font-size:0.9rem;margin:0 0 8px;color:var(--ink)">Terms & Conditions</h3>
+          <ul style="margin:0;padding-left:18px;font-size:0.82rem;color:var(--muted);line-height:1.8">
+            <li>Goods once sold will not be taken back or exchanged.</li>
+            <li>Payment is due within 7 days of invoice date.</li>
+            <li>All disputes subject to local jurisdiction.</li>
+            <li>This is a computer-generated invoice and does not require a physical signature.</li>
+          </ul>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;padding-top:16px">
+          <div>
+            <p style="font-size:0.82rem;color:var(--muted);margin:0">Customer Signature</p>
+            <div style="border-bottom:1px solid var(--card-border);width:180px;margin-top:40px"></div>
+          </div>
+          <div style="text-align:right">
+            <p style="font-size:0.82rem;color:var(--muted);margin:0">Authorized Signatory</p>
+            <div style="border-bottom:1px solid var(--card-border);width:180px;margin-top:40px;margin-left:auto"></div>
+            <p style="font-size:0.78rem;color:var(--muted);margin:4px 0 0">${companyName}</p>
+          </div>
+        </div>
+
         <div class="invoice-footer">
-          <p>Thank you for shopping with Lakshyaim Private Limited!</p>
-          <p>For queries, contact us. This is a computer-generated invoice.</p>
+          <p>Thank you for shopping with ${companyName}!</p>
+          <p>For queries, contact us at ${companyEmail || "our support email"}. This is a computer-generated invoice.</p>
           ${gstin ? `<p style="margin-top:8px">GSTIN: ${gstin}</p>` : ""}
         </div>
       `;
