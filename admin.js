@@ -441,7 +441,10 @@ function renderRecentOrders() {
                 )
                 .join("")}
             </div>
-            <div class="od-total">Order Total · <b>${fmtN(o.total)}</b></div>
+            <div class="od-total">Order Total <b>${fmtN(o.total)}</b></div>
+            <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+              <a href="invoice.html?id=${encodeURIComponent(o.id)}" target="_blank" class="btn btn-sm" style="text-decoration:none">Print Invoice</a>
+            </div>
           </div>
         </td>
       </tr>`;
