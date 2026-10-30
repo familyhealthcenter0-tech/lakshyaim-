@@ -58,9 +58,16 @@ const CONTENT_DEFAULTS = {
     ],
   },
   footer: {
-    about: "Lakshyaim Private Limited — balanced, science-backed nutrition for everyday life. Made in India, made for routines.",
+    about: "Lakshyaim Private Limited - balanced, science-backed nutrition for everyday life. Made in India, made for routines.",
     credit: "Designed & Developed with ❤️ by <b>Mukesh Sharma</b>",
-    copyright: "© 2026 Lakshyaim Private Limited — All rights reserved.",
+    copyright: "© 2026 Lakshyaim Private Limited - All rights reserved.",
+    social: {
+      instagram: "#",
+      facebook: "#",
+      youtube: "#",
+      whatsapp: "#",
+      twitter: "#",
+    },
   },
   payment: {
     razorpay: false,
@@ -195,8 +202,25 @@ function buildPlans() {
     .join("");
 }
 
+function applySocialLinks() {
+  const c = getSiteContent();
+  const social = (c.footer && c.footer.social) || {};
+  const map = {
+    socialInstagram: social.instagram,
+    socialFacebook: social.facebook,
+    socialYoutube: social.youtube,
+    socialWhatsapp: social.whatsapp,
+    socialTwitter: social.twitter,
+  };
+  Object.keys(map).forEach((id) => {
+    const el = document.getElementById(id);
+    if (el && map[id]) el.setAttribute("href", map[id]);
+  });
+}
+
 function applySiteContent() {
   applyContentText();
+  applySocialLinks();
   buildHeroStats();
   buildWhyCards();
   buildTestimonials();

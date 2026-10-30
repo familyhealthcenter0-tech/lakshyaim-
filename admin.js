@@ -1328,6 +1328,41 @@ document.getElementById("savePaymentBtn")?.addEventListener("click", () => {
   pm.style.color = "#0b6b46";
 });
 
+// ===== Social media settings =====
+function loadSocialSettings() {
+  const c = getSiteContent();
+  const social = (c.footer && c.footer.social) || {};
+  const ig = document.getElementById("socialInstagramUrl");
+  const fb = document.getElementById("socialFacebookUrl");
+  const yt = document.getElementById("socialYoutubeUrl");
+  const wa = document.getElementById("socialWhatsappUrl");
+  const tw = document.getElementById("socialTwitterUrl");
+  if (ig) ig.value = social.instagram || "";
+  if (fb) fb.value = social.facebook || "";
+  if (yt) yt.value = social.youtube || "";
+  if (wa) wa.value = social.whatsapp || "";
+  if (tw) tw.value = social.twitter || "";
+}
+loadSocialSettings();
+
+document.getElementById("saveSocialBtn")?.addEventListener("click", () => {
+  const c = getSiteContent();
+  if (!c.footer) c.footer = {};
+  if (!c.footer.social) c.footer.social = {};
+  c.footer.social.instagram = document.getElementById("socialInstagramUrl").value.trim() || "#";
+  c.footer.social.facebook = document.getElementById("socialFacebookUrl").value.trim() || "#";
+  c.footer.social.youtube = document.getElementById("socialYoutubeUrl").value.trim() || "#";
+  c.footer.social.whatsapp = document.getElementById("socialWhatsappUrl").value.trim() || "#";
+  c.footer.social.twitter = document.getElementById("socialTwitterUrl").value.trim() || "#";
+  saveSiteContent(c);
+  logActivity("S", "Social media links update kiye");
+  const msg = document.getElementById("socialMsg");
+  if (msg) {
+    msg.textContent = "Social links save ho gaye - footer par live.";
+    msg.style.color = "#0b6b46";
+  }
+});
+
 // ===== Database view — localStorage overview =====
 const DB_COLLECTIONS = [
   { key: "lakshyaim_orders", label: "Orders", icon: "🧾" },
