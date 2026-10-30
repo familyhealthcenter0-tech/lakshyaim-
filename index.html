@@ -11,27 +11,27 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261109" />
+  <link rel="stylesheet" href="styles.css?v=20261110" />
 </head>
 <body>
 
   <!-- Top bar -->
   <div class="topbar">
     <span data-cms="topbar.t1"></span>
-    <span class="topbar-sep">·</span>
+    <span class="topbar-sep">|</span>
     <span data-cms="topbar.t2"></span>
   </div>
 
   <!-- Navbar : left hamburger · center logo · right actions -->
   <header class="navbar" id="navbar">
     <div class="container nav-inner">
-      <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
+      <button class="hamburger" id="hamburger" aria-label="Menu">Menu</button>
       <a href="#" class="logo">
         <span class="logo-mark">L</span>
         <span class="logo-text">Lakshyaim</span>
       </a>
       <div class="nav-actions">
-        <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Switch to dark mode">🌙</button>
+        <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Switch to dark mode">Theme</button>
         <div class="user-menu" id="userMenu">
           <button id="signInBtn" class="btn btn-sm" aria-label="Sign In" aria-haspopup="true" aria-expanded="false"><span class="btn-label">Sign In</span></button>
           <div class="user-dropdown" id="userDropdown">
@@ -42,14 +42,14 @@
                 <p class="ud-email" id="udEmail">Google se sign in karo</p>
               </div>
             </div>
-            <a href="my-orders.html" class="ud-link">📦 My Orders</a>
-            <a href="#account" class="ud-link">👤 My Account</a>
-            <a href="#membership" class="ud-link">⭐ Membership</a>
-            <button class="ud-link ud-signout" id="udSignOut">🚪 Sign Out</button>
+            <a href="my-orders.html" class="ud-link">My Orders</a>
+            <a href="#account" class="ud-link">My Account</a>
+            <a href="#membership" class="ud-link">Membership</a>
+            <button class="ud-link ud-signout" id="udSignOut">Sign Out</button>
           </div>
         </div>
         <a href="admin.html" class="btn btn-sm btn-ghost" aria-label="Admin"><span class="btn-label">Admin</span></a>
-        <a href="cart.html" class="icon-btn" aria-label="Cart">🛒 <span class="cart-count">2</span></a>
+        <a href="cart.html" class="icon-btn" aria-label="Cart">Cart <span class="cart-count">2</span></a>
       </div>
     </div>
     <nav class="nav-links" id="navLinks">
@@ -75,7 +75,7 @@
       <h1><span data-cms-html="hero.l1"></span><span data-cms-html="hero.accent"></span><span data-cms-html="hero.l2"></span></h1>
       <p class="sub" data-cms="hero.sub"></p>
       <div class="hero-btns">
-        <a href="#products" class="btn"><span data-cms="hero.cta1"></span> <span class="btn-arrow">→</span></a>
+        <a href="#products" class="btn"><span data-cms="hero.cta1"></span> <span class="btn-arrow">&rarr;</span></a>
         <a href="#programs" class="btn btn-outline" data-cms="hero.cta2"></a>
       </div>
       <div class="trust-row">
@@ -83,7 +83,7 @@
           <span class="av-a">RS</span><span class="av-b">AK</span><span class="av-c">MP</span><span class="av-plus">+</span>
         </div>
         <p class="trust-copy">
-          <span class="stars">★★★★★</span>
+          <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
           <strong>4.9/5</strong> from 50,000+ members
         </p>
       </div>
@@ -92,14 +92,14 @@
     <div class="hero-img">
       <div class="shake-card">
         <div class="shake-media">
-          <span class="shake-emoji">🥤</span>
+          
           <img class="shake-photo" src="gallery/img-54.jpg" alt="Formula 1 Shake" loading="eager" onerror="this.remove()" />
         </div>
         <p data-cms="hero.cardTitle"></p>
         <p class="shake-sub" data-cms="hero.cardSub"></p>
-        <span class="float-chip chip-a">✅ FSSAI Certified</span>
-        <span class="float-chip chip-b">🥤 18g Protein</span>
-        <span class="float-chip chip-c">⭐ 4.9 · 2,140 reviews</span>
+        <span class="float-chip chip-a">FSSAI Certified</span>
+        <span class="float-chip chip-b">18g Protein</span>
+        <span class="float-chip chip-c">4.9 - 2,140 reviews</span>
       </div>
     </div>
   </section>
@@ -193,11 +193,11 @@
       <!-- Signed out -->
       <div id="accountSignedOut">
         <div class="checkout-success" style="max-width:560px;margin:0 auto;">
-          <span class="success-icon">👤</span>
+          <span class="success-icon">A</span>
           <h1 style="font-size:1.5rem;">Sign in to see your orders</h1>
           <p class="success-sub">Order history, delivery status — sab ek jagah, secure.</p>
           <button type="button" class="btn" id="accountGoogleBtn" style="margin-top:20px">
-            🔵 Sign in with Google
+            Sign in with Google
           </button>
           <p class="form-msg" id="accountMsg" style="margin-top:14px"></p>
         </div>
@@ -211,7 +211,7 @@
             <p class="acc-name" id="accName"></p>
             <p class="acc-email" id="accEmail"></p>
           </div>
-          <a href="my-orders.html" class="btn btn-sm" style="background:rgba(255,255,255,0.14);color:#fff;box-shadow:none">📦 All Orders</a>
+          <a href="my-orders.html" class="btn btn-sm" style="background:rgba(255,255,255,0.14);color:#fff;box-shadow:none">All Orders</a>
           <button class="btn btn-sm" id="accSignOut" style="background:rgba(255,255,255,0.12);box-shadow:none">Sign Out</button>
         </div>
 
@@ -235,10 +235,10 @@
         </p>
       </div>
       <div class="feature-row">
-        <div class="feature"><span>🧪</span><p>Lab-tested ingredients</p></div>
-        <div class="feature"><span>🌿</span><p>Traceable sourcing</p></div>
-        <div class="feature"><span>🥗</span><p>Balanced macros</p></div>
-        <div class="feature"><span>👩‍⚕️</span><p>Coach network</p></div>
+        <div class="feature"><span>L</span><p>Lab-tested ingredients</p></div>
+        <div class="feature"><span>T</span><p>Traceable sourcing</p></div>
+        <div class="feature"><span>B</span><p>Balanced macros</p></div>
+        <div class="feature"><span>C</span><p>Coach network</p></div>
       </div>
     </div>
   </section>
@@ -346,7 +346,7 @@
       <div>
         <h4>Support</h4>
         <a href="#">FAQs</a><a href="#">Shipping</a><a href="#">Returns</a><a href="#">Privacy</a>
-        <a href="admin.html">🔐 Admin Login</a>
+        <a href="admin.html">Admin Login</a>
       </div>
     </div>
     <div class="footer-credit-inner">
@@ -365,18 +365,18 @@
 
   <!-- Gallery lightbox -->
   <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Photo viewer">
-    <button class="lb-btn lb-close" id="lbClose" aria-label="Close">✕</button>
+    <button class="lb-btn lb-close" id="lbClose" aria-label="Close">Close</button>
     <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous photo">‹</button>
     <img id="lbImg" src="" alt="Gallery photo" />
     <button class="lb-btn lb-next" id="lbNext" aria-label="Next photo">›</button>
     <p class="lb-count" id="lbCount"></p>
   </div>
 
-  <script src="products.js?v=20261109"></script>
-  <script src="cart.js?v=20261109"></script>
-  <script src="site-content.js?v=20261109"></script>
-  <script src="script.js?v=20261109"></script>
-  <script src="auth.js?v=20261109"></script>
-  <script src="theme.js?v=20261109"></script>
+  <script src="products.js?v=20261110"></script>
+  <script src="cart.js?v=20261110"></script>
+  <script src="site-content.js?v=20261110"></script>
+  <script src="script.js?v=20261110"></script>
+  <script src="auth.js?v=20261110"></script>
+  <script src="theme.js?v=20261110"></script>
 </body>
 </html>
