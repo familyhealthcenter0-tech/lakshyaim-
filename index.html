@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261139" />
+  <link rel="stylesheet" href="styles.css?v=20261140" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#1e40af" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -392,11 +392,11 @@
     <p class="lb-count" id="lbCount"></p>
   </div>
 
-  <script src="products.js?v=20261139"></script>
-  <script src="cart.js?v=20261139"></script>
-  <script src="site-content.js?v=20261139"></script>
-  <script src="script.js?v=20261139"></script>
-  <script src="auth.js?v=20261139"></script>
+  <script src="products.js?v=20261140"></script>
+  <script src="cart.js?v=20261140"></script>
+  <script src="site-content.js?v=20261140"></script>
+  <script src="script.js?v=20261140"></script>
+  <script src="auth.js?v=20261140"></script>
   <!-- PWA Install Popup -->
   <div id="pwaPopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;padding:16px">
     <div style="background:#fff;border-radius:20px;padding:32px;max-width:400px;width:100%;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,0.2);position:relative">
@@ -450,7 +450,7 @@
     </div>
   </div>
 
-  <script src="theme.js?v=20261139"></script>
+  <script src="theme.js?v=20261140"></script>
   <script>
     let deferredPrompt = null;
 
@@ -809,27 +809,6 @@
       });
       chatbotMessages.parentElement.insertBefore(sugDiv, chatbotMessages.nextSibling);
       // sendMessage defined below, inside IIFE
-      async function sendMessage() {
-        const text = chatbotInput.value.trim();
-        if (!text) return;
-        addMessage(text, true);
-        chatbotInput.value = "";
-        const typing = document.createElement("div");
-        typing.style.cssText = "background:#fff;border-radius:12px;padding:10px 14px;max-width:85%;align-self:flex-start;box-shadow:0 1px 2px rgba(0,0,0,0.08)";
-        typing.innerHTML = "<p style='margin:0;font-size:0.9rem;color:var(--muted)'>Typing...</p>";
-        chatbotMessages.appendChild(typing);
-        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-
-        const response = await generateResponse(text);
-        typing.remove();
-        addMessage(response, false);
-      }
-
-      chatbotSend?.addEventListener("click", sendMessage);
-      chatbotInput?.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") sendMessage();
-      });
-
       // suggestions already rendered above
     })();
   </script>
