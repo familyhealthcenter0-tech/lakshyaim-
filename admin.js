@@ -1322,9 +1322,15 @@ function loadPaymentSettings() {
   const p = getSiteContent().payment;
   const rzp = document.getElementById("payRzp");
   const rzpKey = document.getElementById("payRzpKey");
+  const rzpSecret = document.getElementById("payRzpSecret");
+  const apiKeyId = document.getElementById("apiKeyId");
+  const apiKeySecret = document.getElementById("apiKeySecret");
   const note = document.getElementById("payNote");
   if (rzp) rzp.checked = p.razorpay !== false;
   if (rzpKey) rzpKey.value = p.razorpayKey || "";
+  if (rzpSecret) rzpSecret.value = p.razorpaySecret || "";
+  if (apiKeyId) apiKeyId.value = p.apiKeyId || "";
+  if (apiKeySecret) apiKeySecret.value = p.apiKeySecret || "";
   if (note) note.value = p.note || "";
 }
 loadPaymentSettings();
@@ -1333,17 +1339,26 @@ document.getElementById("savePaymentBtn")?.addEventListener("click", () => {
   const c = getSiteContent();
   c.payment.razorpay = document.getElementById("payRzp").checked;
   c.payment.razorpayKey = document.getElementById("payRzpKey").value.trim();
+  c.payment.razorpaySecret = document.getElementById("payRzpSecret").value.trim();
+  c.payment.apiKeyId = document.getElementById("apiKeyId").value.trim();
+  c.payment.apiKeySecret = document.getElementById("apiKeySecret").value.trim();
   c.payment.note = document.getElementById("payNote").value.trim();
   if (!c.payment.razorpay) {
     const pm = document.getElementById("payMsg");
-    pm.textContent = "❌ Kam se kam ek payment method on rakho.";
+    pm.textContent = "Razorpay on rakho - kam se kam ek payment method chahiye.";
+    pm.style.color = "#b33232";
+    return;
+  }
+  if (!c.payment.razorpayKey) {
+    const pm = document.getElementById("payMsg");
+    pm.textContent = "Razorpay Key ID zaroori hai.";
     pm.style.color = "#b33232";
     return;
   }
   saveSiteContent(c);
-  logActivity("💳", "Payment settings update ki (Razorpay)");
+  logActivity("P", "Payment settings update ki (Razorpay + API keys)");
   const pm = document.getElementById("payMsg");
-  pm.textContent = "✅ Payment settings save ho gayi — checkout par live.";
+  pm.textContent = "Payment settings save ho gayi - checkout par live.";
   pm.style.color = "#0b6b46";
 });
 

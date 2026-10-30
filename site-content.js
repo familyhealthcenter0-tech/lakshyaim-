@@ -72,6 +72,9 @@ const CONTENT_DEFAULTS = {
   payment: {
     razorpay: false,
     razorpayKey: "",
+    razorpaySecret: "",
+    apiKeyId: "",
+    apiKeySecret: "",
     note: "Secure payment via Razorpay",
   },
 };

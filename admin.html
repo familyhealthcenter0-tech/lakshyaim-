@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261116" />
-  <link rel="stylesheet" href="admin.css?v=20261116" />
+  <link rel="stylesheet" href="styles.css?v=20261117" />
+  <link rel="stylesheet" href="admin.css?v=20261117" />
 </head>
 <body class="admin-body">
 
@@ -562,6 +562,17 @@
                 <label>Razorpay Key ID (rzp_test_... / rzp_live_...)
                   <input type="text" id="payRzpKey" placeholder="rzp_test_xxxxxxxxxx" />
                 </label>
+                <label>Razorpay Key Secret (for backend verification)
+                  <input type="password" id="payRzpSecret" placeholder="Enter key secret" />
+                </label>
+              </div>
+              <div class="row">
+                <label>API Key ID (optional - for custom integration)
+                  <input type="text" id="apiKeyId" placeholder="api_key_id" />
+                </label>
+                <label>API Key Secret (optional - for custom integration)
+                  <input type="password" id="apiKeySecret" placeholder="api_key_secret" />
+                </label>
               </div>
               <label>Checkout payment note
                 <input type="text" id="payNote" placeholder="Secure payment via Razorpay" />
@@ -577,9 +588,9 @@
     </div>
   </div>
 
-  <script src="products.js?v=20261116"></script>
-  <script src="site-content.js?v=20261116"></script>
-  <script src="admin.js?v=20261116"></script>
-  <script src="theme.js?v=20261116"></script>
+  <script src="products.js?v=20261117"></script>
+  <script src="site-content.js?v=20261117"></script>
+  <script src="admin.js?v=20261117"></script>
+  <script src="theme.js?v=20261117"></script>
 </body>
 </html>
