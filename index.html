@@ -434,6 +434,9 @@
           <p style="margin:0;font-size:0.75rem;opacity:0.8">Online | Product Expert</p>
         </div>
       </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <button id="langToggle" style="background:rgba(255,255,255,0.2);border:none;color:#fff;padding:4px 10px;border-radius:8px;font-size:0.75rem;cursor:pointer;font-weight:600">HI</button>
+      </div>
       <button id="chatbotClose" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;padding:4px 8px;line-height:1">&times;</button>
     </div>
     <div id="chatbotMessages" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:#f0f2f5">
@@ -621,21 +624,77 @@
         return "Rs " + Number(n).toLocaleString("en-IN");
       }
 
+      // Language state
+      let currentLang = localStorage.getItem("chatbot_lang") || "hi";
+
+      const langToggle = document.getElementById("langToggle");
+      if (langToggle) {
+        langToggle.textContent = currentLang === "hi" ? "HI" : "EN";
+        langToggle.addEventListener("click", () => {
+          currentLang = currentLang === "hi" ? "en" : "hi";
+          localStorage.setItem("chatbot_lang", currentLang);
+          langToggle.textContent = currentLang === "hi" ? "HI" : "EN";
+          const greetMsg = currentLang === "hi"
+            ? "Namaste! Main Lakshyaim Assistant hoon. Aap products, prices, ingredients, benefits ke baare me pooch sakte hain. Kya help chahiye?"
+            : "Hello! I am Lakshyaim Assistant. You can ask about products, prices, ingredients, benefits and more. How can I help?";
+          addMessage(greetMsg, false);
+        });
+      }
+
+      const responses = {
+        hi: {
+          greeting: "Namaste! Main Lakshyaim Assistant hoon. Aap products, prices, ingredients, benefits ke baare me pooch sakte hain. Kya help chahiye?",
+          help: "Main aapki help kar sakta hoon:\n- Product list aur prices\n- Product details (ingredients, benefits, usage)\n- Delivery aur shipping info\n- Order status\n- Admin contact\n\nExample: 'Formula 1 price kya hai?' ya 'Herbal Tea benefits batao'",
+          productList: (products) => "Hamare products:\n\n" + products.map((p) => p.name + " - Rs " + Number(p.price).toLocaleString("en-IN") + (p.mrp > p.price ? " (MRP Rs " + Number(p.mrp).toLocaleString("en-IN") + ")" : "")).join("\n") + "\n\nKisi specific product ke baare me poochne ke liye naam likhein.",
+          price: (p) => p.name + "\nPrice: Rs " + Number(p.price).toLocaleString("en-IN") + (p.mrp > p.price ? "\nMRP: Rs " + Number(p.mrp).toLocaleString("en-IN") + " (" + Math.round(((p.mrp - p.price) / p.mrp) * 100) + "% OFF)" : "") + "\nRating: " + "\u2605".repeat(p.rating) + "\u2606".repeat(5 - p.rating) + " (" + p.reviews + " reviews)",
+          benefits: (p) => p.name + " - Key Benefits:\n- " + (p.benefits || []).join("\n- "),
+          ingredients: (p) => p.name + " - Ingredients:\n" + (p.ingredients || "Information not available"),
+          usage: (p) => p.name + " - How to Use:\n" + (p.usage || "Information not available") + "\n\nWeight: " + (p.weight || "N/A") + " | Servings: " + (p.servings || "N/A"),
+          description: (p) => p.name + "\n\n" + (p.description || "") + "\n\nPrice: Rs " + Number(p.price).toLocaleString("en-IN") + "\nRating: " + "\u2605".repeat(p.rating) + "\u2606".repeat(5 - p.rating) + " (" + p.reviews + " reviews)" + "\nTag: " + p.tag + "\nWeight: " + (p.weight || "N/A") + " | Servings: " + (p.servings || "N/A") + "\n\nBenefits: " + (p.benefits || []).join(", ") + "\n\nUsage: " + (p.usage || "N/A"),
+          defaultProduct: (p) => p.name + " (" + p.tag + ")\nPrice: Rs " + Number(p.price).toLocaleString("en-IN") + (p.mrp > p.price ? " (MRP Rs " + Number(p.mrp).toLocaleString("en-IN") + ")" : "") + "\nRating: " + "\u2605".repeat(p.rating) + "\u2606".repeat(5 - p.rating) + " (" + p.reviews + " reviews)" + "\n\n" + (p.description || "") + "\n\nBenefits: " + (p.benefits || []).join(", ") + "\n\nType 'benefits', 'ingredients', 'usage', or 'price' for more details.",
+          shipping: "Shipping Info:\n- Free shipping on orders above Rs 2999\n- Shipping fee: Rs 99 (below threshold)\n- Delivery: 3-5 working days pan-India\n- 27,000+ pin codes covered",
+          payment: "Payment Options:\n- Razorpay (UPI, Card, Netbanking)\n\nAll payments are secure and encrypted. Order is confirmed only after successful payment.",
+          order: "Order Tracking:\n- Sign in with Google to view your orders\n- Go to 'My Orders' page for order history\n- Each order shows: status, items, total, payment ID\n\nFor order-related queries, please sign in and check My Orders page.",
+          admin: "Admin Panel:\n- URL: /admin\n- Default credentials: admin / admin123\n- Admin can manage products, orders, settings, analytics, and more",
+          gst: "GST Information:\n- GST is applied at checkout (default 18%)\n- GSTIN is displayed on invoice\n- GST amount is calculated automatically\n- Admin can configure GST rate in Settings",
+          contact: "Contact Us:\n- Phone: +91 9999999999\n- Email: info@lakshyaim.com\n- Address: Lakshyaim Private Limited\n\nYou can also reach us through social media links in the footer.",
+          fallback: "Mujhe samajh nahi aaya. Aap pooch sakte hain:\n- Product names aur prices\n- Product benefits, ingredients, usage\n- Shipping aur delivery\n- Payment options\n- Order tracking\n- Admin panel info\n\nExample: 'Formula 1 price kya hai?' ya 'Herbal Tea benefits batao'"
+        },
+        en: {
+          greeting: "Hello! I am Lakshyaim Assistant. You can ask about products, prices, ingredients, benefits and more. How can I help?",
+          help: "I can help you with:\n- Product list and prices\n- Product details (ingredients, benefits, usage)\n- Delivery and shipping info\n- Order status\n- Admin contact\n\nExample: 'What is Formula 1 price?' or 'Tell me Herbal Tea benefits'",
+          productList: (products) => "Our products:\n\n" + products.map((p) => p.name + " - Rs " + Number(p.price).toLocaleString("en-IN") + (p.mrp > p.price ? " (MRP Rs " + Number(p.mrp).toLocaleString("en-IN") + ")" : "")).join("\n") + "\n\nAsk about any specific product for more details.",
+          price: (p) => p.name + "\nPrice: Rs " + Number(p.price).toLocaleString("en-IN") + (p.mrp > p.price ? "\nMRP: Rs " + Number(p.mrp).toLocaleString("en-IN") + " (" + Math.round(((p.mrp - p.price) / p.mrp) * 100) + "% OFF)" : "") + "\nRating: " + "\u2605".repeat(p.rating) + "\u2606".repeat(5 - p.rating) + " (" + p.reviews + " reviews)",
+          benefits: (p) => p.name + " - Key Benefits:\n- " + (p.benefits || []).join("\n- "),
+          ingredients: (p) => p.name + " - Ingredients:\n" + (p.ingredients || "Information not available"),
+          usage: (p) => p.name + " - How to Use:\n" + (p.usage || "Information not available") + "\n\nWeight: " + (p.weight || "N/A") + " | Servings: " + (p.servings || "N/A"),
+          description: (p) => p.name + "\n\n" + (p.description || "") + "\n\nPrice: Rs " + Number(p.price).toLocaleString("en-IN") + "\nRating: " + "\u2605".repeat(p.rating) + "\u2606".repeat(5 - p.rating) + " (" + p.reviews + " reviews)" + "\nTag: " + p.tag + "\nWeight: " + (p.weight || "N/A") + " | Servings: " + (p.servings || "N/A") + "\n\nBenefits: " + (p.benefits || []).join(", ") + "\n\nUsage: " + (p.usage || "N/A"),
+          defaultProduct: (p) => p.name + " (" + p.tag + ")\nPrice: Rs " + Number(p.price).toLocaleString("en-IN") + (p.mrp > p.price ? " (MRP Rs " + Number(p.mrp).toLocaleString("en-IN") + ")" : "") + "\nRating: " + "\u2605".repeat(p.rating) + "\u2606".repeat(5 - p.rating) + " (" + p.reviews + " reviews)" + "\n\n" + (p.description || "") + "\n\nBenefits: " + (p.benefits || []).join(", ") + "\n\nType 'benefits', 'ingredients', 'usage', or 'price' for more details.",
+          shipping: "Shipping Info:\n- Free shipping on orders above Rs 2999\n- Shipping fee: Rs 99 (below threshold)\n- Delivery: 3-5 working days pan-India\n- 27,000+ pin codes covered",
+          payment: "Payment Options:\n- Razorpay (UPI, Card, Netbanking)\n\nAll payments are secure and encrypted. Order is confirmed only after successful payment.",
+          order: "Order Tracking:\n- Sign in with Google to view your orders\n- Go to 'My Orders' page for order history\n- Each order shows: status, items, total, payment ID\n\nFor order-related queries, please sign in and check My Orders page.",
+          admin: "Admin Panel:\n- URL: /admin\n- Default credentials: admin / admin123\n- Admin can manage products, orders, settings, analytics, and more",
+          gst: "GST Information:\n- GST is applied at checkout (default 18%)\n- GSTIN is displayed on invoice\n- GST amount is calculated automatically\n- Admin can configure GST rate in Settings",
+          contact: "Contact Us:\n- Phone: +91 9999999999\n- Email: info@lakshyaim.com\n- Address: Lakshyaim Private Limited\n\nYou can also reach us through social media links in the footer.",
+          fallback: "I didn't understand. You can ask about:\n- Product names and prices\n- Product benefits, ingredients, usage\n- Shipping and delivery\n- Payment options\n- Order tracking\n- Admin panel info\n\nExample: 'What is Formula 1 price?' or 'Tell me Herbal Tea benefits'"
+        }
+      };
+
       async function generateResponse(query) {
         const q = query.toLowerCase().trim();
+        const r = responses[currentLang];
         const products = await getProducts();
 
-        if (q.match(/^(hi|hello|hey|namaste|namaskar|hii)/)) {
-          return "Namaste! Main Lakshyaim Assistant hoon. Aap products, prices, ingredients, benefits ke baare me pooch sakte hain. Kya help chahiye?";
+        if (q.match(/^(hi|hello|hey|namaste|namaskar|hii|namaskaram)/)) {
+          return r.greeting;
         }
 
-        if (q.match(/help|kya pooch|kaise|what can/)) {
-          return "Main aapki help kar sakta hoon:\n- Product list aur prices\n- Product details (ingredients, benefits, usage)\n- Delivery aur shipping info\n- Order status\n- Admin contact\n\nExample: 'Formula 1 price kya hai?' ya 'Herbal Tea benefits batao'";
+        if (q.match(/help|kya pooch|kaise|what can|madad/)) {
+          return r.help;
         }
 
-        if (q.match(/product|products|sab product|all product|catalog|list/)) {
-          const list = products.map((p) => p.name + " - " + formatPrice(p.price) + (p.mrp > p.price ? " (MRP " + formatPrice(p.mrp) + ")" : "")).join("\n");
-          return "Hamare products:\n\n" + list + "\n\nKisi specific product ke baare me poochne ke liye naam likhein.";
+        if (q.match(/product|products|sab product|all product|catalog|list|sabhi/)) {
+          return r.productList(products);
         }
 
         let matchedProduct = null;
@@ -649,58 +708,95 @@
 
         if (matchedProduct) {
           const p = matchedProduct;
-          const stars = "\u2605".repeat(p.rating) + "\u2606".repeat(5 - p.rating);
 
-          if (q.match(/price|kitna|cost|rate|mrp/)) {
-            return p.name + "\nPrice: " + formatPrice(p.price) + (p.mrp > p.price ? "\nMRP: " + formatPrice(p.mrp) + " (" + Math.round(((p.mrp - p.price) / p.mrp) * 100) + "% OFF)" : "") + "\nRating: " + stars + " (" + p.reviews + " reviews)";
+          if (q.match(/price|kitna|cost|rate|mrp|kimat|daam/)) {
+            return r.price(p);
           }
 
-          if (q.match(/benefit|faida|advantage|kya fayda/)) {
-            const benefits = (p.benefits || []).join("\n- ");
-            return p.name + " - Key Benefits:\n- " + benefits;
+          if (q.match(/benefit|faida|advantage|kya fayda|labh/)) {
+            return r.benefits(p);
           }
 
-          if (q.match(/ingredient|kya hai inside|composition|contains/)) {
-            return p.name + " - Ingredients:\n" + (p.ingredients || "Information not available");
+          if (q.match(/ingredient|kya hai inside|composition|contains|sammil/)) {
+            return r.ingredients(p);
           }
 
-          if (q.match(/usage|how to use|kaise use|kaise khana|kaise peena/)) {
-            return p.name + " - How to Use:\n" + (p.usage || "Information not available") + "\n\nWeight: " + (p.weight || "N/A") + " | Servings: " + (p.servings || "N/A");
+          if (q.match(/usage|how to use|kaise use|kaise khana|kaise peena|upayog/)) {
+            return r.usage(p);
           }
 
-          if (q.match(/description|detail|about|batao|info/)) {
-            return p.name + "\n\n" + (p.description || "") + "\n\nPrice: " + formatPrice(p.price) + "\nRating: " + stars + " (" + p.reviews + " reviews)" + "\nTag: " + p.tag + "\nWeight: " + (p.weight || "N/A") + " | Servings: " + (p.servings || "N/A") + "\n\nBenefits: " + (p.benefits || []).join(", ") + "\n\nUsage: " + (p.usage || "N/A");
+          if (q.match(/description|detail|about|batao|info|vivaran/)) {
+            return r.description(p);
           }
 
-          return p.name + " (" + p.tag + ")\nPrice: " + formatPrice(p.price) + (p.mrp > p.price ? " (MRP " + formatPrice(p.mrp) + ")" : "") + "\nRating: " + stars + " (" + p.reviews + " reviews)" + "\n\n" + (p.description || "") + "\n\nBenefits: " + (p.benefits || []).join(", ") + "\n\nType 'benefits', 'ingredients', 'usage', or 'price' for more details.";
+          return r.defaultProduct(p);
         }
 
-        if (q.match(/shipping|delivery|free shipping|kab aayega|delivery time/)) {
-          return "Shipping Info:\n- Free shipping on orders above Rs 2999\n- Shipping fee: Rs 99 (below threshold)\n- Delivery: 3-5 working days pan-India\n- 27,000+ pin codes covered";
+        if (q.match(/shipping|delivery|free shipping|kab aayega|delivery time|pehunch/)) {
+          return r.shipping;
         }
 
-        if (q.match(/payment|pay|razorpay|upi|card/)) {
-          return "Payment Options:\n- Razorpay (UPI, Card, Netbanking)\n\nAll payments are secure and encrypted. Order is confirmed only after successful payment.";
+        if (q.match(/payment|pay|razorpay|upi|card|bhugtan/)) {
+          return r.payment;
         }
 
-        if (q.match(/order|track|status|where is my/)) {
-          return "Order Tracking:\n- Sign in with Google to view your orders\n- Go to 'My Orders' page for order history\n- Each order shows: status, items, total, payment ID\n\nFor order-related queries, please sign in and check My Orders page.";
+        if (q.match(/order|track|status|where is my|kahan hai/)) {
+          return r.order;
         }
 
         if (q.match(/admin|login|password/)) {
-          return "Admin Panel:\n- URL: /admin\n- Default credentials: admin / admin123\n- Admin can manage products, orders, settings, analytics, and more";
+          return r.admin;
         }
 
         if (q.match(/gst|tax/)) {
-          return "GST Information:\n- GST is applied at checkout (default 18%)\n- GSTIN is displayed on invoice\n- GST amount is calculated automatically\n- Admin can configure GST rate in Settings";
+          return r.gst;
         }
 
-        if (q.match(/contact|phone|email|address|support/)) {
-          return "Contact Us:\n- Phone: +91 9999999999\n- Email: info@lakshyaim.com\n- Address: Lakshyaim Private Limited\n\nYou can also reach us through social media links in the footer.";
+        if (q.match(/contact|phone|email|address|support|sampark/)) {
+          return r.contact;
         }
 
-        return "Mujhe samajh nahi aaya. Aap pooch sakte hain:\n- Product names aur prices\n- Product benefits, ingredients, usage\n- Shipping aur delivery\n- Payment options\n- Order tracking\n- Admin panel info\n\nExample: 'Formula 1 price kya hai?' ya 'Herbal Tea benefits batao'";
+        return r.fallback;
       }
+
+      async function sendMessage() {
+        const text = chatbotInput.value.trim();
+        if (!text) return;
+        addMessage(text, true);
+        chatbotInput.value = "";
+        const typing = document.createElement("div");
+        typing.style.cssText = "background:#fff;border-radius:12px;padding:10px 14px;max-width:85%;align-self:flex-start;box-shadow:0 1px 2px rgba(0,0,0,0.08)";
+        typing.innerHTML = "<p style='margin:0;font-size:0.9rem;color:var(--muted)'>Typing...</p>";
+        chatbotMessages.appendChild(typing);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+        const response = await generateResponse(text);
+        typing.remove();
+        addMessage(response, false);
+      }
+
+      chatbotSend?.addEventListener("click", sendMessage);
+      chatbotInput?.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") sendMessage();
+      });
+
+      const suggestions = currentLang === "hi" 
+        ? ["Products list", "Formula 1 price", "Shipping info", "Payment options"]
+        : ["Product list", "Formula 1 price", "Shipping info", "Payment options"];
+      const sugDiv = document.createElement("div");
+      sugDiv.style.cssText = "display:flex;gap:6px;flex-wrap:wrap;padding:8px 16px;background:#f0f2f5";
+      suggestions.forEach((sug) => {
+        const btn = document.createElement("button");
+        btn.textContent = sug;
+        btn.style.cssText = "background:#fff;border:1px solid var(--card-border);border-radius:999px;padding:4px 12px;font-size:0.78rem;cursor:pointer;color:var(--green)";
+        btn.addEventListener("click", () => {
+          chatbotInput.value = sug;
+          sendMessage();
+        });
+        sugDiv.appendChild(btn);
+      });
+      chatbotMessages.parentElement.insertBefore(sugDiv, chatbotMessages.nextSibling);
+    })();
 
       async function sendMessage() {
         const text = chatbotInput.value.trim();
