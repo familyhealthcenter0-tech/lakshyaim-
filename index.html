@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261130" />
+  <link rel="stylesheet" href="styles.css?v=20261131" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#1e40af" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -347,6 +347,12 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7 8 8.2 12h-6.4l-5-7.3L5.8 22H2.7l7.5-8.6L2.3 2h6.6l4.5 6.7L18.9 2zm-1.1 18h1.8L7.4 3.9H5.5L17.8 20z"/></svg>
           </a>
         </div>
+        <div style="margin-top:16px">
+          <button id="footerInstallBtn" style="display:none;background:var(--green);color:#fff;font-weight:700;padding:10px 20px;border-radius:12px;border:none;cursor:pointer;font-size:0.9rem;display:inline-flex;align-items:center;gap:8px" onclick="triggerPwaInstall()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download App
+          </button>
+        </div>
       </div>
       <div>
         <h4>Shop</h4>
@@ -385,11 +391,11 @@
     <p class="lb-count" id="lbCount"></p>
   </div>
 
-  <script src="products.js?v=20261130"></script>
-  <script src="cart.js?v=20261130"></script>
-  <script src="site-content.js?v=20261130"></script>
-  <script src="script.js?v=20261130"></script>
-  <script src="auth.js?v=20261130"></script>
+  <script src="products.js?v=20261131"></script>
+  <script src="cart.js?v=20261131"></script>
+  <script src="site-content.js?v=20261131"></script>
+  <script src="script.js?v=20261131"></script>
+  <script src="auth.js?v=20261131"></script>
   <!-- PWA Install Popup -->
   <div id="pwaPopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;padding:16px">
     <div style="background:#fff;border-radius:20px;padding:32px;max-width:400px;width:100%;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,0.2);position:relative">
@@ -411,7 +417,7 @@
     </button>
   </div>
 
-  <script src="theme.js?v=20261130"></script>
+  <script src="theme.js?v=20261131"></script>
   <script>
     let deferredPrompt = null;
     window.addEventListener("beforeinstallprompt", (e) => {
@@ -426,6 +432,8 @@
       }
       const fab = document.getElementById("pwaFabBtn");
       if (fab) fab.style.display = "flex";
+      const footerBtn = document.getElementById("footerInstallBtn");
+      if (footerBtn) footerBtn.style.display = "inline-flex";
     });
     document.getElementById("pwaInstallBtn")?.addEventListener("click", async () => {
       if (!deferredPrompt) return;
@@ -447,13 +455,45 @@
       if (popup) popup.style.display = "none";
       const fab = document.getElementById("pwaFabBtn");
       if (fab) fab.style.display = "none";
+      const footerBtn = document.getElementById("footerInstallBtn");
+      if (footerBtn) footerBtn.style.display = "none";
       deferredPrompt = null;
     });
+
+    // Footer install button visibility
+    function updateFooterInstallBtn() {
+      const footerBtn = document.getElementById("footerInstallBtn");
+      if (footerBtn && deferredPrompt) {
+        footerBtn.style.display = "inline-flex";
+      }
+    }
+
+    // Global function for footer button
+    window.triggerPwaInstall = async function() {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      const footerBtn = document.getElementById("footerInstallBtn");
+      if (footerBtn) footerBtn.style.display = "none";
+    };
+
+    // Update footer button when installable
+    const origHandler = window.addEventListener;
+    // Check after beforeinstallprompt
+    setTimeout(() => {
+      if (deferredPrompt) {
+        const footerBtn = document.getElementById("footerInstallBtn");
+        if (footerBtn) footerBtn.style.display = "inline-flex";
+      }
+    }, 1000);
 
     // Show FAB when installable
     if (deferredPrompt) {
       const fab = document.getElementById("pwaFabBtn");
       if (fab) fab.style.display = "flex";
+      const footerBtn = document.getElementById("footerInstallBtn");
+      if (footerBtn) footerBtn.style.display = "inline-flex";
     }
 
     // FAB click
