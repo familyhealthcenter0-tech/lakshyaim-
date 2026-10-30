@@ -32,8 +32,8 @@
   width: 64px;
   height: 64px;
   border-radius: 18px;
-  background: linear-gradient(150deg, #14b8a6, #0d9488);
-  box-shadow: 0 8px 20px rgba(13, 148, 136, 0.35);
+  background: linear-gradient(150deg, #3b82f6, #2563eb);
+  box-shadow: 0 8px 20px rgba(30, 64, 175, 0.35);
   font-size: 1.7rem;
 }
 .login-card h1 { font-size: 1.55rem; margin-top: 14px; font-family: "Manrope", sans-serif; }
@@ -53,7 +53,7 @@
 }
 #loginForm input:focus {
   border-color: var(--green);
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.16);
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.16);
 }
 .pass-wrap { position: relative; }
 .pass-wrap input { width: 100%; padding-right: 42px; }
@@ -137,7 +137,7 @@
   place-items: center;
   font-weight: 800;
   font-size: 1rem;
-  box-shadow: 0 4px 12px rgba(13, 115, 119, 0.25);
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.25);
 }
 .ad-nav {
   display: flex;
@@ -182,7 +182,7 @@
   outline: none;
   background: var(--green-light);
   color: var(--green-dark);
-  box-shadow: inset 0 0 0 1.5px rgba(13, 115, 119, 0.25);
+  box-shadow: inset 0 0 0 1.5px rgba(30, 64, 175, 0.25);
 }
 .ad-link.active {
   background: var(--green-light);
@@ -198,7 +198,7 @@
   width: 3px;
   height: 18px;
   border-radius: 0 3px 3px 0;
-  background: #14b8a6;
+  background: #3b82f6;
 }
 .ad-side-bottom {
   margin-top: auto;
@@ -235,8 +235,8 @@
   color: #0f172a;
 }
 .ad-userchip {
-  background: #e0f5f4;
-  color: #0f766e;
+  background: #dbeafe;
+  color: #1e40af;
   font-size: 0.82rem;
   font-weight: 700;
   padding: 7px 14px;
@@ -289,7 +289,7 @@
   width: 96px;
   height: 96px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(13, 148, 136, 0.07) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(30, 64, 175, 0.07) 0%, transparent 70%);
 }
 .dash-ico {
   display: grid;
@@ -300,7 +300,7 @@
   font-size: 1.4rem;
   margin-bottom: 14px;
 }
-.dash-ico.ico-green { background: linear-gradient(150deg, #e0f5f4, #ccfbf1); box-shadow: inset 0 0 0 1px rgba(13, 148, 136, 0.14); }
+.dash-ico.ico-green { background: linear-gradient(150deg, #dbeafe, #ccfbf1); box-shadow: inset 0 0 0 1px rgba(30, 64, 175, 0.14); }
 .dash-ico.ico-amber { background: linear-gradient(150deg, #fff5d8, #fdedbe); box-shadow: inset 0 0 0 1px rgba(245, 158, 11, 0.18); }
 .dash-ico.ico-blue { background: linear-gradient(150deg, #e9f1fc, #d6e4fb); box-shadow: inset 0 0 0 1px rgba(29, 79, 215, 0.12); }
 .dash-ico.ico-slate { background: linear-gradient(150deg, #eef2f6, #e2e8f0); box-shadow: inset 0 0 0 1px rgba(16, 35, 26, 0.08); }
@@ -325,11 +325,11 @@
 }
 
 /* Professional KPI cards - clean white with subtle colored accent */
-.kpi-green { border-left: 4px solid #14b8a6 !important; background: #fff !important; color: var(--ink) !important; }
-.kpi-amber { border-left: 4px solid #d4b23a !important; background: #fff !important; color: var(--ink) !important; }
+.kpi-green { border-left: 4px solid #3b82f6 !important; background: #fff !important; color: var(--ink) !important; }
+.kpi-amber { border-left: 4px solid #fb923c !important; background: #fff !important; color: var(--ink) !important; }
 .kpi-blue { border-left: 4px solid #4f8fd9 !important; background: #fff !important; color: var(--ink) !important; }
 .kpi-violet { border-left: 4px solid #7c6ff0 !important; background: #fff !important; color: var(--ink) !important; }
-.kpi-teal { border-left: 4px solid #14b8a6 !important; background: #fff !important; color: var(--ink) !important; }
+.kpi-teal { border-left: 4px solid #3b82f6 !important; background: #fff !important; color: var(--ink) !important; }
 .kpi-rose { border-left: 4px solid #f43f5e !important; background: #fff !important; color: var(--ink) !important; }
 .kpi-green .dash-num, .kpi-amber .dash-num, .kpi-blue .dash-num, .kpi-violet .dash-num, .kpi-teal .dash-num, .kpi-rose .dash-num { color: var(--ink) !important; }
 .kpi-green .dash-label, .kpi-amber .dash-label, .kpi-blue .dash-label, .kpi-violet .dash-label, .kpi-teal .dash-label, .kpi-rose .dash-label { color: var(--muted) !important; }
@@ -340,7 +340,7 @@
 .dash-grid .dash-card .dash-label { color: var(--muted) !important; }
 .dash-grid .dash-card .dash-ico { background: var(--green-light) !important; box-shadow: none !important; }
 .dash-grid .dash-card .dash-trend { background: var(--green-light) !important; color: var(--green-dark) !important; }
-.dash-grid .dash-card::after { background: radial-gradient(circle, rgba(13, 148, 136, 0.04) 0%, transparent 70%) !important; }
+.dash-grid .dash-card::after { background: radial-gradient(circle, rgba(30, 64, 175, 0.04) 0%, transparent 70%) !important; }
 
 /* Quick action cards */
 .qa-cards {
@@ -425,7 +425,7 @@
 }
 .search-input:focus {
   border-color: var(--green);
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.16);
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.16);
 }
 
 .orders-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
@@ -445,7 +445,7 @@
 .st-done { background: #e6f7f0; color: #0b6b46; }
 .st-ship { background: #e4edfb; color: #1d4fd7; }
 .st-pend { background: #fef3c7; color: #b45309; }
-.st-paid { background: #e0f5f4; color: #0a5a5e; }
+.st-paid { background: #dbeafe; color: #1e3a8a; }
 .pay-chip {
   background: var(--green-light);
   color: var(--green-dark);
@@ -483,7 +483,7 @@
 }
 .add-form input:focus, .add-form select:focus {
   border-color: var(--green);
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.16);
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.16);
 }
 .add-form .btn { align-self: flex-start; }
 
@@ -527,7 +527,7 @@
 
 /* Nayi add hui row halka green flash */
 @keyframes rowFlash {
-  from { background: #d9f4e7; }
+  from { background: #dbeafe; }
   to { background: transparent; }
 }
 tr.row-new { animation: rowFlash 2s ease-out; }
@@ -712,7 +712,7 @@ tr.row-new { animation: rowFlash 2s ease-out; }
 .cms-field input:focus,
 .cms-field textarea:focus {
   border-color: var(--green);
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.16);
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.16);
 }
 .cms-check {
   display: flex;
@@ -813,7 +813,7 @@ tr.row-new { animation: rowFlash 2s ease-out; }
 }
 .kpi-grid-12 .dash-card { text-align: left; }
 .kpi-grid-12 .dash-num { font-size: 1.55rem; }
-.kpi-teal { background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%) !important; border: none !important; color: #fff !important; }
+.kpi-teal { background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%) !important; border: none !important; color: #fff !important; }
 .kpi-rose { background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%) !important; border: none !important; color: #fff !important; }
 .kpi-teal .dash-num, .kpi-teal .dash-label, .kpi-teal .dash-trend,
 .kpi-rose .dash-num, .kpi-rose .dash-label, .kpi-rose .dash-trend { color: #fff !important; }
@@ -844,7 +844,7 @@ tr.row-new { animation: rowFlash 2s ease-out; }
   width: 100%;
   max-width: 46px;
   border-radius: 10px 10px 4px 4px;
-  background: linear-gradient(180deg, #14b8a6, #0d9488);
+  background: linear-gradient(180deg, #3b82f6, #2563eb);
   position: relative;
   transition: height 0.4s;
   display: flex;
@@ -952,7 +952,7 @@ tr.row-new { animation: rowFlash 2s ease-out; }
   font-weight: 800;
   font-size: 1.1rem;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.25);
 }
 .settings-group h3 {
   margin: 0 0 2px;
@@ -1032,12 +1032,12 @@ tr.row-new { animation: rowFlash 2s ease-out; }
 }
 .pay-opt:hover {
   border-color: var(--green);
-  box-shadow: 0 2px 8px rgba(13, 148, 136, 0.08);
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.08);
 }
 .pay-opt:has(input:checked) {
   border-color: var(--green);
   background: var(--green-light);
-  box-shadow: 0 2px 8px rgba(13, 148, 136, 0.12);
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.12);
 }
 .pay-opt input {
   accent-color: var(--green);
@@ -1061,7 +1061,7 @@ tr.row-new { animation: rowFlash 2s ease-out; }
 }
 .settings-group .row input:focus {
   border-color: var(--green);
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
   outline: none;
 }
 .settings-group .btn {
