@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261131" />
+  <link rel="stylesheet" href="styles.css?v=20261132" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#1e40af" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -391,11 +391,11 @@
     <p class="lb-count" id="lbCount"></p>
   </div>
 
-  <script src="products.js?v=20261131"></script>
-  <script src="cart.js?v=20261131"></script>
-  <script src="site-content.js?v=20261131"></script>
-  <script src="script.js?v=20261131"></script>
-  <script src="auth.js?v=20261131"></script>
+  <script src="products.js?v=20261132"></script>
+  <script src="cart.js?v=20261132"></script>
+  <script src="site-content.js?v=20261132"></script>
+  <script src="script.js?v=20261132"></script>
+  <script src="auth.js?v=20261132"></script>
   <!-- PWA Install Popup -->
   <div id="pwaPopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;padding:16px">
     <div style="background:#fff;border-radius:20px;padding:32px;max-width:400px;width:100%;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,0.2);position:relative">
@@ -417,12 +417,17 @@
     </button>
   </div>
 
-  <script src="theme.js?v=20261131"></script>
+  <script src="theme.js?v=20261132"></script>
   <script>
     let deferredPrompt = null;
+
+    // Capture the install prompt
     window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
       deferredPrompt = e;
+      console.log("PWA install prompt available");
+
+      // Show banner
       const banner = document.getElementById("pwaInstallBanner");
       if (banner) {
         const dismissed = localStorage.getItem("pwa_dismissed");
@@ -430,11 +435,17 @@
           banner.style.display = "block";
         }
       }
+
+      // Show FAB
       const fab = document.getElementById("pwaFabBtn");
       if (fab) fab.style.display = "flex";
+
+      // Show footer button
       const footerBtn = document.getElementById("footerInstallBtn");
       if (footerBtn) footerBtn.style.display = "inline-flex";
     });
+
+    // Banner install button
     document.getElementById("pwaInstallBtn")?.addEventListener("click", async () => {
       if (!deferredPrompt) return;
       deferredPrompt.prompt();
@@ -443,58 +454,28 @@
       const banner = document.getElementById("pwaInstallBanner");
       if (banner) banner.style.display = "none";
     });
+
+    // Banner dismiss
     document.getElementById("pwaDismissBtn")?.addEventListener("click", () => {
       const banner = document.getElementById("pwaInstallBanner");
       if (banner) banner.style.display = "none";
       localStorage.setItem("pwa_dismissed", Date.now().toString());
     });
-    window.addEventListener("appinstalled", () => {
-      const banner = document.getElementById("pwaInstallBanner");
-      if (banner) banner.style.display = "none";
-      const popup = document.getElementById("pwaPopup");
-      if (popup) popup.style.display = "none";
-      const fab = document.getElementById("pwaFabBtn");
-      if (fab) fab.style.display = "none";
-      const footerBtn = document.getElementById("footerInstallBtn");
-      if (footerBtn) footerBtn.style.display = "none";
-      deferredPrompt = null;
-    });
 
-    // Footer install button visibility
-    function updateFooterInstallBtn() {
-      const footerBtn = document.getElementById("footerInstallBtn");
-      if (footerBtn && deferredPrompt) {
-        footerBtn.style.display = "inline-flex";
-      }
-    }
-
-    // Global function for footer button
+    // Footer install button
     window.triggerPwaInstall = async function() {
-      if (!deferredPrompt) return;
+      if (!deferredPrompt) {
+        alert("Install not available. Try using Chrome/Edge browser or check if already installed.");
+        return;
+      }
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       deferredPrompt = null;
       const footerBtn = document.getElementById("footerInstallBtn");
       if (footerBtn) footerBtn.style.display = "none";
-    };
-
-    // Update footer button when installable
-    const origHandler = window.addEventListener;
-    // Check after beforeinstallprompt
-    setTimeout(() => {
-      if (deferredPrompt) {
-        const footerBtn = document.getElementById("footerInstallBtn");
-        if (footerBtn) footerBtn.style.display = "inline-flex";
-      }
-    }, 1000);
-
-    // Show FAB when installable
-    if (deferredPrompt) {
       const fab = document.getElementById("pwaFabBtn");
-      if (fab) fab.style.display = "flex";
-      const footerBtn = document.getElementById("footerInstallBtn");
-      if (footerBtn) footerBtn.style.display = "inline-flex";
-    }
+      if (fab) fab.style.display = "none";
+    };
 
     // FAB click
     document.getElementById("pwaFabBtn")?.addEventListener("click", async () => {
@@ -506,7 +487,7 @@
       if (fab) fab.style.display = "none";
     });
 
-    // Show popup after 3 seconds if installable
+    // Popup after 3 seconds
     setTimeout(() => {
       if (deferredPrompt) {
         const popup = document.getElementById("pwaPopup");
@@ -522,8 +503,6 @@
       deferredPrompt = null;
       const popup = document.getElementById("pwaPopup");
       if (popup) popup.style.display = "none";
-      const banner = document.getElementById("pwaInstallBanner");
-      if (banner) banner.style.display = "none";
     });
 
     // Popup dismiss
@@ -532,6 +511,20 @@
       if (popup) popup.style.display = "none";
       localStorage.setItem("pwa_dismissed", Date.now().toString());
     });
+
+    // App installed
+    window.addEventListener("appinstalled", () => {
+      const banner = document.getElementById("pwaInstallBanner");
+      if (banner) banner.style.display = "none";
+      const popup = document.getElementById("pwaPopup");
+      if (popup) popup.style.display = "none";
+      const fab = document.getElementById("pwaFabBtn");
+      if (fab) fab.style.display = "none";
+      const footerBtn = document.getElementById("footerInstallBtn");
+      if (footerBtn) footerBtn.style.display = "none";
+      deferredPrompt = null;
+    });
+  </script>
   </script>
   <script>
     if ('serviceWorker' in navigator) {
