@@ -560,9 +560,12 @@ function renderActivity() {
 // ===== Settings =====
 function getSettings() {
   try {
-    return JSON.parse(localStorage.getItem("lakshyaim_settings")) || {};
+    const s = JSON.parse(localStorage.getItem("lakshyaim_settings")) || {};
+    if (s.gstRate == null) s.gstRate = 18;
+    if (!s.gstin) s.gstin = "";
+    return s;
   } catch {
-    return {};
+    return { gstRate: 18, gstin: "" };
   }
 }
 
