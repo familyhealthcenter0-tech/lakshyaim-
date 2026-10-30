@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261111" />
-  <link rel="stylesheet" href="admin.css?v=20261111" />
+  <link rel="stylesheet" href="styles.css?v=20261112" />
+  <link rel="stylesheet" href="admin.css?v=20261112" />
 </head>
 <body class="admin-body">
 
@@ -457,6 +457,33 @@
               <p class="co-note">GST amount checkout par automatically calculate hoga based on subtotal.</p>
             </div>
 
+            <!-- Admin Credentials -->
+            <div class="settings-group">
+              <div class="settings-group-head">
+                <span class="settings-group-icon">A</span>
+                <div>
+                  <h3>Admin Credentials</h3>
+                  <p class="settings-group-sub">Admin login username aur password update karo</p>
+                </div>
+              </div>
+              <div class="row">
+                <label>New Username
+                  <input type="text" id="adminNewUser" placeholder="admin" autocomplete="username" />
+                </label>
+                <label>New Password
+                  <input type="password" id="adminNewPass" placeholder="********" autocomplete="new-password" />
+                </label>
+              </div>
+              <div class="row">
+                <label>Confirm Password
+                  <input type="password" id="adminConfirmPass" placeholder="********" autocomplete="new-password" />
+                </label>
+              </div>
+              <button type="button" class="btn" id="saveAdminCredsBtn">Update Credentials</button>
+              <p class="form-msg" id="adminCredsMsg"></p>
+              <p class="co-note">Update ke baad naye credentials se login karo. Purane credentials kaam nahi karenge.</p>
+            </div>
+
             <!-- Social Media Links -->
             <div class="settings-group">
               <div class="settings-group-head">
@@ -522,9 +549,9 @@
     </div>
   </div>
 
-  <script src="products.js?v=20261111"></script>
-  <script src="site-content.js?v=20261111"></script>
-  <script src="admin.js?v=20261111"></script>
-  <script src="theme.js?v=20261111"></script>
+  <script src="products.js?v=20261112"></script>
+  <script src="site-content.js?v=20261112"></script>
+  <script src="admin.js?v=20261112"></script>
+  <script src="theme.js?v=20261112"></script>
 </body>
 </html>

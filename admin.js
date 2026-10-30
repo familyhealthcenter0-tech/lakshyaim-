@@ -1,9 +1,15 @@
-// Admin login logic (demo — credentials are client-side only)
+// Admin login logic (credentials stored in localStorage, default admin/admin123)
 
-const CREDENTIALS = {
-  username: "admin",
-  password: "admin123",
-};
+function getAdminCreds() {
+  try {
+    const raw = localStorage.getItem("lakshyaim_admin_creds");
+    if (raw) {
+      const c = JSON.parse(raw);
+      if (c.username && c.password) return c;
+    }
+  } catch {}
+  return { username: "admin", password: "admin123" };
+}
 
 const loginForm = document.getElementById("loginForm");
 const errorMsg = document.getElementById("errorMsg");
@@ -26,17 +32,18 @@ loginForm.addEventListener("submit", (e) => {
   const user = document.getElementById("username").value.trim().toLowerCase();
   const pass = passwordInput.value.trim().toLowerCase();
 
-  const userOk = user === CREDENTIALS.username;
-  const passOk = pass === CREDENTIALS.password;
+  const creds = getAdminCreds();
+  const userOk = user === creds.username.toLowerCase();
+  const passOk = pass === creds.password.toLowerCase();
 
   if (userOk && passOk) {
-    sessionStorage.setItem("lakshyaim_admin", CREDENTIALS.username);
-    openDashboard(CREDENTIALS.username);
+    sessionStorage.setItem("lakshyaim_admin", creds.username);
+    openDashboard(creds.username);
   } else if (!userOk && passOk) {
-    errorMsg.textContent = "❌ Username galat hai. Sahi username: admin";
+    errorMsg.textContent = "Username galat hai.";
     errorMsg.classList.add("show");
   } else if (userOk && !passOk) {
-    errorMsg.textContent = "❌ Password galat hai. Sahi password: admin123";
+    errorMsg.textContent = "Password galat hai.";
     errorMsg.classList.add("show");
   } else {
     errorMsg.textContent = "❌ Username aur password dono galat hain.";
@@ -1361,6 +1368,41 @@ document.getElementById("saveSocialBtn")?.addEventListener("click", () => {
     msg.textContent = "Social links save ho gaye - footer par live.";
     msg.style.color = "#0b6b46";
   }
+});
+
+// ===== Admin credentials update =====
+document.getElementById("saveAdminCredsBtn")?.addEventListener("click", () => {
+  const newUser = document.getElementById("adminNewUser").value.trim();
+  const newPass = document.getElementById("adminNewPass").value.trim();
+  const confirmPass = document.getElementById("adminConfirmPass").value.trim();
+  const msg = document.getElementById("adminCredsMsg");
+
+  if (!newUser || !newPass) {
+    msg.textContent = "Username aur password dono bhariye.";
+    msg.style.color = "#b33232";
+    return;
+  }
+  if (newPass !== confirmPass) {
+    msg.textContent = "Password aur confirm password match nahi kar rahe.";
+    msg.style.color = "#b33232";
+    return;
+  }
+  if (newPass.length < 4) {
+    msg.textContent = "Password kam se kam 4 characters ka ho.";
+    msg.style.color = "#b33232";
+    return;
+  }
+
+  const creds = { username: newUser, password: newPass };
+  localStorage.setItem("lakshyaim_admin_creds", JSON.stringify(creds));
+  logActivity("A", "Admin credentials update kiye");
+  msg.textContent = "Credentials update ho gaye - naye credentials se login karo.";
+  msg.style.color = "#0b6b46";
+
+  // Clear fields
+  document.getElementById("adminNewUser").value = "";
+  document.getElementById("adminNewPass").value = "";
+  document.getElementById("adminConfirmPass").value = "";
 });
 
 // ===== Database view — localStorage overview =====
