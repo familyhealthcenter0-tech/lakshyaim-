@@ -5,10 +5,7 @@
 
 /* ===== Admin login ===== */
 .admin-body {
-  background:
-    radial-gradient(ellipse 50% 40% at 80% 10%, rgba(13, 148, 136, 0.15) 0%, transparent 100%),
-    radial-gradient(ellipse 40% 35% at 15% 90%, rgba(244, 63, 94, 0.08) 0%, transparent 100%),
-    linear-gradient(135deg, #0f172a 0%, #0b1220 100%);
+  background: #0f172a;
   min-height: 100vh;
 }
 .admin-body .navbar { background: #fff; border-bottom: 1px solid #e2e8f0; }
@@ -326,26 +323,23 @@
   border-radius: 999px;
 }
 
-/* Colorful KPI cards */
-.kpi-green { background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important; border: none !important; color: #fff !important; }
-.kpi-amber { background: linear-gradient(135deg, #d4b23a 0%, #9a7a1a 100%) !important; border: none !important; color: #fff !important; }
-.kpi-blue { background: linear-gradient(135deg, #4f8fd9 0%, #1d4ed8 100%) !important; border: none !important; color: #fff !important; }
-.kpi-violet { background: linear-gradient(135deg, #7c6ff0 0%, #5b42c7 100%) !important; border: none !important; color: #fff !important; }
-.kpi-teal { background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%) !important; border: none !important; color: #fff !important; }
-.kpi-rose { background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%) !important; border: none !important; color: #fff !important; }
-.kpi-green .dash-num, .kpi-amber .dash-num, .kpi-blue .dash-num, .kpi-violet .dash-num, .kpi-teal .dash-num, .kpi-rose .dash-num { color: #fff !important; }
-.kpi-green .dash-label, .kpi-amber .dash-label, .kpi-blue .dash-label, .kpi-violet .dash-label, .kpi-teal .dash-label, .kpi-rose .dash-label { color: rgba(255,255,255,0.85) !important; }
-.kpi-green .dash-ico, .kpi-amber .dash-ico, .kpi-blue .dash-ico, .kpi-violet .dash-ico, .kpi-teal .dash-ico, .kpi-rose .dash-ico { background: rgba(255,255,255,0.22) !important; box-shadow: none !important; }
-.kpi-green .dash-trend, .kpi-amber .dash-trend, .kpi-blue .dash-trend, .kpi-violet .dash-trend, .kpi-teal .dash-trend, .kpi-rose .dash-trend { background: rgba(255,255,255,0.24) !important; color: #fff !important; }
-.dash-grid .dash-card:nth-child(1) { background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); border: none; color: #fff; }
-.dash-grid .dash-card:nth-child(2) { background: linear-gradient(135deg, #d4b23a 0%, #9a7a1a 100%); border: none; color: #fff; }
-.dash-grid .dash-card:nth-child(3) { background: linear-gradient(135deg, #4f8fd9 0%, #1d4ed8 100%); border: none; color: #fff; }
-.dash-grid .dash-card:nth-child(4) { background: linear-gradient(135deg, #7c6ff0 0%, #5b42c7 100%); border: none; color: #fff; }
-.dash-grid .dash-card .dash-num { color: #fff; }
-.dash-grid .dash-card .dash-label { color: rgba(255, 255, 255, 0.85); }
-.dash-grid .dash-card .dash-ico { background: rgba(255, 255, 255, 0.22); box-shadow: none; }
-.dash-grid .dash-card .dash-trend { background: rgba(255, 255, 255, 0.24); color: #fff; }
-.dash-grid .dash-card::after { background: radial-gradient(circle, rgba(255, 255, 255, 0.16) 0%, transparent 70%); }
+/* Professional KPI cards - clean white with subtle colored accent */
+.kpi-green { border-left: 4px solid #14b8a6 !important; background: #fff !important; color: var(--ink) !important; }
+.kpi-amber { border-left: 4px solid #d4b23a !important; background: #fff !important; color: var(--ink) !important; }
+.kpi-blue { border-left: 4px solid #4f8fd9 !important; background: #fff !important; color: var(--ink) !important; }
+.kpi-violet { border-left: 4px solid #7c6ff0 !important; background: #fff !important; color: var(--ink) !important; }
+.kpi-teal { border-left: 4px solid #14b8a6 !important; background: #fff !important; color: var(--ink) !important; }
+.kpi-rose { border-left: 4px solid #f43f5e !important; background: #fff !important; color: var(--ink) !important; }
+.kpi-green .dash-num, .kpi-amber .dash-num, .kpi-blue .dash-num, .kpi-violet .dash-num, .kpi-teal .dash-num, .kpi-rose .dash-num { color: var(--ink) !important; }
+.kpi-green .dash-label, .kpi-amber .dash-label, .kpi-blue .dash-label, .kpi-violet .dash-label, .kpi-teal .dash-label, .kpi-rose .dash-label { color: var(--muted) !important; }
+.kpi-green .dash-ico, .kpi-amber .dash-ico, .kpi-blue .dash-ico, .kpi-violet .dash-ico, .kpi-teal .dash-ico, .kpi-rose .dash-ico { background: var(--green-light) !important; box-shadow: none !important; }
+.kpi-green .dash-trend, .kpi-amber .dash-trend, .kpi-blue .dash-trend, .kpi-violet .dash-trend, .kpi-teal .dash-trend, .kpi-rose .dash-trend { background: var(--green-light) !important; color: var(--green-dark) !important; }
+.dash-grid .dash-card { background: #fff !important; border: 1px solid var(--card-border) !important; color: var(--ink) !important; }
+.dash-grid .dash-card .dash-num { color: var(--ink) !important; }
+.dash-grid .dash-card .dash-label { color: var(--muted) !important; }
+.dash-grid .dash-card .dash-ico { background: var(--green-light) !important; box-shadow: none !important; }
+.dash-grid .dash-card .dash-trend { background: var(--green-light) !important; color: var(--green-dark) !important; }
+.dash-grid .dash-card::after { background: radial-gradient(circle, rgba(13, 148, 136, 0.04) 0%, transparent 70%) !important; }
 
 /* Quick action cards */
 .qa-cards {

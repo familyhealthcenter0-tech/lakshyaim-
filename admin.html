@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin – Lakshyaim Private Limited</title>
+  <title>Admin - Lakshyaim Private Limited</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230d9b64'/%3E%3Ctext x='50' y='70' font-size='58' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='800'%3EL%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>(function(){try{var t=localStorage.getItem('lakshyaim_theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-  <link rel="stylesheet" href="styles.css?v=20261105" />
-  <link rel="stylesheet" href="admin.css?v=20261105" />
+  <link rel="stylesheet" href="styles.css?v=20261106" />
+  <link rel="stylesheet" href="admin.css?v=20261106" />
 </head>
 <body class="admin-body">
 
@@ -30,7 +30,7 @@
   <!-- ===== Login screen ===== -->
   <main class="login-wrap" id="loginScreen">
     <div class="login-card">
-      <span class="login-icon">🔐</span>
+      <span class="login-icon">A</span>
       <h1>Admin Login</h1>
       <p class="login-sub">Lakshyaim Private Limited control panel</p>
       <form id="loginForm">
@@ -39,12 +39,12 @@
         <label for="password">Password</label>
         <div class="pass-wrap">
           <input type="password" id="password" placeholder="Enter password" autocomplete="current-password" required />
-          <button type="button" id="togglePass" aria-label="Show password">👁</button>
+          <button type="button" id="togglePass" aria-label="Show password">Show</button>
         </div>
         <p class="error-msg" id="errorMsg"></p>
         <button type="submit" class="btn">Login</button>
       </form>
-      <p class="hint">Demo credentials: <strong>admin</strong> / <strong>admin123</strong></p>
+      
     </div>
   </main>
 
@@ -59,21 +59,21 @@
       </a>
       <nav class="ad-nav">
         <p class="ad-side-label">Menu</p>
-        <button class="ad-link active" data-view="dashboard" data-title="Dashboard">📊 Dashboard</button>
-        <button class="ad-link" data-view="products" data-title="Products">📦 Products</button>
-        <button class="ad-link" data-view="orders" data-title="Orders">🧾 Orders</button>
-        <button class="ad-link" data-view="analytics" data-title="Analytics">📈 Analytics</button>
-        <button class="ad-link" data-view="gallerymgmt" data-title="Gallery Manager">🖼️ Gallery Manager</button>
-        <button class="ad-link" data-view="database" data-title="Database">🗄 Database</button>
-        <button class="ad-link" data-view="members" data-title="Members">👥 Members</button>
-        <button class="ad-link" data-view="content" data-title="Site Content">🎨 Content</button>
-        <button class="ad-link" data-view="activity" data-title="Activity">🕒 Activity Log</button>
-        <button class="ad-link" data-view="settings" data-title="Settings">⚙️ Settings</button>
-        <a href="index.html" class="ad-link">🛍 View Store</a>
-        <a href="gallery.html" class="ad-link">🖼 Gallery</a>
+        <button class="ad-link active" data-view="dashboard" data-title="Dashboard">Dashboard</button>
+        <button class="ad-link" data-view="products" data-title="Products">Products</button>
+        <button class="ad-link" data-view="orders" data-title="Orders">Orders</button>
+        <button class="ad-link" data-view="analytics" data-title="Analytics">Analytics</button>
+        <button class="ad-link" data-view="gallerymgmt" data-title="Gallery Manager">Gallery Manager</button>
+        <button class="ad-link" data-view="database" data-title="Database">Database</button>
+        <button class="ad-link" data-view="members" data-title="Members">Members</button>
+        <button class="ad-link" data-view="content" data-title="Site Content">Site Content</button>
+        <button class="ad-link" data-view="activity" data-title="Activity">Activity Log</button>
+        <button class="ad-link" data-view="settings" data-title="Settings">Settings</button>
+        <a href="index.html" class="ad-link">View Store</a>
+        <a href="gallery.html" class="ad-link">Gallery</a>
       </nav>
       <div class="ad-side-bottom">
-        <span class="ad-user" id="adUserChip">👤 admin</span>
+        <span class="ad-user" id="adUserChip">admin</span>
         <button class="btn btn-outline btn-sm" id="logoutBtn">Logout</button>
       </div>
     </aside>
@@ -82,11 +82,11 @@
     <!-- Main area -->
     <div class="ad-main">
       <header class="ad-topbar">
-        <button class="ad-burger" id="adBurger" aria-label="Menu">☰</button>
+        <button class="ad-burger" id="adBurger" aria-label="Menu">Menu</button>
         <h1 class="ad-viewtitle" id="viewTitle">Dashboard</h1>
-        <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Switch to dark mode" style="background:var(--green-light);border-radius:11px;padding:7px 10px">🌙</button>
+        <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Switch to dark mode" style="background:var(--green-light);border-radius:11px;padding:7px 10px">Theme</button>
         <span class="ad-date" id="adDate"></span>
-        <span class="ad-userchip" id="adUserChipTop">👤 admin</span>
+        <span class="ad-userchip" id="adUserChipTop">admin</span>
       </header>
 
       <div class="ad-content">
@@ -96,84 +96,74 @@
           <div class="welcome-banner">
             <div class="wb-text">
               <h2 id="welcomeMsg">Welcome back!</h2>
-              <p class="wb-sub">Yahan aaj ka poora update hai — orders, products aur store performance ek nazar me.</p>
+              <p class="wb-sub">Yahan aaj ka poora update hai - orders, products aur store performance ek nazar me.</p>
             </div>
-            <span class="wb-badge">🟢 Store Live</span>
+            <span class="wb-badge">Live</span>
           </div>
 
           <div class="dash-grid">
             <div class="dash-card">
-              <span class="dash-ico">🧾</span>
+              <span class="dash-ico">•</span>
               <span class="dash-trend">Live</span>
               <p class="dash-num" id="statOrders">0</p>
               <p class="dash-label">Total orders</p>
             </div>
             <div class="dash-card">
-              <span class="dash-ico">⏳</span>
+              <span class="dash-ico">•</span>
               <p class="dash-num" id="statPending">0</p>
               <p class="dash-label">Pending orders</p>
             </div>
             <div class="dash-card">
-              <span class="dash-ico">📦</span>
+              <span class="dash-ico">•</span>
               <span class="dash-trend">Synced</span>
               <p class="dash-num" id="statProducts">0</p>
               <p class="dash-label">Products live</p>
             </div>
             <div class="dash-card">
-              <span class="dash-ico">💰</span>
+              <span class="dash-ico">•</span>
               <span class="dash-trend">All time</span>
-              <p class="dash-num" id="statRevenue">₹0</p>
+              <p class="dash-num" id="statRevenue">Rs 0</p>
               <p class="dash-label">Total revenue</p>
             </div>
           </div>
 
           <div class="qa-cards">
             <button class="qa-card" data-goto="products">
-              <span class="qa-ico ico-green">➕</span>
+              <span class="qa-ico ico-green">•</span>
               <b>Add New Product</b>
               <span>Photo, price, rating ke saath naya product add karo</span>
             </button>
             <button class="qa-card" data-goto="products">
-              <span class="qa-ico ico-amber">🛍</span>
+              <span class="qa-ico ico-amber">•</span>
               <b>Manage Catalog</b>
-              <span>Edit / delete / search — poora catalog control</span>
+              <span>Edit / delete / search - poora catalog control</span>
             </button>
             <button class="qa-card" data-goto="orders">
-              <span class="qa-ico ico-blue">🧾</span>
+              <span class="qa-ico ico-blue">•</span>
               <b>View Orders</b>
-              <span>Status update karo — Pending → Shipped → Delivered</span>
+              <span>Status update karo - Pending → Shipped → Delivered</span>
             </button>
           </div>
 
-          <div class="dash-panel">
-            <h2><span class="panel-ico">🚀</span> Quick Tips</h2>
-            <p class="ad-tip">
-              Products tab me se naye product add karo — shop, products page aur
-              dropdown me turant live ho jayenge. Orders tab me checkout ke
-              orders status ke saath dikhte hain. Changes browser me save hote
-              hain; sab visitors ke liye permanent karne ke liye
-              <b>Download products.json</b> button use karo.
-            </p>
-          </div>
         </div>
 
         <!-- ===== View: Products ===== -->
         <div class="ad-view" id="view-products" style="display:none">
           <div class="dash-panel" id="addProductPanel" style="margin-bottom:26px">
-            <h2>➕ Add New Product</h2>
+            <h2>Add New Product</h2>
             <form id="addProductForm" class="add-form">
               <div class="row">
                 <label>Product name
-                  <input type="text" id="pName" placeholder="e.g. Aloevera Concentrate – Mango" required />
+                  <input type="text" id="pName" placeholder="e.g. Aloevera Concentrate - Mango" required />
                 </label>
                 <label>Emoji (sirf emoji wale product ke liye)
-                  <input type="text" id="pEmoji" placeholder="🥭" maxlength="4" />
+                  <input type="text" id="pEmoji" placeholder="emoji" maxlength="4" />
                 </label>
               </div>
               <div class="row">
                 <label>Photo (gallery se choose karo)
                   <select id="pImage">
-                    <option value="">— Koi photo nahi (emoji dikhega) —</option>
+                    <option value="">- Koi photo nahi (emoji dikhega) -</option>
                   </select>
                 </label>
                 <label>Photo focus (optional)
@@ -181,7 +171,7 @@
                 </label>
               </div>
               <div class="row">
-                <label>Photo zoom (optional — 1 = normal)
+                <label>Photo zoom (optional - 1 = normal)
                   <input type="number" id="pImgZoom" step="0.1" min="1" max="3" placeholder="1" />
                 </label>
                 <div class="add-preview" id="addPreview" hidden>
@@ -209,7 +199,7 @@
                 </label>
               </div>
               <div class="row">
-                <label>Rating (1–5)
+                <label>Rating (1-5)
                   <input type="number" id="pRating" min="1" max="5" value="5" required />
                 </label>
                 <label>Reviews count
@@ -225,7 +215,7 @@
 
           <div class="dash-panel" id="catalogPanel">
             <div class="search-row">
-              <h2>🛍 Product Catalog (<span id="prodCount">0</span>)</h2>
+              <h2>Product Catalog (<span id="prodCount">0</span>)</h2>
               <input type="text" id="prodSearch" class="search-input" placeholder="🔍 Search by name ya tag..." />
             </div>
             <table class="orders-table">
@@ -241,7 +231,7 @@
         <div class="ad-view" id="view-orders" style="display:none">
           <div class="dash-panel">
             <div class="search-row">
-              <h2>🧾 Recent Orders <span style="font-size:0.78rem;color:var(--muted);font-weight:600">(checkout se place hue)</span></h2>
+              <h2>Recent Orders <span style="font-size:0.78rem;color:var(--muted);font-weight:600">(checkout se place hue)</span></h2>
               <button class="btn btn-outline btn-sm" id="exportOrdersBtn">⬇ Orders CSV</button>
             </div>
             <table class="orders-table orders-table--rich">
@@ -257,7 +247,7 @@
         <div class="ad-view" id="view-content" style="display:none">
           <div class="dash-panel">
             <div class="search-row">
-              <h2>🎨 Site Content Editor</h2>
+              <h2>Site Content Editor</h2>
               <div class="panel-actions">
                 <button class="btn btn-outline btn-sm" id="exportContentBtn">⬇ Export JSON</button>
                 <label class="btn btn-outline btn-sm" for="importContentFile" style="cursor:pointer">⬆ Import JSON</label>
@@ -265,7 +255,7 @@
               </div>
             </div>
             <p class="co-note">
-              Website ke har section ka content yahan se edit karo — save karte hi
+              Website ke har section ka content yahan se edit karo - save karte hi
               homepage par turant apply ho jayega (usi browser me). Sab visitors ke liye
               permanent karne ke liye <b>Export JSON</b> karke mujhe file de dena.
             </p>
@@ -282,45 +272,45 @@
           <div class="kpi-grid-12" id="analyticsKpis"></div>
 
           <div class="dash-panel" style="margin-bottom:24px">
-            <h2><span class="panel-ico">📈</span> Revenue Trend — Order by Order</h2>
+            <h2>Revenue Trend - Order by Order</h2>
             <div id="chartTrend"></div>
           </div>
 
           <div class="analytics-grid" style="margin-bottom:24px">
             <div class="dash-panel">
-              <h2><span class="panel-ico">💰</span> Revenue — Last Orders</h2>
+              <h2>Revenue - Last Orders</h2>
               <div class="chart-bars" id="chartRevenue"></div>
             </div>
             <div class="dash-panel">
-              <h2><span class="panel-ico">🧾</span> Order Status</h2>
+              <h2>Order Status</h2>
               <div class="donut-wrap">
                 <div class="donut" id="donutStatus"><span class="donut-center" id="donutTotal">0</span></div>
                 <div class="legend" id="statusLegend"></div>
               </div>
             </div>
             <div class="dash-panel">
-              <h2><span class="panel-ico">💳</span> Payment Split</h2>
+              <h2>Payment Split</h2>
               <div class="hbars" id="chartPay"></div>
             </div>
             <div class="dash-panel">
-              <h2><span class="panel-ico">🏆</span> Top Products</h2>
+              <h2>Top Products</h2>
               <div class="hbars" id="chartTop"></div>
             </div>
           </div>
 
           <div class="analytics-grid" style="margin-bottom:24px">
             <div class="dash-panel">
-              <h2><span class="panel-ico">🏷</span> Catalog by Category</h2>
+              <h2>Catalog by Category</h2>
               <div class="hbars" id="chartCategory"></div>
             </div>
             <div class="dash-panel">
-              <h2><span class="panel-ico">👥</span> Members Growth</h2>
+              <h2>Members Growth</h2>
               <div class="hbars" id="chartMembers"></div>
             </div>
           </div>
 
           <div class="dash-panel" id="gstReportPanel">
-            <h2><span class="panel-ico">🧮</span> GST Report</h2>
+            <h2>GST Report</h2>
             <p class="co-note" id="gstReportNote"></p>
             <table class="orders-table" id="gstTable" style="display:none">
               <thead>
@@ -335,7 +325,7 @@
         <div class="ad-view" id="view-gallerymgmt" style="display:none">
           <div class="dash-panel" style="margin-bottom:24px">
             <div class="search-row">
-              <h2>⬆️ Upload Photos</h2>
+              <h2>Upload Photos</h2>
               <label class="btn btn-sm" for="galleryUpload" style="cursor:pointer">📁 Choose Photos</label>
               <input type="file" id="galleryUpload" accept="image/*" multiple hidden />
             </div>
@@ -343,7 +333,7 @@
           </div>
           <div class="dash-panel">
             <div class="search-row">
-              <h2>🖼 Gallery Manager</h2>
+              <h2>Gallery Manager</h2>
               <span class="prod-count-chip" id="gmCount">0 / 0 visible</span>
             </div>
             <p class="co-note" style="margin-bottom:14px">👁 Visible = homepage + gallery page par dikhega · 🚫 Hidden = sirf yahan rahega · 🗑 sirf uploaded photos delete hote hain</p>
@@ -356,7 +346,7 @@
           <div class="db-kpis" id="dbKpis"></div>
           <div class="dash-panel">
             <div class="search-row">
-              <h2>🗄 Data Storage</h2>
+              <h2>Data Storage</h2>
               <button class="btn btn-outline btn-sm" id="exportAllBtn">⬇ Export All (JSON)</button>
             </div>
             <table class="orders-table">
@@ -365,7 +355,7 @@
               </thead>
               <tbody id="dbTableBody"></tbody>
             </table>
-            <p class="co-note">Ye browser ka local database hai (localStorage) — products, orders, members, content sab yahan store hote hain. Export JSON se backup lo.</p>
+            <p class="co-note">Ye browser ka local database hai (localStorage) - products, orders, members, content sab yahan store hote hain. Export JSON se backup lo.</p>
           </div>
         </div>
 
@@ -373,7 +363,7 @@
         <div class="ad-view" id="view-members" style="display:none">
           <div class="dash-panel">
             <div class="search-row">
-              <h2>👥 Members <span style="font-size:0.78rem;color:var(--muted);font-weight:600">(homepage join form se)</span></h2>
+              <h2>Members <span style="font-size:0.78rem;color:var(--muted);font-weight:600">(homepage join form se)</span></h2>
               <button class="btn btn-outline btn-sm" id="exportMembersBtn">⬇ Members CSV</button>
             </div>
             <table class="orders-table">
@@ -389,7 +379,7 @@
         <div class="ad-view" id="view-activity" style="display:none">
           <div class="dash-panel">
             <div class="search-row">
-              <h2>🕒 Activity Log</h2>
+              <h2>Activity Log</h2>
               <button class="btn btn-outline btn-sm" id="clearActivityBtn">Clear log</button>
             </div>
             <ul class="activity-list" id="activityList"></ul>
@@ -399,14 +389,14 @@
         <!-- ===== View: Settings ===== -->
         <div class="ad-view" id="view-settings" style="display:none">
           <div class="dash-panel settings-panel">
-            <h2>⚙️ Store Settings</h2>
+            <h2>Store Settings</h2>
 
             <!-- Branding -->
             <div class="settings-group">
               <div class="settings-group-head">
                 <span class="settings-group-icon">🖼</span>
                 <div>
-                  <h3>Branding — Website Logo</h3>
+                  <h3>Branding - Website Logo</h3>
                   <p class="settings-group-sub">Site header aur sidebar ka logo upload karo</p>
                 </div>
               </div>
@@ -416,7 +406,7 @@
                   <label class="btn btn-sm" for="logoFile" style="cursor:pointer">📁 Upload Logo</label>
                   <input type="file" id="logoFile" accept="image/*" hidden />
                   <button type="button" class="btn btn-outline btn-sm" id="removeLogoBtn">Remove Logo</button>
-                  <p class="co-note" style="margin:8px 0 0">PNG/JPG/SVG — auto-compress (max 240px). Header aur sidebar me turant apply ho jayega.</p>
+                  <p class="co-note" style="margin:8px 0 0">PNG/JPG/SVG - auto-compress (max 240px). Header aur sidebar me turant apply ho jayega.</p>
                 </div>
               </div>
             </div>
@@ -435,7 +425,7 @@
                   <label>Free shipping threshold (₹)
                     <input type="number" id="setFreeOver" min="0" placeholder="2999" />
                   </label>
-                  <label>Shipping fee (₹) — threshold se neeche
+                  <label>Shipping fee (₹) - threshold se neeche
                     <input type="number" id="setShipFee" min="0" placeholder="99" />
                   </label>
                 </div>
@@ -451,14 +441,14 @@
                 <span class="settings-group-icon">🧾</span>
                 <div>
                   <h3>GST Details</h3>
-                  <p class="settings-group-sub">GSTIN aur rate set karo — checkout par auto-calculate hoga</p>
+                  <p class="settings-group-sub">GSTIN aur rate set karo - checkout par auto-calculate hoga</p>
                 </div>
               </div>
               <div class="row">
-                <label>GSTIN (optional — checkout par dikhega)
+                <label>GSTIN (optional - checkout par dikhega)
                   <input type="text" id="setGstin" placeholder="e.g. 23ABCDE1234F1Z5" maxlength="15" />
                 </label>
-                <label>GST rate (%) — 0 = off
+                <label>GST rate (%) - 0 = off
                   <input type="number" id="setGstRate" min="0" max="28" placeholder="5" />
                 </label>
               </div>
@@ -485,15 +475,15 @@
                 <label>Razorpay Key ID (rzp_test_... / rzp_live_...)
                   <input type="text" id="payRzpKey" placeholder="rzp_test_xxxxxxxxxx" />
                 </label>
-                <label>UPI ID (optional — checkout par customer ko dikhega)
+                <label>UPI ID (optional - checkout par customer ko dikhega)
                   <input type="text" id="payUpiId" placeholder="lakshyaim@upi" />
                 </label>
               </div>
               <label>Checkout payment note
-                <input type="text" id="payNote" placeholder="Demo store — COD available..." />
+                <input type="text" id="payNote" placeholder="Demo store - COD available..." />
               </label>
-              <p class="co-note" style="margin-bottom:14px">Razorpay on karne par checkout me <b>Razorpay</b> option dikhega — live keys integrate hone tak demo mode me order record hota hai.</p>
-              <button type="button" class="btn" id="savePaymentBtn">Save Payment Settings</button>
+              <p class="co-note" style="margin-bottom:14px">Razorpay on karne par checkout me <b>Razorpay</b> option dikhega - live keys integrate hone tak demo mode me order record hota hai.</p>
+              <button type="button" class="btn" id="savePaymentBtn">Settings</button>
               <p class="form-msg" id="payMsg"></p>
             </div>
           </div>
@@ -503,9 +493,9 @@
     </div>
   </div>
 
-  <script src="products.js?v=20261105"></script>
-  <script src="site-content.js?v=20261105"></script>
-  <script src="admin.js?v=20261105"></script>
-  <script src="theme.js?v=20261105"></script>
+  <script src="products.js?v=20261106"></script>
+  <script src="site-content.js?v=20261106"></script>
+  <script src="admin.js?v=20261106"></script>
+  <script src="theme.js?v=20261106"></script>
 </body>
 </html>
